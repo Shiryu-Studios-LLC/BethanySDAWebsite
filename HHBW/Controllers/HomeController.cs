@@ -1,6 +1,11 @@
-﻿using HHBW.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Diagnostics;
+
+using HHBW.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HHBW.Controllers
 {
@@ -11,10 +16,14 @@ namespace HHBW.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+
         }
 
         public IActionResult Index()
         {
+            var element = Document.GetelementByID("element1");
+
+
             return View();
         }
 
