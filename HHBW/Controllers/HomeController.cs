@@ -21,9 +21,7 @@ namespace HHBW.Controllers
 
         public IActionResult Index()
         {
-            var element = Document.GetelementByID("element1");
-
-
+            
             return View();
         }
 

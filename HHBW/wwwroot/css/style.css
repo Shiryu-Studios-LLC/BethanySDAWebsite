@@ -376,9 +376,16 @@ h6 {
 
 #hero h2 {
   color: #fff;
-  margin-bottom: 30px;
+  margin-bottom: 5px;
   font-size: 48px;
   font-weight: 700;
+}
+
+#hero h3 {
+    color: #fff;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 700;
 }
 
 #hero p {
@@ -442,17 +449,19 @@ h6 {
   border-radius: 4px;
   transition: 0.5s;
   line-height: 1;
-  margin: 10px;
+  position: absolute;
+  margin-top: 15%;
+  
   color: #fff;
   animation-delay: 0.8s;
   border: 2px solid #00c1c1;
 }
 
-#hero .btn-get-started:hover {
-  background: #00c1c1;
-  color: #fff;
-  text-decoration: none;
-}
+    #hero .btn-get-started:hover {
+        background: radial-gradient(#e66465, #9198e5);
+        color: #fff;
+        text-decoration: none;
+    }
 
 @media (max-width: 768px) {
   #hero h2 {
