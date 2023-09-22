@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Reflection;
+using System.Reflection.Metadata;
 
 namespace BethanySDAWebsite.Pages
 {
@@ -15,8 +16,7 @@ namespace BethanySDAWebsite.Pages
 
 		public void OnGet()
 		{
-            Console.WriteLine(Assembly.GetExecutingAssembly().GetName().FullName);
-
+            var element = Document
         }
     }
 }
