@@ -4,7 +4,7 @@
     {
         public static string SDALogo { get; set; } = "https://i.pinimg.com/originals/dd/97/48/dd9748b2cfc8271d76b1c661e05269d3.png";
         public static string Title { get; set; } = "Houston Haitian Bethany";
-        public static string Orginization { get; set; } = "Seventh Day Advantis Church";
+        public static string Orginization { get; set; } = "Seventh Day Adventist Church";
         public static string Phone { get; set; } = "+1 ";
         public static string Email { get; set; } = "bethanysda777@gmail.com";
         public static string Address { get; set; } = "12112 Carlsbad St, Houston, TX 77085";
@@ -19,16 +19,6 @@
                 BackgroundImage = PlaceHolderImage,
                 Description = "Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto."
             },
-            new Slide
-            {
-                BackgroundImage = PlaceHolderImage,
-                Description = "Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto."
-            },
-            new Slide
-            {
-                BackgroundImage = PlaceHolderImage,
-                Description = "Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto."
-            }
         };
         public static List<Service> Services { get; set; } = new ()
         {
@@ -41,14 +31,33 @@
         };
         public static List<string> Achivements { get; set; } = new() 
         {
-            
+            "Blessed!",
         };
         public static List<TeamMember> TeamMembers { get; set; } = new()
         {
-           
+           new TeamMember()
         };
-
+        public static List<News> News = new()
+        {
+            new News(),
+            new News(),
+            new News(),
+        };
+        public static List<Language> Languages = new()
+        { 
+            new() { Name = "En" }, 
+            new() { Name = "Fr" }, 
+            new() { Name = "Sp" } 
+        };
+        public static Language Language { get; set; } = Languages.First();
 
         public static string PlaceHolderImage => "https://images.hdqwalls.com/wallpapers/anime-fantasy-sky-5k-3h.jpg";
+
+
+        public static string GetLanguageId(Language language)
+        {
+            var index = Languages.IndexOf(language);
+            return $"change-lang-opt{index}";
+        }
     }
 }
