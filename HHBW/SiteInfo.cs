@@ -6,7 +6,7 @@
         public static string Title { get; set; } = "Houston Haitian Bethany";
         public static string Orginization { get; set; } = "Seventh Day Adventist Church";
         public static string Phone { get; set; } = "+1 ";
-        public static string Email { get; set; } = "bethanysda777@gmail.com";
+        public static string Email { get; set; } = "houstonhaitianbethany@gmail.com";
         public static string Address { get; set; } = "12112 Carlsbad St, Houston, TX 77085";
         public static string GoogleMap { get; set; } = "https://www.google.com/maps/embed/v1/place?key=AIzaSyC0XiUPly6Q2nFRmdqdSCmbn-" +
             "t7WT1F674&q=Houston+Haitian+Bethany+Church+12112+Carlsbad+St+Houston%2C+TX+77085-1206&attribution_source=" +
@@ -26,8 +26,17 @@
             {
                 Icon = "https://static.vecteezy.com/system/resources/previews/020/966/244/original/hand-holding-a-hearth-shape-icon-symbol-healthcare-volunteering-charity-and-donation-concept-png.png",
                 Name = "Online Giving",
-                Description = "Want to contribute to our mission."
+                Description = "Want to contribute to our mission.",
+                Link = "https://adventistgiving.org/donate/ANWFIA"
+            },
+            new Service
+            {
+                Icon = "https://static.vecteezy.com/system/resources/previews/020/966/244/original/hand-holding-a-hearth-shape-icon-symbol-healthcare-volunteering-charity-and-donation-concept-png.png",
+                Name = "Google",
+                Description = "This is an example google.",
+                Link = "https://google.com"
             }
+
         };
         public static List<string> Achivements { get; set; } = new() 
         {
