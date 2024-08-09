@@ -33,21 +33,41 @@ h6 {
   font-family: "Raleway", sans-serif;
 }
 
+
+/*------------------------------------------------------
+#Announcement  Section
+----------------------------------------------------------*/
+.announcementBlock {
+    background-color: #fff0;
+    border-radius: 10%;
+    margin: 5px, 20px, 5px, 20px;
+}
+
+.announcementBlock .announcementDetails {
+
+}
+
+.announcementBlock .card-img-left {
+    float: left;
+    width: 256px;
+    height: 256px;
+    border-radius: 10%;
+}
 /*--------------------------------------------------------------
 # Back to top button
 --------------------------------------------------------------*/
 .back-to-top {
-  position: fixed;
-  visibility: hidden;
-  opacity: 0;
-  right: 15px;
-  bottom: 15px;
-  z-index: 996;
-  background: #00c1c1;
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-  transition: all 0.4s;
+    position: fixed;
+    visibility: hidden;
+    opacity: 0;
+    right: 15px;
+    bottom: 15px;
+    z-index: 996;
+    background: #00c1c1;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    transition: all 0.4s;
 }
 
 .back-to-top i {

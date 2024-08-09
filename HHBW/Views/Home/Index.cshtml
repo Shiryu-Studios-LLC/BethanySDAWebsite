@@ -125,7 +125,27 @@
                     <img style="border-radius:5%" src=@SiteInfo.PlaceHolderImage class="img-fluid" width="1024" height="768" alt="about-image">
                 </div>
                 <div class="col-lg-6 pt-4 pt-lg-0 content">
-                    <h3>Who We Are...</h3>
+                    <h3>
+                        About Us Seventh-Day Adventist:
+                    </h3>
+                    <p class="fst-italic">
+                        <strong style="font-size:30px">@SiteInfo.AboutUs.Substring(0, 1)</strong>
+                        @SiteInfo.AboutUs.Substring(1, SiteInfo.AboutUs.Length - 1)
+                    </p>
+                    <ul>
+                        @foreach (var achivement in SiteInfo.Achivements)
+                        {
+                            <li><i class="bi bi-check-circle"></i>@achivement</li>
+                        }
+                    </ul>
+                    <p>
+
+                    </p>
+                </div>
+                <div class="col-lg-6 pt-4 pt-lg-0 content">
+                    <h3>
+                        Bethany in Houston:
+                    </h3>
                     <p class="fst-italic">
                         <strong style="font-size:30px">@SiteInfo.AboutUs.Substring(0, 1)</strong>
                         @SiteInfo.AboutUs.Substring(1, SiteInfo.AboutUs.Length - 1)
@@ -183,6 +203,50 @@
 
         </div>
     </section><!-- End Cards Section -->
+    <!---======= Youtube Feed  =======->
+    @{
+        if (!@SiteInfo.YoutubeLiveInfo.isLive)
+        {
+                                    <!-- ======= Cta Section ======= -->
+            <section id="cta" class="cta">
+                <div class="container">
+                    <div class="text-center">
+                        <h3>Our Youtube Feed!</h3>
+                        <br>
+                        <section id="hero" style="height: 500px">
+                            <div class="hero-container">
+                                <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
+
+                                    <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
+
+                                    <div class="carousel-inner" role="listbox">
+                                       @*  @{
+                                            foreach (var info in @SiteInfo.News)
+                                            {
+                                                <div class="carousel-item active" style="background-image: #0000;">
+                                                    <div class="carousel-container">
+                                                        <div class="carousel-content">
+                                                            <h2 id="main_title_1" class="animate__animated animate__fadeInDown">@info.Headline</h2>
+                                                            <p class="animate__animated animate__fadeInUp">@info.Description</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        } *@
+                                        <h1> We are not live show youtube feed </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- End Cta Section -->
+        }
+    }
+    <!-- End Youtube Feed -->
     <!-- ======= Services Section ======= -->
     <section id="services" class="services section-bg">
         <div class="container">
@@ -273,9 +337,11 @@
                                             {
                                                 <div class="carousel-item active" style="background-image: #0000;">
                                                     <div class="carousel-container">
-                                                        <div class="carousel-content">
-                                                            <h2 id="main_title_1" class="animate__animated animate__fadeInDown">@info.Headline</h2>
-                                                            <p class="animate__animated animate__fadeInUp">@info.Description</p>
+                                                        <div class="announcementBlock">
+                                                            <img src=@SiteInfo.PlaceHolderImage class="card-img-left" alt="...">
+                                                            <div class="announcementDetails">
+                                                            
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -286,7 +352,6 @@
                             </div>
                         </section>
                     </div>
-
                 </div>
             </section>
 

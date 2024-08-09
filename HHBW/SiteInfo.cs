@@ -5,7 +5,7 @@
         public static string SDALogo { get; set; } = "https://i.pinimg.com/originals/dd/97/48/dd9748b2cfc8271d76b1c661e05269d3.png";
         public static string Title { get; set; } = "Houston Haitian Bethany";
         public static string Orginization { get; set; } = "Seventh Day Adventist Church";
-        public static string Phone { get; set; } = "+1 ";
+        public static string Phone { get; set; } = "+1(281)772-3617";
         public static string Email { get; set; } = "houstonhaitianbethany@gmail.com";
         public static string Address { get; set; } = "12112 Carlsbad St, Houston, TX 77085";
         public static string GoogleMap { get; set; } = "https://www.google.com/maps/embed/v1/place?key=AIzaSyC0XiUPly6Q2nFRmdqdSCmbn-" +
@@ -16,7 +16,7 @@
         {
             new Slide
             {
-                BackgroundImage = PlaceHolderImage,
+                BackgroundImage = "https://lh3.google.com/u/5/d/1blFX9QG507YHK4YyhqMsHrFnDqgKaBOD=w1879-h931-iv1",
                 Description = "Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto."
             },
         };
@@ -46,11 +46,19 @@
         {
            new TeamMember()
         };
+
+        public static class YoutubeLiveInfo
+        {
+            public static bool isLive { get; set; }
+
+        }
+
         public static List<News> News = new()
         {
-            new News(),
-            new News(),
-            new News(),
+            new News(){ Headline = "Friday Night Vesper- August 2nd 2024 at 7:00 PM" },
+            new News(){ Headline = "Youth Day- July 27th 2024 at 9:30 AM- 12:00 PM" },
+            new News(){ Headline = "Adventurer and Pathfinder Club Registration Day- July 27th 2024 at 2:00 PM" },
+            new News(){ Headline = "Men’s Ministry Day- August 31st 2024" },
         };
         public static List<Language> Languages = new()
         { 
