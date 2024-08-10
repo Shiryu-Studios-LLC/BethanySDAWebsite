@@ -16,8 +16,8 @@
         {
             new Slide
             {
-                BackgroundImage = "https://lh3.google.com/u/5/d/1blFX9QG507YHK4YyhqMsHrFnDqgKaBOD=w1879-h931-iv1",
-                Description = "Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto."
+                BackgroundImage = "1_npGNjURyLwk0iC4F4cKdcZg4-R5G5rS",
+                Description = "Psalm 132:13-16: “God's dwelling place is always filled with His presence, and He wants to share it with His people.”"
             },
         };
         public static List<Service> Services { get; set; } = new ()
@@ -55,10 +55,28 @@
 
         public static List<News> News = new()
         {
-            new News(){ Headline = "Friday Night Vesper- August 2nd 2024 at 7:00 PM" },
-            new News(){ Headline = "Youth Day- July 27th 2024 at 9:30 AM- 12:00 PM" },
-            new News(){ Headline = "Adventurer and Pathfinder Club Registration Day- July 27th 2024 at 2:00 PM" },
-            new News(){ Headline = "Men’s Ministry Day- August 31st 2024" },
+            new News()
+            {
+                Headline = "Friday Night Vesper",
+                DateTime = new DateTime().ToCustomFormat(DateTimeExtensions.Months.Aug, 2, 2024, 7, 0, DateTimeExtensions.AMPM.PM)                
+            },
+            new News()
+            {
+                Headline = "Youth Day",
+                DateTime = new DateTime().ToCustomFormat(DateTimeExtensions.Months.Jul, 27, 2024, 9, 30, DateTimeExtensions.AMPM.AM),
+                DateTimeOffset = new DateTime().ToCustomFormat(DateTimeExtensions.Months.Jul, 27, 2024, 12, 0, DateTimeExtensions.AMPM.PM)
+            },
+            new News()
+            {
+                Headline = "Adventurer and Pathfinder Club Registration Day",
+                DateTime = new DateTime().ToCustomFormat(DateTimeExtensions.Months.Jul, 27, 2024, 2, 00, DateTimeExtensions.AMPM.PM),
+            },
+            new News()
+            { 
+                Headline = "Men’s Ministry Day- August 31st 2024",
+                DateTime = new DateTime().ToCustomFormat(DateTimeExtensions.Months.Aug, 31, 2024, 9, 30, DateTimeExtensions.AMPM.AM),
+                DateTimeOffset = new DateTime().ToCustomFormat(DateTimeExtensions.Months.Aug, 31, 2024, 1, 00, DateTimeExtensions.AMPM.PM),
+            },
         };
         public static List<Language> Languages = new()
         { 

@@ -71,7 +71,7 @@
                     {
                         if (SiteInfo.Slides.First() == info)
                         {
-                            <div class="carousel-item active" style="background-image: url(@info.BackgroundImage);">
+                            <div class="carousel-item active" style="background-image: url(@Utils.GetImageFromDrive(info.BackgroundImage));">
                                 <div class="carousel-container">
                                     <div class="carousel-content">
                                         <h2 id="main_title_1" class="animate__animated animate__fadeInDown">@info.Headline <br><p style="font-size:20px">@SiteInfo.Orginization</p></h2>
@@ -330,24 +330,31 @@
                                 <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
 
                                     <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
-
-                                    <div class="carousel-inner" role="listbox">
-                                        @{
-                                            foreach (var info in @SiteInfo.News)
-                                            {
-                                                <div class="carousel-item active" style="background-image: #0000;">
-                                                    <div class="carousel-container">
+                                    <center>
+                                        <ul class="no-bullets">
+                                            @{
+                                                foreach (var info in @SiteInfo.News)
+                                                {
+                                                    <li>
                                                         <div class="announcementBlock">
-                                                            <img src=@SiteInfo.PlaceHolderImage class="card-img-left" alt="...">
+                                                            <img src=@SiteInfo.PlaceHolderImage alt="...">
                                                             <div class="announcementDetails">
-                                                            
+                                                                <div class="announcementHeader"><a href="#">@info.Headline</a></div>
+                                                                <br />
+                                                                <div class="announcementDate">
+                                                                    @info.DateTime.ToString("MMM/dd/yyyy")                                                                   
+                                                                </div>
+                                                                <div class="announcementTime">
+                                                                    @info.DateTime.ToString("hh:mm tt")
+                                                                    @if (info.DateTimeOffset != default) info.DateTimeOffset.ToString("-hh:mm tt");
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
+                                                    </li>
+                                                }
                                             }
-                                        }
-                                    </div>
+                                        </ul>
+                                    </center>
                                 </div>
                             </div>
                         </section>
