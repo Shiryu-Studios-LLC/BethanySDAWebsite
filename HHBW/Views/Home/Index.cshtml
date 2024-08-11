@@ -69,12 +69,10 @@
                 @inject HHBW.Utils Utils
                 @{
                     foreach (var info in @SiteInfo.Slides)
-                    {
-                        var imageUrl = await Utils.GetImageFromDrive(info.BackgroundImage);
-                                                
+                    {          
                         if (SiteInfo.Slides.First() == info)
                         {
-                            <div class="carousel-item active" style="background-image: url(@imageUrl);">
+                            <div class="carousel-item active" style="background-image: url(@await Utils.GetImageFromDrive(info.BackgroundImage));">
                                 <div class="carousel-container">
                                     <div class="carousel-content">
                                         <h2 id="main_title_1" class="animate__animated animate__fadeInDown">@info.Headline <br><p style="font-size:20px">@SiteInfo.Orginization</p></h2>
@@ -573,7 +571,7 @@
                         <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
                             <div class="member">
                                 <div class="member-img">
-                                    <img src=@member.Image class="img-fluid" alt="">
+                                    <img src="@await Utils.GetImageFromDrive(member.Image)" class="img-fluid" alt="">
                                     <div class="social">
                                         <a href=@member.Twitter><i class="bi bi-twitter"></i></a>
                                         <a href=@member.Facebook><i class="bi bi-facebook"></i></a>

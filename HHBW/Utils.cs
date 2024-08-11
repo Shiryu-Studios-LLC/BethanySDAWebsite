@@ -73,10 +73,6 @@ namespace HHBW
         {
             try
             {
-                // Load and setup credentials
-                //ConvertTextToBinary("../../BethanySDAWebsite_credentials.json", "credentials.jbin");
-
-
                 ConvertBinaryToText("credentials.jbin", "../../BethanySDAWebsite_credentials.json");
                 var credential = GoogleCredential.FromFile("../../BethanySDAWebsite_credentials.json");
                 if (typeof(T).Equals(typeof(DriveService)))

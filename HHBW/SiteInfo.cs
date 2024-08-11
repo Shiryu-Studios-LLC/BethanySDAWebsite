@@ -44,7 +44,12 @@
         };
         public static List<TeamMember> TeamMembers { get; set; } = new()
         {
-           new TeamMember()
+           new TeamMember
+           {
+               Name = "Pastor Celant",
+               Image = "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+               Role = "Pastor",
+           }
         };
 
         public static class YoutubeLiveInfo
