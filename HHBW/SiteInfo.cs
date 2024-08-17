@@ -8,10 +8,12 @@
         public static string Phone { get; set; } = "+1(281)772-3617";
         public static string Email { get; set; } = "houstonhaitianbethany@gmail.com";
         public static string Address { get; set; } = "12112 Carlsbad St, Houston, TX 77085";
+        public static string YoutubeChannelID { get; set; } = "";
         public static string GoogleMap { get; set; } = "https://www.google.com/maps/embed/v1/place?key=AIzaSyC0XiUPly6Q2nFRmdqdSCmbn-" +
             "t7WT1F674&q=Houston+Haitian+Bethany+Church+12112+Carlsbad+St+Houston%2C+TX+77085-1206&attribution_source=" +
             "Houston+Haitian+Bethany+Church&attribution_web_url=http://houstonhaitianbethanytx.adventistchurch.org&zoom=15";
-        public static string AboutUs { get; set; } = "The Seventh-day Adventist Church is a mainstream Protestant church with approximately 19 million members worldwide, including more than one million members in North America. The Adventist Church operates 173 hospitals and sanitariums and more than 7,500 schools around the world. The Adventist Development and Relief Agency (ADRA) works within communities in more than 130 countries to provide community development and disaster relief.";
+        public static string AboutUsSDA { get; set; } = "The Seventh-day Adventist Church is a mainstream Protestant church with approximately 19 million members worldwide, including more than one million members in North America. The Adventist Church operates 173 hospitals and sanitariums and more than 7,500 schools around the world. The Adventist Development and Relief Agency (ADRA) works within communities in more than 130 countries to provide community development and disaster relief.";
+        public static string AboutUsBethany { get; set; } = "Houston Haitian Bethany Seventh-day Adventist Church is a welcoming community of faith dedicated to serving the Haitian diaspora and the Franco-American community in Houston, Texas. We are committed to providing a spiritual home where individuals can connect and meet with God, find community, and experience the transforming power of God’s love.\r\nOur church offers a blend of Haitian and American worship experiences, incorporating traditional hymns and contemporary music. We strive to create a space where everyone feels safe, valued and embraced, regardless of their background or life stage.\r\nWelcome home!\r\n";
         public static List<Slide> Slides { get; set; } = new ()
         {
             new Slide
@@ -38,17 +40,19 @@
             }
 
         };
-        public static List<string> Achivements { get; set; } = new() 
-        {
-            "Blessed!",
-        };
         public static List<TeamMember> TeamMembers { get; set; } = new()
         {
            new TeamMember
            {
-               Name = "Pastor Celant",
+               Name = "Stephenson Celant",
                Image = "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
                Role = "Pastor",
+           },
+            new TeamMember
+           {
+               Name = "Jean Bellot Louis",
+               Image = "1B1qO5FXAX2wqeOoz7QbOjsQSVzrsRijK",
+               Role = "1st Elder",
            }
         };
 

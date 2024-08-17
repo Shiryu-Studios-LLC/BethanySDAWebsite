@@ -1,0 +1,34 @@
+﻿<section id="about" class="about">
+    <div class="container">
+
+        <div class="section-title">
+            <h2>About</h2>
+            <p></p>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <img style="border-radius:5%" src=@SiteInfo.PlaceHolderImage class="img-fluid" width="1024" height="768" alt="about-image">
+            </div>
+            <div class="col-lg-6 pt-4 pt-lg-0 content">
+                <h3>
+                    About Us Seventh-Day Adventist:
+                </h3>
+                <p class="fst-italic">
+                    <strong style="font-size:30px">@SiteInfo.AboutUsSDA.Substring(0, 1)</strong>
+                    @SiteInfo.AboutUsSDA.Substring(1, SiteInfo.AboutUsSDA.Length - 1)
+                </p>
+            </div>
+            <div class="col-lg-6 pt-4 pt-lg-0 content">
+                <h3>
+                    Bethany in Houston:
+                </h3>
+                <p class="fst-italic">
+                    <strong style="font-size:30px">@SiteInfo.AboutUsBethany.Substring(0, 1)</strong>
+                    @SiteInfo.AboutUsBethany.Substring(1, SiteInfo.AboutUsBethany.Length - 1)
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>

@@ -14,6 +14,8 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Hosting;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using Google.Apis.Http;
+using Google.Apis.Util.Store;
 
 namespace HHBW
 {
@@ -69,24 +71,33 @@ namespace HHBW
             Console.WriteLine($"Obfuscated binary file converted back to text and saved to {outputFilePath}");
         }
 
-        private T? GetGoogleServiceAsync<T>()
+        private async Task<T?> GetGoogleServiceAsync<T>()
         {
+            var applicationName = "bethany-sda-website";
             try
             {
-                ConvertBinaryToText("credentials.jbin", "../../BethanySDAWebsite_credentials.json");
-                var credential = GoogleCredential.FromFile("../../BethanySDAWebsite_credentials.json");
                 if (typeof(T).Equals(typeof(DriveService)))
-                    credential = credential.CreateScoped(DriveService.Scope.Drive, DriveService.Scope.DriveFile, DriveService.Scope.DriveMetadata);
-                else if (typeof(T).Equals(typeof(YouTubeService)))
-                    credential = credential.CreateScoped(YouTubeService.Scope.Youtube, YouTubeService.Scope.YoutubeUpload);
-
-                var initializer = new BaseClientService.Initializer()
                 {
-                    ApplicationName = "bethany-sda-website",
-                    HttpClientInitializer = credential
+                    var credential = GetCredentialsFromServiceAccountFile();
+                    credential = credential.CreateScoped(DriveService.Scope.Drive, DriveService.Scope.DriveFile, DriveService.Scope.DriveMetadata);
+                    return (T)Activator.CreateInstance(typeof(T), new BaseClientService.Initializer()
+                    {
+                        ApplicationName = applicationName,
+                        HttpClientInitializer = credential
 
-                };
-                return (T)Activator.CreateInstance(typeof(T), initializer);
+                    });
+                }
+                else if (typeof(T).Equals(typeof(YouTubeService)))
+                {
+                    var credential = await GetCredentialFromOAuth2File(Scopes: YouTubeService.Scope.YoutubeReadonly);
+                    return (T)Activator.CreateInstance(typeof(T), new BaseClientService.Initializer()
+                    {
+                        ApplicationName = applicationName,
+                        HttpClientInitializer = credential
+
+                    });
+                }
+                return default;
             }
             catch(Exception ex)
             {
@@ -94,6 +105,28 @@ namespace HHBW
                 return default;
             }
         }
+
+        private GoogleCredential GetCredentialsFromServiceAccountFile()
+        {
+            ConvertBinaryToText("serviceaccount_credentials.jbin", "../../Bethany_ServiceAccount_Credentials.json");
+            return GoogleCredential.FromFile("../../Bethany_ServiceAccount_Credentials.json");
+        }
+        private async Task<UserCredential> GetCredentialFromOAuth2File(params string[] Scopes)
+        {
+            ConvertBinaryToText("oauth2_credentials.jbin", "../../Bethany_OAuth2_Credentials.json");
+            using (var stream = new FileStream("../../Bethany_OAuth2_Credentials.json", FileMode.Open, FileAccess.Read))
+            {
+                return await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(this.GetType().ToString())
+                );
+            }
+        }
+
+
         public async Task<string> GetImageFromDrive(string fileId)
         {
             string ImageFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img", "bethany_images");
@@ -108,7 +141,7 @@ namespace HHBW
 
             try
             {
-                var service = GetGoogleServiceAsync<DriveService>();
+                var service = await GetGoogleServiceAsync<DriveService>();
 
                 if (service == null)
                 {
@@ -152,6 +185,32 @@ namespace HHBW
             {
                 Console.WriteLine(ex);
                 return string.Empty;
+            }
+        }
+        public async Task<List<LiveBroadcast>?> GetPreviousLiveStreamsAsync(string channelId)
+        {
+            try
+            {
+                var service = await GetGoogleServiceAsync<YouTubeService>();
+
+                if (service == null)
+                {
+                    throw new InvalidOperationException("Failed to create Google Youtube service.");
+                }
+
+                var liveBroadcastRequest = service.LiveBroadcasts.List("snippet,contentDetails,status");
+                liveBroadcastRequest.BroadcastStatus = LiveBroadcastsResource.ListRequest.BroadcastStatusEnum.Completed;
+                liveBroadcastRequest.BroadcastType = LiveBroadcastsResource.ListRequest.BroadcastTypeEnum.Event__;
+                liveBroadcastRequest.MaxResults = 50;  // Number of results to return
+                //liveBroadcastRequest.ChannelId = channelId;
+
+                var liveBroadcastResponse = await liveBroadcastRequest.ExecuteAsync();
+                return liveBroadcastResponse.Items as List<LiveBroadcast>;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+                return default;
             }
         }
     }

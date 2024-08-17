@@ -1,0 +1,22 @@
+﻿<section id="services" class="services section-bg">
+    <div class="container">
+        <div class="section-title">
+            <h2>Services</h2>
+        </div>
+        <div class="row">
+            @{
+                foreach (var service in SiteInfo.Services)
+                {
+                    <div class="col-md-6" onclick="OpenService('@service.Link');">
+                        <div class="icon-box">
+                            <i class="bi bi-gem"></i>
+                            <h4><a href="#">@service.Name</a></h4>
+                            <p>@service.Description</p>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+    </div>
+</section>

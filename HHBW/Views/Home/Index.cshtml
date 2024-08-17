@@ -13,35 +13,13 @@
                 <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
                 <li><a class="nav-link scrollto" href="#about">About</a></li>
                 <li><a class="nav-link scrollto" href="#services">Services</a></li>
-                <li><a class="nav-link scrollto" href="#cta">Announcements / News</a></li>
+                <li><a class="nav-link scrollto" href="#news">Announcements / News</a></li>
                 @*<li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li>*@
-                <li><a class="nav-link scrollto" href="#team">Team</a></li>
-                @*
-                <li class="dropdown">
-                <a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
-                <ul>
-                <li><a href="#">Drop Down 1</a></li>
-                <li class="dropdown">
-                <a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-                <ul>
-                <li><a href="#">Deep Drop Down 1</a></li>
-                <li><a href="#">Deep Drop Down 2</a></li>
-                <li><a href="#">Deep Drop Down 3</a></li>
-                <li><a href="#">Deep Drop Down 4</a></li>
-                <li><a href="#">Deep Drop Down 5</a></li>
-                </ul>
-                </li>
-                <li><a href="#">Drop Down 2</a></li>
-                <li><a href="#">Drop Down 3</a></li>
-                <li><a href="#">Drop Down 4</a></li>
-                </ul>
-                </li>
-                *@
+                <li><a class="nav-link scrollto" href="#team">Team</a></li>                
                 <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
                 <li class="dropdown">
                     <a><span id="cur-lang">@SiteInfo.Language.Name</span> <i class="bi bi-chevron-down"></i></a>
                     <ul>
-                        @*<li><a id="change-lang-opt1" class="table-active" href="#">Drop Down 1</a></li>*@
                         @{
                             foreach (var lang in SiteInfo.Languages)
                             {
@@ -51,7 +29,6 @@
                         }
                     </ul>
                 </li>
-
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
@@ -59,315 +36,25 @@
     </div>
 </header><!-- End Header -->
 <!-- ======= Hero Section ======= -->
-<section id="hero">
-    <div class="hero-container">
-        <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
-
-            <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
-
-            <div class="carousel-inner" role="listbox">                
-                @inject HHBW.Utils Utils
-                @{
-                    foreach (var info in @SiteInfo.Slides)
-                    {          
-                        if (SiteInfo.Slides.First() == info)
-                        {
-                            <div class="carousel-item active" style="background-image: url(@await Utils.GetImageFromDrive(info.BackgroundImage));">
-                                <div class="carousel-container">
-                                    <div class="carousel-content">
-                                        <h2 id="main_title_1" class="animate__animated animate__fadeInDown">@info.Headline <br><p style="font-size:20px">@SiteInfo.Orginization</p></h2>
-                                        <p class="animate__animated animate__fadeInUp">@info.Description</p>
-                                        <a href="#about" class="btn-get-started scrollto animate__animated animate__fadeInUp">@info.Expand</a>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="carousel-item" style="background-image: url(@info.BackgroundImage);">
-                                <div class="carousel-container">
-                                    <div class="carousel-content">
-                                        <h2 id="main_title_1" class="animate__animated animate__fadeInDown">@info.Headline <br><p style="font-size:20px">@SiteInfo.Orginization</p></h2>
-                                        <p class="animate__animated animate__fadeInUp">@info.Description</p>
-                                        <a href="#about" class="btn-get-started scrollto animate__animated animate__fadeInUp">@info.Expand</a>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                }
-            </div>
-
-            @* <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon bi bi-chevron-double-left" aria-hidden="true"></span>
-            </a> *@
-
-            @* <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
-            <span class="carousel-control-next-icon bi bi-chevron-double-right" aria-hidden="true"></span>
-            </a> *@
-
-        </div>
-    </div>
-</section><!-- End Hero -->
+@await Html.PartialAsync("~/Views/Partial/_Hero.cshtml")
 
 <main id="main">
 
     <!-- ======= About Section ======= -->
-    <section id="about" class="about">
-        <div class="container">
-
-            <div class="section-title">
-                <h2>About</h2>
-                <p></p>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-6">
-                    <img style="border-radius:5%" src=@SiteInfo.PlaceHolderImage class="img-fluid" width="1024" height="768" alt="about-image">
-                </div>
-                <div class="col-lg-6 pt-4 pt-lg-0 content">
-                    <h3>
-                        About Us Seventh-Day Adventist:
-                    </h3>
-                    <p class="fst-italic">
-                        <strong style="font-size:30px">@SiteInfo.AboutUs.Substring(0, 1)</strong>
-                        @SiteInfo.AboutUs.Substring(1, SiteInfo.AboutUs.Length - 1)
-                    </p>
-                    <ul>
-                        @foreach (var achivement in SiteInfo.Achivements)
-                        {
-                            <li><i class="bi bi-check-circle"></i>@achivement</li>
-                        }
-                    </ul>
-                    <p>
-
-                    </p>
-                </div>
-                <div class="col-lg-6 pt-4 pt-lg-0 content">
-                    <h3>
-                        Bethany in Houston:
-                    </h3>
-                    <p class="fst-italic">
-                        <strong style="font-size:30px">@SiteInfo.AboutUs.Substring(0, 1)</strong>
-                        @SiteInfo.AboutUs.Substring(1, SiteInfo.AboutUs.Length - 1)
-                    </p>
-                    <ul>
-                        @foreach (var achivement in SiteInfo.Achivements)
-                        {
-                            <li><i class="bi bi-check-circle"></i>@achivement</li>
-                        }
-                    </ul>
-                    <p>
-
-                    </p>
-                </div>
-            </div>
-
-        </div>
-    </section><!-- End About Section -->
+    @await Html.PartialAsync("~/Views/Partial/_AboutUs.cshtml")
     <!-- ======= Cards Section ======= -->
-    <section id="cards" class="cards">
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mb-5 mb-lg-0">
-                    <div class="card">
-                        <img src=@SiteInfo.PlaceHolderImage class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title"><a href="">Autem sunt earum</a></h5>
-                            <p class="card-text">Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore</p>
-                            <a href="#" class="btn">Explore more</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mb-5 mb-lg-0">
-                    <div class="card">
-                        <img src=@SiteInfo.PlaceHolderImage class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title"><a href="">Nobis et tempore</a></h5>
-                            <p class="card-text">Ut quas omnis est. Non et aut tempora dignissimos similique in dignissimos. Sit incidunt et odit iusto</p>
-                            <a href="#" class="btn">Explore more</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mb-5 mb-lg-0">
-                    <div class="card">
-                        <img src=@SiteInfo.PlaceHolderImage class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title"><a href="">Facere quia quae dolores</a></h5>
-                            <p class="card-text">Modi ut et delectus. Modi nobis saepe voluptates nostrum. Sed quod consequatur quia provident dera</p>
-                            <a href="#" class="btn">Explore more</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section><!-- End Cards Section -->
-    <!---======= Youtube Feed  =======->
-    @{
-        if (!@SiteInfo.YoutubeLiveInfo.isLive)
-        {
-                                    <!-- ======= Cta Section ======= -->
-            <section id="cta" class="cta">
-                <div class="container">
-                    <div class="text-center">
-                        <h3>Our Youtube Feed!</h3>
-                        <br>
-                        <section id="hero" style="height: 500px">
-                            <div class="hero-container">
-                                <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
-
-                                    <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
-
-                                    <div class="carousel-inner" role="listbox">
-                                       @*  @{
-                                            foreach (var info in @SiteInfo.News)
-                                            {
-                                                <div class="carousel-item active" style="background-image: #0000;">
-                                                    <div class="carousel-container">
-                                                        <div class="carousel-content">
-                                                            <h2 id="main_title_1" class="animate__animated animate__fadeInDown">@info.Headline</h2>
-                                                            <p class="animate__animated animate__fadeInUp">@info.Description</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
-                                        } *@
-                                        <h1> We are not live show youtube feed </h1>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- End Cta Section -->
-        }
-    }
-    <!-- End Youtube Feed -->
+    <!-- @await Html.PartialAsync("~/Views/Partial/_Cards.cshtml") -->
+    <!-- ======= Youtube Feed  ======= -->
+    @await Html.PartialAsync("~/Views/Partial/_YoutubeFeed.cshtml")
     <!-- ======= Services Section ======= -->
-    <section id="services" class="services section-bg">
-        <div class="container">
-
-            <div class="section-title">
-                <h2>Services</h2>
-                <p></p>
-            </div>
-            <div class="row">
-                @{
-                    foreach (var service in SiteInfo.Services)
-                    {
-                        <div class="col-md-6" onclick="OpenService('@service.Link');">
-                            <div class="icon-box">
-                                <i class="bi bi-gem"></i>
-                                <h4><a href="#">@service.Name</a></h4>
-                                <p>@service.Description</p>
-                            </div>
-                        </div>
-                    }
-
-                }
-
-                @* <div class="col-md-6">
-                <div class="icon-box">
-                <i class="bi bi-briefcase"></i>
-                <h4><a href="#">Lorem Ipsum</a></h4>
-                <p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
-                </div>
-                </div>
-                <div class="col-md-6 mt-4 mt-md-0">
-                <div class="icon-box">
-                <i class="bi bi-card-checklist"></i>
-                <h4><a href="#">Dolor Sitema</a></h4>
-                <p>Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat tarad limino ata</p>
-                </div>
-                </div>
-                <div class="col-md-6 mt-4 mt-md-0">
-                <div class="icon-box">
-                <i class="bi bi-bar-chart"></i>
-                <h4><a href="#">Sed ut perspiciatis</a></h4>
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
-                </div>
-                </div>
-                <div class="col-md-6 mt-4 mt-md-0">
-                <div class="icon-box">
-                <i class="bi bi-binoculars"></i>
-                <h4><a href="#">Nemo Enim</a></h4>
-                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-                </div>
-                </div>
-                <div class="col-md-6 mt-4 mt-md-0">
-                <div class="icon-box">
-                <i class="bi bi-brightness-high"></i>
-                <h4><a href="#">Magni Dolore</a></h4>
-                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>
-                </div>
-                </div>
-                <div class="col-md-6 mt-4 mt-md-0">
-                <div class="icon-box">
-                <i class="bi bi-calendar4-week"></i>
-                <h4><a href="#">Eiusmod Tempor</a></h4>
-                <p>Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi</p>
-                </div>
-                </div> *@
-            </div>
-
-        </div>
-    </section><!-- End Services Section -->
-    @{
-        if (@SiteInfo.News.Count > 0)
-        {
-            <!-- ======= Cta Section ======= -->
-            <section id="cta" class="cta">
-                <div class="container">
-                    <div class="text-center">
-                        <h3>Announcements / News!</h3>
-                        <br>
-                        <section id="hero">
-                            <div class="hero-container">
-                                <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
-
-                                    <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
-                                    <center>
-                                        <ul class="no-bullets">
-                                            @{
-                                                foreach (var info in @SiteInfo.News)
-                                                {
-                                                    <li>
-                                                        <div class="announcementBlock">
-                                                            <img src=@SiteInfo.PlaceHolderImage alt="...">
-                                                            <div class="announcementDetails">
-                                                                <div class="announcementHeader"><a href="#">@info.Headline</a></div>
-                                                                <br />
-                                                                <div class="announcementDate">
-                                                                    @info.DateTime.ToString("MMM/dd/yyyy")                                                                   
-                                                                </div>
-                                                                <div class="announcementTime">
-                                                                    @info.DateTime.ToString("hh:mm tt")
-                                                                    @if (info.DateTimeOffset != default) info.DateTimeOffset.ToString("-hh:mm tt");
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                }
-                                            }
-                                        </ul>
-                                    </center>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </section>
-
-            <!-- End Cta Section -->
-        }
-    }
-
-
+    @await Html.PartialAsync("~/Views/Partial/_Services.cshtml")
+    <!-- ======= News Section ======= -->
+    @await Html.PartialAsync("~/Views/Partial/_News.cshtml")
+    <!-- ======= Team Section ======= -->
+    @await Html.PartialAsync("~/Views/Partial/_Teams.cshtml")
+    <!-- ======= Contact Section ======= -->
+    @await Html.PartialAsync("~/Views/Partial/_Contact.cshtml")
+    
     @*
     <!-- ======= Portfolio Section ======= -->
     <section id="portfolio" class="portfolio">
@@ -554,113 +241,6 @@
     </section>
     <!-- End Pricing Section -->
     *@
-    <!-- ======= Team Section ======= -->
-    <section id="team" class="team">
-        <div class="container">
-
-            <div class="section-title">
-                <h2>Team</h2>
-                <p></p>
-            </div>
-
-            <div class="row">
-
-                @{
-                    foreach (var member in SiteInfo.TeamMembers)
-                    {
-                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-                            <div class="member">
-                                <div class="member-img">
-                                    <img src="@await Utils.GetImageFromDrive(member.Image)" class="img-fluid" alt="">
-                                    <div class="social">
-                                        <a href=@member.Twitter><i class="bi bi-twitter"></i></a>
-                                        <a href=@member.Facebook><i class="bi bi-facebook"></i></a>
-                                        <a href=@member.Instagram><i class="bi bi-instagram"></i></a>
-                                        <a href=@member.Linkedin><i class="bi bi-linkedin"></i></a>
-                                    </div>
-                                </div>
-                                <div class="member-info">
-                                    <h4>@member.Name</h4>
-                                    <span>@member.Role</span>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                }
-            </div>
-        </div>
-    </section>
-    <!-- End Team Section -->
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact section-bg">
-        <div class="container">
-
-            <div class="section-title">
-                <h2>Contact</h2>
-                <p></p>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="info-box mb-4">
-                        <i class="bx bx-map"></i>
-                        <h3>Our Address</h3>
-                        <p>@SiteInfo.Address</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="info-box  mb-4">
-                        <i class="bx bx-envelope"></i>
-                        <h3>Email Us</h3>
-                        <p>@SiteInfo.Email</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="info-box  mb-4">
-                        <i class="bx bx-phone-call"></i>
-                        <h3>Call Us</h3>
-                        <p>@SiteInfo.Phone</p>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row">
-
-                <div class="col-lg-6 ">
-                    <iframe class="mb-4 mb-lg-0" src=@SiteInfo.GoogleMap frameborder="0" style="border:0; width: 100%; height: 384px;" allowfullscreen></iframe>
-                </div>
-
-                <div class="col-lg-6">
-                    <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
-                            </div>
-                            <div class="col-md-6 form-group mt-3 mt-md-0">
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
-                            </div>
-                        </div>
-                        <div class="form-group mt-3">
-                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
-                        </div>
-                        <div class="form-group mt-3">
-                            <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
-                        </div>
-                        <div class="my-3">
-                            <div class="loading">Loading</div>
-                            <div class="error-message"></div>
-                            <div class="sent-message">Your message has been sent. Thank you!</div>
-                        </div>
-                        <div class="text-center"><button type="submit">Send Message</button></div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Contact Section -->
 </main><!-- End #main -->
 
 <script>
