@@ -1,4 +1,4 @@
-﻿@inject Utils Utils;
+﻿@inject SiteManager manager;
 <section id="youtube-feed" class="cta">
     <div class="section-title">
         <h2 style="color:white">Our Youtube Feed!</h2>
@@ -13,7 +13,7 @@
                         <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
 
                         <div class="carousel-inner" role="listbox">
-                            @await Utils.GetPreviousLiveStreamsAsync(SiteInfo.YoutubeChannelID);
+                            @await manager.GetUtils.GetPreviousLiveStreamsAsync(manager.GetInfo.YoutubeChannelID);
                             @*  @{
                             foreach (var info in @SiteInfo.News)
                             {

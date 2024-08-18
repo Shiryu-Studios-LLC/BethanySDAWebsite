@@ -1,11 +1,16 @@
-﻿<!-- ======= Header ======= -->
+﻿@inject SiteManager manager;
+@{
+    await manager.GetSiteInfoAsync();
+}
+
+<!-- ======= Header ======= -->
 <header id="header" class="fixed-top d-flex align-items-center ">
     <div class="container d-flex align-items-center justify-content-between ">
 
         <div class="logo">
             @* <h1><a href="index.html">Alstar</a></h1> *@
             <!-- Uncomment below if you prefer to use an image logo -->
-            <a href="index.html"><img src=@SiteInfo.SDALogo alt="" class="img-fluid"></a>
+            <a href="index.html"><img src=@manager.GetInfo.SDALogo alt="" class="img-fluid"></a>
         </div>
 
         <nav id="navbar" class="navbar">
@@ -18,12 +23,12 @@
                 <li><a class="nav-link scrollto" href="#team">Team</a></li>                
                 <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
                 <li class="dropdown">
-                    <a><span id="cur-lang">@SiteInfo.Language.Name</span> <i class="bi bi-chevron-down"></i></a>
+                    <a><span id="cur-lang">@manager.GetInfo.Language</span> <i class="bi bi-chevron-down"></i></a>
                     <ul>
                         @{
-                            foreach (var lang in SiteInfo.Languages)
+                            foreach (var lang in Enum.GetNames(typeof(Language)))
                             {
-                                <li><a id=@SiteInfo.GetLanguageId(lang) href="">@lang.Name</a></li>
+                                <li><a id=@manager.GetUtils.GetLanguageId(Enum.Parse<Language>(lang)) href="">@lang</a></li>
                             }
 
                         }
@@ -43,9 +48,9 @@
     <!-- ======= About Section ======= -->
     @await Html.PartialAsync("~/Views/Partial/_AboutUs.cshtml")
     <!-- ======= Cards Section ======= -->
-    <!-- @await Html.PartialAsync("~/Views/Partial/_Cards.cshtml") -->
+    <!-- await Html.PartialAsync("~/Views/Partial/_Cards.cshtml") -->
     <!-- ======= Youtube Feed  ======= -->
-    @await Html.PartialAsync("~/Views/Partial/_YoutubeFeed.cshtml")
+    <!-- await Html.PartialAsync("~/Views/Partial/_YoutubeFeed.cshtml") -->
     <!-- ======= Services Section ======= -->
     @await Html.PartialAsync("~/Views/Partial/_Services.cshtml")
     <!-- ======= News Section ======= -->

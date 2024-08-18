@@ -1,8 +1,9 @@
 ﻿namespace HHBW
 {
-    public class Language
+    public enum Language
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
+        EN,
+        FR,
+        SP,
     }
 }

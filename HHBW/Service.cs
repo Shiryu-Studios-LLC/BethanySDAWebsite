@@ -1,5 +1,6 @@
 ﻿namespace HHBW
 {
+    [Serializable]
     public class Service
     {
         public string ID { get; set; } = string.Empty;

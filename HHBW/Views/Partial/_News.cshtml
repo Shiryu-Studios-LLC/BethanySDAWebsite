@@ -1,4 +1,5 @@
-﻿<section id="news" class="cta">
+﻿@inject SiteManager manager;
+<section id="news" class="cta">
     <div class="container">
         <div class="text-center">
             <h3>Announcements / News!</h3>
@@ -11,11 +12,11 @@
                         <center>
                             <ul class="no-bullets">
                                 @{
-                                    foreach (var info in @SiteInfo.News)
+                                    foreach (var info in manager.GetInfo.News)
                                     {
                                         <li>
                                             <div class="announcementBlock">
-                                                <img src=@SiteInfo.PlaceHolderImage alt="...">
+                                                <img src=@manager.GetInfo.PlaceHolderImage alt="...">
                                                 <div class="announcementDetails">
                                                     <div class="announcementHeader"><a href="#">@info.Headline</a></div>
                                                     <br />

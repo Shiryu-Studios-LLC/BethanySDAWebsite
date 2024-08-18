@@ -1,11 +1,12 @@
-﻿<section id="services" class="services section-bg">
+﻿@inject SiteManager manager;
+<section id="services" class="services section-bg">
     <div class="container">
         <div class="section-title">
             <h2>Services</h2>
         </div>
         <div class="row">
             @{
-                foreach (var service in SiteInfo.Services)
+                foreach (var service in manager.GetInfo.Services)
                 {
                     <div class="col-md-6" onclick="OpenService('@service.Link');">
                         <div class="icon-box">
@@ -17,6 +18,5 @@
                 }
             }
         </div>
-
     </div>
 </section>

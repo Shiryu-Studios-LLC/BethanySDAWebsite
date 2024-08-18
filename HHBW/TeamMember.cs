@@ -1,14 +1,15 @@
 ﻿namespace HHBW
 {
+    [Serializable]
     public class TeamMember
     {
-        public string Image { get; set; } = @SiteInfo.PlaceHolderImage;
-        public string Name { get; set; } = "John Doe";
-        public string Role { get; set; } = "Pastor";
-        public string Twitter { get; set; } = string.Empty;
-        public string Facebook { get; set; } = string.Empty;
-        public string Instagram { get; set; } = string.Empty;
-        public string Linkedin { get; set; } = string.Empty;
+        public string? Image { get; set; }
+        public string? Name { get; set; }
+        public string? Role { get; set; }
+        public string? Twitter { get; set; }
+        public string? Facebook { get; set; }
+        public string? Instagram { get; set; }
+        public string? Linkedin { get; set; }
     }
 
 }

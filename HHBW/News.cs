@@ -1,11 +1,12 @@
 ﻿namespace HHBW
 {
+    [Serializable]
     public class News
     {
-        public string imageurl = SiteInfo.PlaceHolderImage;
-        public string Headline   = "Updates!";
-        public string Description = "This is just and update news article.";
-        public DateTime DateTime = DateTime.UtcNow;
-        public DateTime DateTimeOffset = default;
+        public string? imageurl { get; set; }
+        public string? Headline { get; set; }
+        public string? Description { get; set; }
+        public DateTime DateTime { get; set; }
+        public DateTime DateTimeOffset { get; set; }
     }
 }

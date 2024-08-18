@@ -32,6 +32,12 @@ namespace HHBW
         }
 
         private const byte ObfuscationKey = 0xAA; // Example key for XOR operation
+
+        public JsonSerializerSettings JsonSettings => new JsonSerializerSettings
+        {
+            Formatting = Formatting.Indented
+        };
+
         public void ConvertTextToBinary(string inputFilePath, string outputFilePath)
         {
             // Read the text from the file
@@ -108,13 +114,13 @@ namespace HHBW
 
         private GoogleCredential GetCredentialsFromServiceAccountFile()
         {
-            ConvertBinaryToText("serviceaccount_credentials.jbin", "../../Bethany_ServiceAccount_Credentials.json");
-            return GoogleCredential.FromFile("../../Bethany_ServiceAccount_Credentials.json");
+            ConvertBinaryToText(_configuration.GetSection("GoogleAuth").GetValue<string>("GoogleServiceAccountBinary"), _configuration.GetSection("GoogleAuth").GetValue<string>("GoogleServiceAccountJson"));
+            return GoogleCredential.FromFile(_configuration.GetSection("GoogleAuth").GetValue<string>("GoogleServiceAccountJson"));
         }
         private async Task<UserCredential> GetCredentialFromOAuth2File(params string[] Scopes)
         {
-            ConvertBinaryToText("oauth2_credentials.jbin", "../../Bethany_OAuth2_Credentials.json");
-            using (var stream = new FileStream("../../Bethany_OAuth2_Credentials.json", FileMode.Open, FileAccess.Read))
+            ConvertBinaryToText(_configuration.GetSection("GoogleAuth").GetValue<string>("GoogleOAuthBinary"), _configuration.GetSection("GoogleAuth").GetValue<string>("GoogleOAuthJson"));
+            using (var stream = new FileStream(_configuration.GetSection("GoogleAuth").GetValue<string>("GoogleOAuthJson"), FileMode.Open, FileAccess.Read))
             {
                 return await GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
@@ -126,8 +132,35 @@ namespace HHBW
             }
         }
 
+        public async Task<SiteInfo> SaveSiteInfoAsync(SiteInfo _SiteInfo)
+        {
+            if (System.IO.File.Exists(_configuration.GetValue<string>("SiteInfoFile")))
+                System.IO.File.Delete(_configuration.GetValue<string>("SiteInfoFile"));
+            var json = JsonConvert.SerializeObject(_SiteInfo, JsonSettings);
+            await System.IO.File.WriteAllTextAsync(_configuration.GetValue<string>("SiteInfoFile"), json);
+            return _SiteInfo;
+        }
+        public async Task<SiteInfo?> LoadSiteInfoAsync()
+        {
+            var json = default(string);
+            var siteinfo = default(SiteInfo);
 
-        public async Task<string> GetImageFromDrive(string fileId)
+            if (!System.IO.File.Exists(_configuration.GetValue<string>("SiteInfoFile")))
+            {
+                var defaultFile = Path.Combine($"{_webHostEnvironment.WebRootPath}", "vendor", "DefaultSiteInfo.json");
+                json = await System.IO.File.ReadAllTextAsync(defaultFile);
+                siteinfo = JsonConvert.DeserializeObject<SiteInfo>(json, JsonSettings);
+                await SaveSiteInfoAsync(siteinfo);
+            }
+            else
+            {
+                json = await System.IO.File.ReadAllTextAsync(_configuration.GetValue<string>("SiteInfoFile"));
+                siteinfo = JsonConvert.DeserializeObject<SiteInfo>(json, JsonSettings);
+            }
+            return siteinfo;
+        }
+
+        public async Task<string> GetImageFromDriveAsync(string fileId)
         {
             string ImageFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img", "bethany_images");
             Directory.CreateDirectory(ImageFolder);
@@ -212,6 +245,13 @@ namespace HHBW
                 Console.WriteLine(ex);
                 return default;
             }
+        }
+
+
+        public string GetLanguageId(Language language)
+        {
+            var index = (int)language;
+            return $"change-lang-opt{index}";
         }
     }
 }
