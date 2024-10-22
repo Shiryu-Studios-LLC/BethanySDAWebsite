@@ -2,15 +2,16 @@
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
 <head>
-    <title>Home</title>
+    <title>@ViewData["Title"]</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" href="images/favicon.png" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Poppins:300,300i,400,500,600,700,800,900,900i%7CRoboto:400%7CRubik:100,400,700">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/fonts.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="@Url.Content("~/images/favicon.png")" type="image/x-icon">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Poppins:300,300i,400,500,600,700,800,900,900i%7CRoboto:400%7CRubik:100,400,700">
+    <link rel="stylesheet" href="@Url.Content("~/css/bootstrap.css")" asp-append-version="true">
+    <link rel="stylesheet" href="@Url.Content("~/css/fonts.css")" asp-append-version="true">
+    <link rel="stylesheet" href="@Url.Content("~/css/style.css")" asp-append-version="true">
+
     <style>
         .ie-panel {
             display: none;
@@ -28,7 +29,11 @@
         }</style>
 </head>
 <body>
-    <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
+    <div class="ie-panel">
+        <a href="@Url.Content("http://windows.microsoft.com/en-US/internet-explorer/")">
+            <img src="@Url.Content("~/images/ie8-panel/warning_bar_0000_us.jpg")" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today.">
+        </a>
+    </div>
     <div class="preloader">
         <div class="preloader-body">
             <div class="cssload-container">
@@ -50,22 +55,22 @@
                                 <!-- RD Navbar Toggle-->
                                 <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
                                 <!-- RD Navbar Brand-->
-                                <div class="rd-navbar-brand"><a asp-action="Index"><img class="brand-logo-light" src="images/logo-inverse-415x103.png" alt="" width="207" height="51" /></a></div>
+                                <div class="rd-navbar-brand"><a asp-action="Index"><img class="brand-logo-light" src="@Url.Content("~/images/logo-inverse-415x103.png")" alt="" width="207" height="51" /></a></div>
                             </div>
                             <div class="rd-navbar-main-element">
                                 <div class="rd-navbar-nav-wrap">
                                     <!-- RD Navbar Nav-->
                                     <ul class="rd-navbar-nav">
-                                        <li class="rd-nav-item active">
+                                        <li class="rd-nav-item @Utils.IsCurPage("Home")">
                                             <a class="rd-nav-link" asp-action="Index">Home</a>
                                         </li>
-                                        <li class="rd-nav-item">
+                                        <li class="rd-nav-item @Utils.IsCurPage("AboutUs")">
                                             <a class="rd-nav-link" asp-action="AboutUs">About Us</a>
                                         </li>
-                                        <li class="rd-nav-item">
+                                        <li class="rd-nav-item @Utils.IsCurPage("Typography")">
                                             <a class="rd-nav-link" asp-action="Typography">Typography</a>
                                         </li>
-                                        <li class="rd-nav-item">
+                                        <li class="rd-nav-item @Utils.IsCurPage("Contacts")">
                                             <a class="rd-nav-link" asp-action="Contacts">Contacts</a>
                                         </li>
                                     </ul><a class="button button-primary button-sm" href="">Donate</a>
@@ -82,14 +87,14 @@
             <div class="container wow-outer">
                 <div class="wow fadeIn">
                     <div class="row row-50 row-lg-60">
-                        <div class="col-12"><a href="index.html"><img src="images/logo-inverse-415x103.png" alt="" width="207" height="51" /></a></div>
+                        <div class="col-12"><a asp-action="Index"><img src="@Url.Content("~/images/logo-inverse-415x103.png")" alt="" width="207" height="51" /></a></div>
                         <div class="col-12">
                             <ul class="footer-minimal-nav">
-                                <li><a href="about-us.html">About Us</a></li>
+                                <li><a asp-action="AboutUs">About Us</a></li>
                                 <li><a href="#">Causes</a></li>
                                 <li><a href="#">Gallery</a></li>
                                 <li><a href="#">Team</a></li>
-                                <li><a href="contacts.html">Contacts</a></li>
+                                <li><a asp-action="Contacts">Contacts</a></li>
                             </ul>
                         </div>
                         <div class="col-12">
@@ -102,13 +107,13 @@
                             </ul>
                         </div>
                     </div>
-                    <p class="rights"><span>&copy;&nbsp;</span><span class="copyright-year"></span><span>&nbsp;</span><span>Helper</span><span>.&nbsp;</span><span>All Rights Reserved.</span><span>&nbsp;</span>Design&nbsp;by&nbsp;<a href="https://www.templatemonster.com/">Templatemonster</a></p>
+                    <p class="rights"><span>'Company-Name-Here'</span><span>&nbsp;</span><span>&copy;&nbsp;</span><span class="copyright-year"></span><span>&nbsp;</span><span>&nbsp;</span><span>All Rights Reserved.</span><span>&nbsp;</span>Design&nbsp;by&nbsp;<a href="https://www.shiryustudios.com/">Shiryu Studios LLC.</a></p>
                 </div>
             </div>
         </footer>
     </div>
     <div class="snackbars" id="form-output-global"></div>
-    <script src="js/core.min.js"></script>
-    <script src="js/script.js"></script>
+    <script src="@Url.Content("~/js/core.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/script.js")" asp-append-version="true"></script>
 </body>
 </html>

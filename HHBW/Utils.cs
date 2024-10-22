@@ -23,7 +23,8 @@ namespace HHBW
     {
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        
+        public static string curPage;
+
         // Constructor with dependency injection for IConfiguration
         public Utils(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
@@ -247,11 +248,16 @@ namespace HHBW
             }
         }
 
-
         public string GetLanguageId(Language language)
         {
             var index = (int)language;
             return $"change-lang-opt{index}";
+        }
+
+        public static string IsCurPage(string Page)
+        {
+            if (Page == curPage) return "active";
+            return string.Empty;
         }
     }
 }

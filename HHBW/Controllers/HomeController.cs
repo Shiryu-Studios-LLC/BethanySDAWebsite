@@ -21,22 +21,25 @@ namespace HHBW.Controllers
 
         public IActionResult Index()
         {
-            
+            Utils.curPage = "Home";
             return View();
         }
 
         public IActionResult AboutUs()
         {
+            Utils.curPage = "AboutUs";
             return View();
         }
 
         public IActionResult Typography()
         {
+            Utils.curPage = "Typography";
             return View();
         }
 
         public IActionResult Contacts()
         {
+            Utils.curPage = "Contacts";
             return View();
         }
 
