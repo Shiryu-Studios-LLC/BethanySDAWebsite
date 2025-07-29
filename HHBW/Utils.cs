@@ -16,6 +16,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Google.Apis.Http;
 using Google.Apis.Util.Store;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace HHBW
 {
@@ -144,32 +146,43 @@ namespace HHBW
         {
             var json = default(string);
             var siteinfo = default(SiteInfo);
-
-            if (!System.IO.File.Exists(_configuration.GetValue<string>("SiteInfoFile")))
+            var _siteFile = _configuration.GetValue<string>("SiteInfoFile");
+            try
             {
-                var defaultFile = Path.Combine($"{_webHostEnvironment.WebRootPath}", "vendor", "DefaultSiteInfo.json");
-                json = await System.IO.File.ReadAllTextAsync(defaultFile);
-                siteinfo = JsonConvert.DeserializeObject<SiteInfo>(json, JsonSettings);
-                await SaveSiteInfoAsync(siteinfo);
+                if (!System.IO.File.Exists(_siteFile))
+                {
+                    siteinfo = SiteManager.GetDefaultSiteInfo();                    
+                    await SaveSiteInfoAsync(siteinfo);
+                }
+                else
+                {
+                    json = await System.IO.File.ReadAllTextAsync(_siteFile);
+                    siteinfo = JsonConvert.DeserializeObject<SiteInfo>(json, JsonSettings);
+                }
             }
-            else
+            catch(Exception ex)
             {
-                json = await System.IO.File.ReadAllTextAsync(_configuration.GetValue<string>("SiteInfoFile"));
-                siteinfo = JsonConvert.DeserializeObject<SiteInfo>(json, JsonSettings);
+                siteinfo = new SiteInfo();
+                await SaveSiteInfoAsync(siteinfo);
+                Console.WriteLine(ex);
+
             }
             return siteinfo;
         }
 
+        //img/bethany_images/upcomingevents.png
+
         public async Task<string> GetImageFromDriveAsync(string fileId)
         {
-            string ImageFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img", "bethany_images");
-            Directory.CreateDirectory(ImageFolder);
+            string imageFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img", "bethany_images");
+            Directory.CreateDirectory(imageFolder);
 
-        // check if File exist in the image folder            
-        get_the_file:
-            if (System.IO.File.Exists(Path.Combine(ImageFolder, $"{fileId}.png")))
+            string fileName = $"{fileId}.png";
+            string fullFilePath = Path.Combine(imageFolder, fileName);
+
+            if (System.IO.File.Exists(fullFilePath))
             {
-                return Path.Combine(ImageFolder.Replace($"{_webHostEnvironment.WebRootPath}\\", string.Empty), $"{fileId}.png").Replace("\\", "/");
+                return GetPlatformLocation(fullFilePath, pretty: true);
             }
 
             try
@@ -181,37 +194,30 @@ namespace HHBW
                     throw new InvalidOperationException("Failed to create Google Drive service.");
                 }
 
-                // Define request parameters to get the file metadata
                 var request = service.Files.Get(fileId);
                 request.Fields = "id, name, mimeType, webViewLink, webContentLink";
 
-                // Execute the request and get the file metadata
                 var file = await request.ExecuteAsync();
 
-                // Check if the file is an image
                 if (file.MimeType.StartsWith("image/"))
                 {
-                    // Step 1: Make the file publicly accessible
-                    var permission = new Permission
+                    var permission = new Google.Apis.Drive.v3.Data.Permission
                     {
                         Role = "reader",
                         Type = "anyone"
                     };
-                    var permissionRequest = service.Permissions.Create(permission, file.Id);
-                    await permissionRequest.ExecuteAsync();
+                    await service.Permissions.Create(permission, file.Id).ExecuteAsync();
 
-                    // Step 2: Generate a public link to the image
-                    
-                    string fullPath = Path.Combine(ImageFolder, $"{file.Id}.png");
-
-                    // Download the file content
                     using (var memoryStream = new MemoryStream())
                     {
                         await request.DownloadAsync(memoryStream);
-                        await System.IO.File.WriteAllBytesAsync(fullPath, memoryStream.ToArray());
+                        await System.IO.File.WriteAllBytesAsync(fullFilePath, memoryStream.ToArray());
                     }
-                    goto get_the_file;
+
+                    // File is downloaded, return the relative path
+                    return GetPlatformLocation(fullFilePath, pretty: true);
                 }
+
                 return string.Empty;
             }
             catch (Exception ex)
@@ -220,6 +226,24 @@ namespace HHBW
                 return string.Empty;
             }
         }
+
+        private string GetPlatformLocation(string filePath, bool pretty = false)
+        {
+            if (pretty)
+            {
+                // Return a relative URL path for the web
+                var relativePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath, filePath);
+                return relativePath.Replace("\\", "/"); // Web URLs use forward slashes
+            }
+            else
+            {
+                // Normalize to platform-specific file system path
+                return filePath.Replace("/", Path.DirectorySeparatorChar.ToString())
+                               .Replace("\\", Path.DirectorySeparatorChar.ToString());
+            }
+        }
+
+
         public async Task<List<LiveBroadcast>?> GetPreviousLiveStreamsAsync(string channelId)
         {
             try
@@ -248,7 +272,7 @@ namespace HHBW
         }
 
 
-        public string GetLanguageId(Language language)
+        public string GetLanguageId(Languages language)
         {
             var index = (int)language;
             return $"change-lang-opt{index}";

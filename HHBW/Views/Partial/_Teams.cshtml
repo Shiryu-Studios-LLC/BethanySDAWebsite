@@ -17,10 +17,26 @@
                             <div class="member-img">
                                 <img src="@await manager.GetUtils.GetImageFromDriveAsync(member.Image)" class="img-fluid" alt="">
                                 <div class="social">
-                                    <a href=@member.Twitter><i class="bi bi-twitter"></i></a>
-                                    <a href=@member.Facebook><i class="bi bi-facebook"></i></a>
-                                    <a href=@member.Instagram><i class="bi bi-instagram"></i></a>
-                                    <a href=@member.Linkedin><i class="bi bi-linkedin"></i></a>
+                                    @if (!string.IsNullOrEmpty(member.X))
+                                    {
+                                        <a href=@member.X><i class="bi bi-twitter"></i></a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(member.Facebook))
+                                    {
+                                        <a href=@member.Facebook><i class="bi bi-facebook"></i></a>                                        
+                                    }
+                                    @if (!string.IsNullOrEmpty(member.Instagram))
+                                    {
+                                        <a href=@member.Instagram><i class="bi bi-instagram"></i></a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(member.Linkedin))
+                                    {
+                                        <a href=@member.Linkedin><i class="bi bi-linkedin"></i></a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(member.Youtube))
+                                    {
+                                        <a href=@member.Youtube><i class="bi bi-linkedin"></i></a>
+                                    }
                                 </div>
                             </div>
                             <div class="member-info">

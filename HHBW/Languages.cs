@@ -1,9 +1,10 @@
 ﻿namespace HHBW
 {
-    public enum Language
+    public enum Languages
     {
         EN,
         FR,
         SP,
+        HC
     }
 }

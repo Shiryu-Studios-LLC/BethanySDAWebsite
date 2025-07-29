@@ -1,0 +1,37 @@
+{
+  "Info": {
+    "Title": "Default Site Title",
+    "Orginization": "Default Site Orginization",
+    "Phone": "+1(123)456-7890",
+    "Email": "example@example.com",
+    "Address": "1234 Example Ln, Example, EX, 12345",
+    "AboutUsSDA": "Default About Us SDA",
+    "AboutUsBethany": "Default About Us Bethany"
+  },
+  "Thumbnail": {
+    "PlaceHolderImage": "default_placeholder_image.png",
+    "SDALogo": "default_sda_logo.png"
+  },
+  "Api": {
+    "YoutubeChannel": null,
+    "GoogleMap": null
+  },
+  "Language": 0,
+  "Slides": [
+    {
+      "Headline": "Welcome to Our Site",
+      "BackgroundImage": "1_npGNjURyLwk0iC4F4cKdcZg4-R5G5rS",
+      "Description": "This is a default slide description.",
+      "Expand": "More"
+    },
+    {
+      "Headline": "Nice site huh?",
+      "BackgroundImage": "UpcomingEvents",
+      "Description": "This is a default slide description for slid 2.",
+      "Expand": "okay"
+    }
+  ],
+  "Services": [],
+  "TeamMembers": [],
+  "News": []
+}
