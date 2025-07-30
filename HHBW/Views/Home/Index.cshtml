@@ -3,46 +3,11 @@
     await manager.GetSiteInfoAsync();
 }
 
-<!-- ======= Header ======= -->
-<header id="header" class="fixed-top d-flex align-items-center ">
-    <div class="container d-flex align-items-center justify-content-between ">
-
-        <div class="logo">
-            @* <h1><a href="index.html">Alstar</a></h1> *@
-            <!-- Uncomment below if you prefer to use an image logo -->
-            <a href="index.html"><img src=@manager.GetInfo.Thumbnail.SDALogo alt="" class="img-fluid"></a>
-        </div>
-
-        <nav id="navbar" class="navbar">
-            <ul>
-                <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-                <li><a class="nav-link scrollto" href="#about">About</a></li>
-                <li><a class="nav-link scrollto" href="#services">Services</a></li>
-                <li><a class="nav-link scrollto" href="#news">Announcements / News</a></li>
-                @*<li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li>*@
-                <li><a class="nav-link scrollto" href="#team">Team</a></li>                
-                <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-                <li class="dropdown">
-                    <a><span id="cur-lang">@manager.GetInfo.Language</span> <i class="bi bi-chevron-down"></i></a>
-                    <ul>
-                       @*  @{
-                            foreach (var lang in Enum.GetNames(typeof(Languages)))
-                            {
-                                <li><a id=@manager.GetUtils.GetLanguageId(Enum.Parse<Languages>(lang)) href="">@lang</a></li>
-                            }
-
-                        } *@
-                    </ul>
-                </li>
-            </ul>
-            <i class="bi bi-list mobile-nav-toggle"></i>
-        </nav><!-- .navbar -->
-
-    </div>
-</header><!-- End Header -->
 <!-- ======= Hero Section ======= -->
 @await Html.PartialAsync("~/Views/Partial/_Hero.cshtml")
 
+
+<!-- ======= Map Section ======= -->
 <main id="main">
 
     <!-- ======= About Section ======= -->

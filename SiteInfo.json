@@ -1,37 +1,131 @@
 {
+  "Language": 0,
   "Info": {
-    "Title": "Default Site Title",
-    "Orginization": "Default Site Orginization",
-    "Phone": "+1(123)456-7890",
-    "Email": "example@example.com",
-    "Address": "1234 Example Ln, Example, EX, 12345",
-    "AboutUsSDA": "Default About Us SDA",
-    "AboutUsBethany": "Default About Us Bethany"
+    "Title": "Houston Haitian Bethany",
+    "Orginization": "Seventh Day Adventist Church",
+    "Phone": "+1(281)772-3617",
+    "Email": "houstonhaitianbethany@gmail.com",
+    "Address": "12112 Carlsbad St, Houston, TX 77085",
+    "AboutUsSDA": "The Seventh-day Adventist Church is a mainstream Protestant church with approximately 19 million members worldwide, including more than one million members in North America. The Adventist Church operates 173 hospitals and sanitariums and more than 7,500 schools around the world. The Adventist Development and Relief Agency (ADRA) works within communities in more than 130 countries to provide community development and disaster relief.",
+    "AboutUsBethany": "Houston Haitian Bethany Seventh-day Adventist Church is a welcoming community of faith dedicated to serving the Haitian diaspora and the Franco-American community in Houston, Texas. We are committed to providing a spiritual home where individuals can connect and meet with God, find community, and experience the transforming power of God’s love.\r\nOur church offers a blend of Haitian and American worship experiences, incorporating traditional hymns and contemporary music. We strive to create a space where everyone feels safe, valued and embraced, regardless of their background or life stage.\r\nWelcome home!"
   },
   "Thumbnail": {
-    "PlaceHolderImage": "default_placeholder_image.png",
-    "SDALogo": "default_sda_logo.png"
+    "PlaceHolderImage": "https://images.hdqwalls.com/wallpapers/anime-fantasy-sky-5k-3h.jpg",
+    "SDALogo": "1GN80S5t9DGde3ovyN7jPetYd3FhRzbP8"
   },
   "Api": {
     "YoutubeChannel": null,
-    "GoogleMap": null
+    "GoogleMap": "https://www.google.com/maps/embed/v1/place?key=AIzaSyC0XiUPly6Q2nFRmdqdSCmbn-t7WT1F674&q=Houston+Haitian+Bethany+Church+12112+Carlsbad+St+Houston%2C+TX+77085-1206&attribution_source=Houston+Haitian+Bethany+Church&attribution_web_url=http://houstonhaitianbethanytx.adventistchurch.org&zoom=15"
   },
-  "Language": 0,
   "Slides": [
     {
-      "Headline": "Welcome to Our Site",
+      "Headline": "Houston Haitian Bethany",
       "BackgroundImage": "1_npGNjURyLwk0iC4F4cKdcZg4-R5G5rS",
-      "Description": "This is a default slide description.",
-      "Expand": "More"
-    },
-    {
-      "Headline": "Nice site huh?",
-      "BackgroundImage": "UpcomingEvents",
-      "Description": "This is a default slide description for slid 2.",
-      "Expand": "okay"
+      "Description": "Psalm 132:13-16: \"God's dwelling place is always filled with His presence, and He wants to share it with His people.",
+      "Expand": "Explore"
     }
   ],
-  "Services": [],
-  "TeamMembers": [],
-  "News": []
+  "Services": [
+    {
+      "ID": null,
+      "Name": "Online Giving",
+      "Icon": "https://static.vecteezy.com/system/resources/previews/020/966/244/original/hand-holding-a-hearth-shape-icon-symbol-healthcare-volunteering-charity-and-donation-concept-png.png",
+      "Description": "Want to contribute to our mission.",
+      "Link": "https://adventistgiving.org/donate/ANWFIA"
+    }
+  ],
+  "TeamMembers": [
+    {
+      "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+      "Name": "Stephenson Celant",
+      "Role": "Pastor",
+      "X": null,
+      "Facebook": null,
+      "Instagram": "https://www.instagram.com/redeem5/?igsh=azhobHh4NzRsMWVr#",
+      "Linkedin": null,
+      "Youtube": "www.youtube.com/@pr.stephensoncelant"
+    },
+    {
+       "Image": "1B1qO5FXAX2wqeOoz7QbOjsQSVzrsRijK",
+      "Name": "Jean Bellot Louis",
+      "Role": "1st Elder",
+      "X": null,
+      "Facebook": null,
+      "Instagram": null,
+      "Linkedin": null,
+      "Youtube": null
+    }
+  ],
+  "News": [
+    {
+      "Imageurl": null,
+      "Headline": "Friday Night Vesper",
+      "Description": "Join us for our Friday Night Vesper service at 7:00 PM. A time of worship, prayer, and fellowship.",
+      "DateTime": "2024-08-02T19:19:00",
+      "DateTimeOffset": "0001-01-01T00:00:00"
+    },
+    {
+      "Imageurl": null,
+      "Headline": "Youth Day",
+      "Description": "Join us for Youth Day on Saturday, August 3rd. A special service led by our youth.",
+      "DateTime": "2024-07-27T09:30:00",
+      "DateTimeOffset":  "2024-07-27T12:19:00"
+    },
+     {
+      "imageurl": null,
+      "Headline": "Adventurer and Pathfinder Club Registration Day",
+      "Description": "Join us for the Adventurer and Pathfinder Club Registration Day on Saturday, August 10th. A great opportunity for children and youth to get involved in our church activities.",
+      "DateTime": "2024-07-27T14:19:00",
+      "DateTimeOffset": "0001-01-01T00:00:00"
+    },
+    {
+      "imageurl": null,
+      "Headline": "Men's Ministry Day- August 31st 2024",
+      "Description": "Join us for some special activities and a sermon focused on the role",
+      "DateTime": "2024-08-31T09:30:00",
+      "DateTimeOffset": "2024-08-31T13:19:00"
+    }
+  ],
+  "Ministries": {
+    "Title": "Holistic Ministries",
+    "Image": "1J2b3gk_U3rELJRE-lv_24kdgBanv9dOj",
+    "Description":"Our Holistic Ministries embrace every member of our church family, nurturing your spirit, heart, and mind with love and care.",
+    "Ministries": [
+       {
+         "Title": "Men’s Ministry",
+          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+          "Description": "A strong brotherhood where men grow in faith, support each other, and serve with courage through prayer, Bible study, and fellowship."
+       },
+       {
+         "Title": "Women’s Ministry",
+          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+          "Description": "A warm, uplifting space for women to connect, pray, and empower one another through retreats, workshops, and shared faith."
+       },
+       {
+         "Title": "Family Ministry",
+          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+          "Description": "A strong brotherhood where men grow in faith, support each other, and serve with courage through prayer, Bible study, and fellowship."
+       },
+       {
+         "Title": "Youth Ministry (Ages 13-17)",
+          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+          "Description": "Igniting teens’ passion for God with dynamic worship, service projects, and fun activities that build lifelong faith and leadership."
+       },
+       {
+         "Title": "Young Adult Ministry (Ages 18-40)",
+          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+          "Description": "A welcoming community for young adults to navigate life’s journey, grow in faith, and serve through fellowship and mentorship."
+       },
+       {
+         "Title": "Children’s Ministry (Ages 0-12)",
+          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+          "Description": "A joyful, safe haven where young children discover God’s love through engaging stories, songs, and hands-on activities."
+       },
+       {
+         "Title": "Education Ministry",
+          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+          "Description": "Empowering personal and professional growth through our English as a Second Language (ESL) program, developing Bethany’s Library, job and career development workshops, skill exploration, and resources for high school, GED, and higher university education for adults."
+       }
+    ]
+  }
 }

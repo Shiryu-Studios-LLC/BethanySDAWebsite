@@ -29,7 +29,7 @@ namespace HHBW
         {
            return new SiteInfo
             {
-                Info = new BasicInfo
+                Info = new BasicInfoObject
                 {
                     Title = "Default Site Title",
                     Orginization = "Default Site Orginization",
@@ -39,17 +39,17 @@ namespace HHBW
                     AboutUsSDA = "Default About Us SDA",
                     AboutUsBethany = "Default About Us Bethany"
                 },
-                Thumbnail = new Thumbnail
+                Thumbnail = new ThumbnailObject
                 {
                     SDALogo = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Example_en.svg/1024px-Example_en.svg.png",
                     PlaceHolderImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Example_en.svg/1024px-Example_en.svg.png",
                 },
-                Api = new LinkedApis(),
+                Api = new ApiLinkObject(),
                 Language = Languages.EN,
-                Slides = new List<Slide>(),
-                Services = new List<Service>(),
-                TeamMembers = new List<TeamMember>(),
-                News = new List<News>()
+                Slides = new List<SlideObject>(),
+                Services = new List<ServiceObject>(),
+                TeamMembers = new List<TeamMemberObject>(),
+                News = new List<NewsObject>()
            };
         }
     }

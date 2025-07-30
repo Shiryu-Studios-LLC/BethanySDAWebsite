@@ -233,7 +233,8 @@ namespace HHBW
             {
                 // Return a relative URL path for the web
                 var relativePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath, filePath);
-                return relativePath.Replace("\\", "/"); // Web URLs use forward slashes
+                relativePath =  $"{relativePath.Replace("\\", "/")}"; // Web URLs use forward slashes
+                return relativePath;
             }
             else
             {
