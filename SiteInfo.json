@@ -29,9 +29,23 @@
     {
       "ID": null,
       "Name": "Online Giving",
-      "Icon": "https://static.vecteezy.com/system/resources/previews/020/966/244/original/hand-holding-a-hearth-shape-icon-symbol-healthcare-volunteering-charity-and-donation-concept-png.png",
-      "Description": "Want to contribute to our mission.",
+      "Icon": "1qWwGcAWJuzg7lqi4qi7vhLWlDtjVAtr3",
+      "Description": "Want to contribute to our mission?",
       "Link": "https://adventistgiving.org/donate/ANWFIA"
+    },
+    {
+      "ID": null,
+      "Name": "Our Ministries",
+      "Icon": "1qWwGcAWJuzg7lqi4qi7vhLWlDtjVAtr3",
+      "Description": "Learn more about our ministries at Bethany",
+      "Link": "https://adventistgiving.org/donate/ANWFIA"
+    },
+    {
+      "ID": null,
+      "Name": "Watch Sermons",
+      "Icon": "1qWwGcAWJuzg7lqi4qi7vhLWlDtjVAtr3",
+      "Description": "Check out our online sermon archive",
+      "Link": "https://www.youtube.com/@Bethany.SDAChurch/streams"
     }
   ],
   "TeamMembers": [
@@ -43,7 +57,7 @@
       "Facebook": null,
       "Instagram": "https://www.instagram.com/redeem5/?igsh=azhobHh4NzRsMWVr#",
       "Linkedin": null,
-      "Youtube": "www.youtube.com/@pr.stephensoncelant"
+      "Youtube": "https://www.youtube.com/@pr.stephensoncelant"
     },
     {
        "Image": "1B1qO5FXAX2wqeOoz7QbOjsQSVzrsRijK",

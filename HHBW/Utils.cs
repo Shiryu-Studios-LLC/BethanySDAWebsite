@@ -170,11 +170,9 @@ namespace HHBW
             return siteinfo;
         }
 
-        //img/bethany_images/upcomingevents.png
-
-        public async Task<string> GetImageFromDriveAsync(string fileId)
+        public async Task<string> GetImageFromDriveAsync(string fileId, string folderName)
         {
-            string imageFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img", "bethany_images");
+            string imageFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img", folderName);
             Directory.CreateDirectory(imageFolder);
 
             string fileName = $"{fileId}.png";

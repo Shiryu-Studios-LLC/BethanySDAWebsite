@@ -11,7 +11,7 @@
                     {
                         if (manager.GetInfo.Slides.First() == slide)
                         {
-                            <div class="carousel-item active" style="background-image: url(@await manager.GetUtils.GetImageFromDriveAsync(slide.BackgroundImage));">
+                            <div class="carousel-item active" style="background-image: url(@await manager.GetUtils.GetImageFromDriveAsync(slide.BackgroundImage, "Hero_Carousel"));">
                                 <div class="carousel-container">
                                     <div class="carousel-content">
                                         <h2 id="main_title_1" class="animate__animated animate__fadeInDown">@slide.Headline <br><p style="font-size:20px">@manager.GetInfo.Info.Orginization</p></h2>
@@ -23,7 +23,7 @@
                         }
                         else
                         {
-                            <div class="carousel-item" style="background-image: url(@slide.BackgroundImage);">
+                            <div class="carousel-item" style="background-image: url(@await manager.GetUtils.GetImageFromDriveAsync(slide.BackgroundImage, "Hero_Carousel"));">
                                 <div class="carousel-container">
                                     <div class="carousel-content">
                                         <h2 id="main_title_1" class="animate__animated animate__fadeInDown">@slide.Headline <br><p style="font-size:20px">@manager.GetInfo.Info.Orginization</p></h2>
