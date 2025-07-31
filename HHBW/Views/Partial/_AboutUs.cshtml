@@ -7,28 +7,47 @@
             <p></p>
         </div>
 
-        <div class="row">
-            <div class="col-lg-6">
-                <img style="border-radius:5%" src=@manager.GetInfo.Thumbnail.PlaceHolderImage class="img-fluid" width="1024" height="768" alt="about-image">
+        <div class="row justify-content-center">
+
+            <!-- Image Section (Centered) -->
+            <div class="col-12 text-center mb-4">
+                <img style="border-radius: 20%;"
+                     src="@manager.GetInfo.Thumbnail.PlaceHolderImage"
+                     class="img-fluid"
+                     width="512" height="384"
+                     alt="about-image">
             </div>
-            <div class="col-lg-6 pt-4 pt-lg-0 content">
-                <h3>
-                    About Us Seventh-Day Adventist:
-                </h3>
-                <p class="fst-italic">
-                    <strong style="font-size:30px">@manager.GetInfo.Info.AboutUsSDA.Substring(0, 1)</strong>
-                    @manager.GetInfo.Info.AboutUsSDA.Substring(1, manager.GetInfo.Info.AboutUsSDA.Length - 1)
-                </p>
-            </div>
-            <div class="col-lg-6 pt-4 pt-lg-0 content">
-                <h3>
-                    Bethany in Houston:
-                </h3>
-                <p class="fst-italic">
-                    <strong style="font-size:30px">@manager.GetInfo.Info.AboutUsBethany.Substring(0, 1)</strong>
-                    @manager.GetInfo.Info.AboutUsBethany.Substring(1, manager.GetInfo.Info.AboutUsBethany.Length - 1)
-                </p>
+
+            <!-- Wrapper Row for Text Sections with Gap -->
+            <div class="col-12 d-flex flex-wrap justify-content-center gap-4">
+
+                <!-- About Us Section -->
+                <div class="content p-3"
+                     style="border: 1px solid aquamarine; display: flex; justify-content: center; align-items: center; height: 300px; width: 45%;">
+                    <div style="text-align: center;">
+                        <h3>About Us Seventh-Day Adventist:</h3>
+                        <p class="fst-italic" style="display: inline-block;">
+                            <strong style="font-size:30px">@manager.GetInfo.Info.AboutUsSDA.Substring(0, 1)</strong>
+                            @manager.GetInfo.Info.AboutUsSDA.Substring(1, @manager.GetInfo.Info.AboutUsSDA.Length - 1)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bethany Section -->
+                <div class="content p-3"
+                     style="border: 1px solid aquamarine; display: flex; justify-content: center; align-items: center; height: 300px; width: 45%;">
+                    <div style="text-align: center;">
+                        <h3>Bethany in Houston</h3>
+                        <p class="fst-italic" style="display: inline-block;">
+                            <strong style="font-size:30px">@manager.GetInfo.Info.AboutUsBethany.Substring(0, 1)</strong>
+                            @manager.GetInfo.Info.AboutUsBethany.Substring(1, @manager.GetInfo.Info.AboutUsBethany.Length - 1)
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </div>
+
+
     </div>
 </section>
