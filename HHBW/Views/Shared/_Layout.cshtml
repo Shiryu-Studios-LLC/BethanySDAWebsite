@@ -37,13 +37,13 @@
 </head>
 <body>
     <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top d-flex align-items-center header-inner-page">
+    <header id="header" class="fixed-top d-flex align-items-center header-scrolled">
         <div class="container d-flex align-items-center justify-content-between ">
 
             <div class="logo">
                 @* <h1><a href="index.html">Alstar</a></h1> *@
                 <!-- Uncomment below if you prefer to use an image logo -->
-                <a href="index.html"><img src=@await manager.GetUtils.GetImageFromDriveAsync(manager.GetInfo.Thumbnail.SDALogo) alt="" class="img-fluid"></a>
+                <a href="index.html"><img src=@await manager.GetUtils.GetImageFromDriveAsync(manager.GetInfo.Thumbnail.SDALogo, "Misc") alt="" class="img-fluid"></a>
             </div>
 
             <nav id="navbar" class="navbar">
@@ -85,7 +85,7 @@
                 <strong>
                     <span>
                         <a href="index.html">
-                            <img src=@await manager.GetUtils.GetImageFromDriveAsync(manager.GetInfo.Thumbnail.SDALogo) alt="" width="64px" height="64px" class="img-fluid">
+                            <img src=@await manager.GetUtils.GetImageFromDriveAsync(manager.GetInfo.Thumbnail.SDALogo, "Misc") alt="" width="64px" height="64px" class="img-fluid">
                         </a>
                         @manager.GetInfo.Info.Title
                     </span>

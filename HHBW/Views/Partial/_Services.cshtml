@@ -8,11 +8,11 @@
             @{
                 foreach (var service in manager.GetInfo.Services)
                 {
-                    <div class="col-md-6" onclick="OpenService('@service.Link');">
+                    <div class="col-6" onclick="OpenService('@service.Link');">
                         <div class="icon-box">
-                            <i class="bi bi-gem"></i>
+                            <i><img src=@await manager.GetUtils.GetImageFromDriveAsync(service.Icon, "Misc") alt="icon" width="72" height="72"></i>
                             <h4><a href="#">@service.Name</a></h4>
-                            <p>@service.Description</p>
+                            <p style="text-align: center;">@service.Description</p>
                         </div>
                     </div>
                 }
