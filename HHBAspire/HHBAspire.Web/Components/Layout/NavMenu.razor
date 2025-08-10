@@ -1,6 +1,9 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@inject BethanyApiClient api
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">HHBAspire</a>
+        <img src="https://drive.google.com/file/d/1GN80S5t9DGde3ovyN7jPetYd3FhRzbP8/view"  width="32" height="32"/>
+        <a class="navbar-brand" href="">@api.GetWeatherAsync()</a>
     </div>
 </div>
 
@@ -27,3 +30,12 @@
         </div>
     </nav>
 </div>
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await api.GetWeatherAsync();
+    }
+}
