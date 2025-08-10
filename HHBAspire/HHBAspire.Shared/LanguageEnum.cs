@@ -1,6 +1,4 @@
-using System;
-
-namespace HHBAspire.ApiService;
+namespace HHBAspire.Shared;
 
 public enum Language
 {

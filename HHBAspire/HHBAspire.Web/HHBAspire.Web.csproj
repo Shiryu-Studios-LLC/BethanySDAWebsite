@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../HHBAspire.Shared/HHBAspire.Shared.csproj" />
     <ProjectReference Include="..\HHBAspire.ServiceDefaults\HHBAspire.ServiceDefaults.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Aspire.StackExchange.Redis.OutputCaching" Version="9.3.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.8" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-using System;
+using HHBAspire.Shared;
+using HHBAspire.Shared.Data;
 
 namespace HHBAspire.ApiService.Data;
 

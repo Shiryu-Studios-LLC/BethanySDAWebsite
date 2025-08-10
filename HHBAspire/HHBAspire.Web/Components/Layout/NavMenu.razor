@@ -1,41 +1,76 @@
-﻿@inject BethanyApiClient api
+﻿@inject BethanyApiClient Api
 
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <img src="https://drive.google.com/file/d/1GN80S5t9DGde3ovyN7jPetYd3FhRzbP8/view"  width="32" height="32"/>
-        <a class="navbar-brand" href="">@api.GetWeatherAsync()</a>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">
+      @if (_loading)
+      {
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span class="ms-2">Loading…</span>
+      }
+      else if (!string.IsNullOrWhiteSpace(_error))
+      {
+          <span class="text-danger">Error</span>
+      }
+      else
+      {
+          @(_basic?.Title ?? "Bethany")
+      }
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/ministries">Ministries</a></li>
+        <li class="nav-item"><a class="nav-link" href="/news">News</a></li>
+        <li class="nav-item"><a class="nav-link" href="/team">Team</a></li>
+        <li class="nav-item"><a class="nav-link" href="/giving" target="_blank" rel="noopener">Giving</a></li>
+
+        @* Example dropdown — customize or remove *@
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">More</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Disabled</a></li>
+      </ul>
+
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
     </div>
-</div>
-
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-    </nav>
-</div>
+  </div>
+</nav>
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private BasicInfoObject? _basic;
+    private bool _loading = true;
+    private string? _error;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await api.GetWeatherAsync();
+        try
+        {
+            _basic = await Api.GetBasicInfoAsync();
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _loading = false;
+        }
     }
 }

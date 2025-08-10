@@ -7,16 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../HHBAspire.Shared/HHBAspire.Shared.csproj" />
     <ProjectReference Include="..\HHBAspire.ServiceDefaults\HHBAspire.ServiceDefaults.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extentions/" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3" />
   </ItemGroup>
 
 </Project>

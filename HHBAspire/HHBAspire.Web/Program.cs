@@ -1,43 +1,41 @@
 using HHBAspire.Web;
 using HHBAspire.Web.Components;
+using HHBAspire.Web.Services;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add service defaults & Aspire client integrations.
 builder.AddServiceDefaults();
-builder.AddRedisOutputCache("cache");
+builder.AddRedisOutputCache("cache"); // response/output caching
 
-// Add services to the container.
+// ✅ add distributed cache for BethanyApiClient
+builder.Services.AddStackExchangeRedisCache(o =>
+{
+    o.Configuration = builder.Configuration.GetConnectionString("cache");
+    o.InstanceName = "bethany:";
+});
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddHttpClient<BethanyApiClient>(client =>
-    {
-        // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
-        // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
-        client.BaseAddress = new("https+http://apiservice");
-    });
+builder.Services.AddHttpClient<BethanyApiClient>()
+    .AddServiceDiscovery();
 
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
 app.UseAntiforgery();
-
-app.UseOutputCache();
-
+app.UseOutputCache();          // uses Redis via AddRedisOutputCache
 app.MapStaticAssets();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+   .AddInteractiveServerRenderMode();
 
 app.MapDefaultEndpoints();
-
 app.Run();

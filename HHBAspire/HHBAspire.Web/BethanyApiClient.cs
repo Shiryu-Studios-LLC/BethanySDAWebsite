@@ -1,8 +1,9 @@
 using System.Net.Http.Json;
 using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
+using HHBAspire.Shared.Data;
 
-namespace HHBAspire.Web;
+namespace HHBAspire.Web.Services;
 
 public class BethanyApiClient
 {
@@ -10,42 +11,41 @@ public class BethanyApiClient
     private readonly IDistributedCache _cache;
     private static readonly JsonSerializerOptions _json = new(JsonSerializerDefaults.Web);
 
-    // cache keys
-    private const string BasicInfoKey = "siteinfo:basicinfo";
-
-    // tune these as needed
-    private static readonly DistributedCacheEntryOptions DefaultCache = new()
+    public BethanyApiClient(HttpClient http, IDistributedCache cache)
     {
-        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2)
-    };
-
-    public BethanyApiClient(HttpClient httpClient, IDistributedCache cache)
-    {
-        _http = httpClient;
+        _http = http;
         _cache = cache;
     }
 
-    // ---- BASIC INFO ----
-    public async Task<BasicInfoObject?> GetBasicInfoAsync(CancellationToken ct = default)
+    private async Task<T?> GetOrSetAsync<T>(string key, string path, TimeSpan duration, CancellationToken ct)
     {
-        // 1) try cache
-        var cached = await _cache.GetStringAsync(BasicInfoKey, ct);
+        var cached = await _cache.GetStringAsync(key, ct);
         if (!string.IsNullOrWhiteSpace(cached))
-        {
-            return JsonSerializer.Deserialize<BasicInfoObject>(cached, _json);
-        }
+            return JsonSerializer.Deserialize<T>(cached, _json);
 
-        // 2) call API
-        var result = await _http.GetFromJsonAsync<BasicInfoObject>("/siteinfo/basicinfo", _json, ct);
-        if (result is null) return null;
+        var result = await _http.GetFromJsonAsync<T>(path, _json, ct);
+        if (result is null) return default;
 
-        // 3) cache it
-        var payload = JsonSerializer.Serialize(result, _json);
-        await _cache.SetStringAsync(BasicInfoKey, payload, DefaultCache, ct);
+        await _cache.SetStringAsync(key, JsonSerializer.Serialize(result, _json),
+            new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = duration }, ct);
         return result;
     }
 
-    // OPTIONAL: if you want to force refresh (e.g., after admin edits)
-    public async Task InvalidateBasicInfoAsync(CancellationToken ct = default)
-        => await _cache.RemoveAsync(BasicInfoKey, ct);
+    public Task<BasicInfoObject?> GetBasicInfoAsync(CancellationToken ct = default) =>
+        GetOrSetAsync<BasicInfoObject>("siteinfo:basicinfo", "/siteinfo/basicinfo", TimeSpan.FromMinutes(5), ct);
+
+    public Task<List<SlideObject>?> GetSlidesAsync(CancellationToken ct = default) =>
+        GetOrSetAsync<List<SlideObject>>("siteinfo:slides", "/siteinfo/slides", TimeSpan.FromMinutes(2), ct);
+
+    public Task<List<ServiceObject>?> GetServicesAsync(CancellationToken ct = default) =>
+        GetOrSetAsync<List<ServiceObject>>("siteinfo:services", "/siteinfo/services", TimeSpan.FromMinutes(2), ct);
+
+    public Task<List<TeamMemberObject>?> GetTeamAsync(CancellationToken ct = default) =>
+        GetOrSetAsync<List<TeamMemberObject>>("siteinfo:team", "/siteinfo/team", TimeSpan.FromMinutes(2), ct);
+
+    public Task<List<NewsObject>?> GetNewsAsync(CancellationToken ct = default) =>
+        GetOrSetAsync<List<NewsObject>>("siteinfo:news", "/siteinfo/news", TimeSpan.FromMinutes(2), ct);
+
+    public Task<List<MinistryObject>?> GetMinistriesAsync(CancellationToken ct = default) =>
+        GetOrSetAsync<List<MinistryObject>>("siteinfo:ministries", "/siteinfo/ministries", TimeSpan.FromMinutes(5), ct);
 }

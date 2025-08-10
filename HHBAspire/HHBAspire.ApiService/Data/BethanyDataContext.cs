@@ -1,5 +1,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
+using HHBAspire.Shared.Data;
 
 namespace HHBAspire.ApiService.Data;
 
@@ -29,14 +30,18 @@ public static class Extentions
 
         var services = scope.ServiceProvider;
         var context = services.GetRequiredService<BethanyDataContext>();
+
+
         try
         {
-            context.Database.EnsureCreated();
+            // Use migrations in dev/prod
+            context.Database.Migrate();
+            //context.Database.EnsureCreated();
             DbInitializer.Initialize(context);
         }
         catch (Exception ex)
         {
-            
+
         }
     }
 }
