@@ -1,0 +1,29 @@
+﻿.hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1;
+}
+
+/* Center text vertically but account for navbar height */
+.hero .container {
+    padding-top: 56px; /* height of your navbar */
+}
+
+/* Ensure the row fills the remaining height after navbar */
+.hero .row {
+    min-height: calc(100vh - 56px);
+}
+
+.hero .col-12 {
+    z-index: 2; /* keep above overlay and video */
+}

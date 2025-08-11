@@ -1,0 +1,29 @@
+﻿@page "/"
+<PageTitle>Home</PageTitle>
+
+<section class="hero min-vh-100 position-relative overflow-hidden">
+    <!-- Background video -->
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="ihttps://upload.wikimedia.org/wikipedia/commons/d/d1/Killing_field_on_the_circle.gif" aria-hidden="true">
+        <source src="~/videos/hero.mp4" type="video/mp4" />
+        <!-- Optional: add a WebM for better compression on some browsers -->
+        <!--<source src="videos/hero.webm" type="video/webm" /> -->
+        <!-- Fallback if video can’t play -->
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Dark overlay for contrast -->
+    <div class="hero-overlay"></div>
+
+    <!-- Content -->
+    <div class="container position-relative z-1 h-100">
+        <div class="row h-100">
+            <div class="col-12 d-flex flex-column justify-content-center align-items-center text-center text-white">
+                <h1 class="display-4 fw-bold">Your Big Headline</h1>
+                <p class="lead mb-4">Short supporting copy that looks good over video.</p>
+                <div class="d-flex gap-3">
+                    <NavLink class="btn btn-primary btn-lg" href="/get-started">Plan A Visit</NavLink>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
