@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace HHBAspire.Shared.Data;
 
+[Owned] // make this an owned value object
 public class ApiLinkObject
 {
-    [Key]
-    public int Id { get; set; }
     public string? YoutubeChannel { get; set; }
     public string? GoogleMap { get; set; }
 }

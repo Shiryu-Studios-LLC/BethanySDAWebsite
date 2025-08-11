@@ -34,6 +34,9 @@ public class BethanyApiClient
     public Task<BasicInfoObject?> GetBasicInfoAsync(CancellationToken ct = default) =>
         GetOrSetAsync<BasicInfoObject>("siteinfo:basicinfo", "/siteinfo/basicinfo", TimeSpan.FromMinutes(5), ct);
 
+    public Task<ThumbnailObject?> GetThumbnailfoAsync(CancellationToken ct = default) =>
+    GetOrSetAsync<ThumbnailObject>("siteinfo:thumbnailinfo", "/siteinfo/thumbnailinfo", TimeSpan.FromMinutes(5), ct);
+
     public Task<List<SlideObject>?> GetSlidesAsync(CancellationToken ct = default) =>
         GetOrSetAsync<List<SlideObject>>("siteinfo:slides", "/siteinfo/slides", TimeSpan.FromMinutes(2), ct);
 

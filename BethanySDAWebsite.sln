@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HHBW (Depracated)", "HHBW\HHBW (Depracated).csproj", "{45018FDD-6927-42AC-9B68-70F6FC20CBA3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HHBAspire.AppHost", "HHBAspire\HHBAspire.AppHost\HHBAspire.AppHost.csproj", "{63789759-22C8-4DF3-8674-BAD7CCF12B27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HHBAspire.ServiceDefaults", "HHBAspire\HHBAspire.ServiceDefaults\HHBAspire.ServiceDefaults.csproj", "{B5CE813E-7BC9-1965-B8EB-7A76B3F2C677}"
@@ -12,8 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HHBAspire.ApiService", "HHBAspire\HHBAspire.ApiService\HHBAspire.ApiService.csproj", "{C867DF27-D571-2BC5-CFC4-0E6A07AB7ABE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HHBAspire.Web", "HHBAspire\HHBAspire.Web\HHBAspire.Web.csproj", "{15162004-FA29-8816-A7C8-EF056DD76041}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HHBAspire", "HHBAspire", "{C410976C-597C-17CE-280C-95B60C1DA309}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HHBAspire.Shared", "HHBAspire\HHBAspire.Shared\HHBAspire.Shared.csproj", "{37C60E6D-7DF6-41D8-A10E-7EE79E6FBE23}"
 EndProject
@@ -27,18 +23,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{45018FDD-6927-42AC-9B68-70F6FC20CBA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45018FDD-6927-42AC-9B68-70F6FC20CBA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45018FDD-6927-42AC-9B68-70F6FC20CBA3}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{45018FDD-6927-42AC-9B68-70F6FC20CBA3}.Debug|x64.Build.0 = Debug|Any CPU
-		{45018FDD-6927-42AC-9B68-70F6FC20CBA3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{45018FDD-6927-42AC-9B68-70F6FC20CBA3}.Debug|x86.Build.0 = Debug|Any CPU
-		{45018FDD-6927-42AC-9B68-70F6FC20CBA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45018FDD-6927-42AC-9B68-70F6FC20CBA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45018FDD-6927-42AC-9B68-70F6FC20CBA3}.Release|x64.ActiveCfg = Release|Any CPU
-		{45018FDD-6927-42AC-9B68-70F6FC20CBA3}.Release|x64.Build.0 = Release|Any CPU
-		{45018FDD-6927-42AC-9B68-70F6FC20CBA3}.Release|x86.ActiveCfg = Release|Any CPU
-		{45018FDD-6927-42AC-9B68-70F6FC20CBA3}.Release|x86.Build.0 = Release|Any CPU
 		{63789759-22C8-4DF3-8674-BAD7CCF12B27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63789759-22C8-4DF3-8674-BAD7CCF12B27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63789759-22C8-4DF3-8674-BAD7CCF12B27}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -102,9 +86,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{37C60E6D-7DF6-41D8-A10E-7EE79E6FBE23} = {C410976C-597C-17CE-280C-95B60C1DA309}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A1F5434-6A67-4BC0-8001-75B054786C86}

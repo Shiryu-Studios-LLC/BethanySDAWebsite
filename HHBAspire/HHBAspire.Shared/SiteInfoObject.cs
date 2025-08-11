@@ -9,7 +9,7 @@ public class SiteInfo
     public Language Language { get; set; }
 
     public BasicInfoObject Info { get; set; }
-    public ThumbnailObject Thumbnail { get; set; } 
+    public List<ThumbnailObject> Thumbnails { get; set; } = new();
     public ApiLinkObject Api { get; set; }
 
     public List<SlideObject> Slides { get; set; } = new();

@@ -14,6 +14,11 @@ public static class SiteInfoEndpoints
                 ? Results.Ok(info)
                 : Results.NotFound());
 
+        site.MapGet("/thumbnailinfo", async (BethanyDataContext db, CancellationToken ct) =>
+            await db.SiteInfos.Select(s => s.Thumbnails).FirstOrDefaultAsync(ct) is var info && info != null
+                ? Results.Ok(info)
+                : Results.NotFound());
+
         site.MapGet("/slides", async (BethanyDataContext db, CancellationToken ct) =>
             Results.Ok(await db.Slides.ToListAsync(ct)));
 

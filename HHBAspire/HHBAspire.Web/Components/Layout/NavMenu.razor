@@ -1,60 +1,39 @@
 ﻿@inject BethanyApiClient Api
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">
-      @if (_loading)
-      {
-          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          <span class="ms-2">Loading…</span>
-      }
-      else if (!string.IsNullOrWhiteSpace(_error))
-      {
-          <span class="text-danger">Error</span>
-      }
-      else
-      {
-          @(_basic?.Title ?? "Bethany")
-      }
-    </a>
+<nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+            <img src="/docs/5.3/assets/brand/bootstrap-logo.svg"
+                 alt="Logo" width="30" height="24"
+                 class="d-inline-block align-text-top" />
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="/ministries">Ministries</a></li>
-        <li class="nav-item"><a class="nav-link" href="/news">News</a></li>
-        <li class="nav-item"><a class="nav-link" href="/team">Team</a></li>
-        <li class="nav-item"><a class="nav-link" href="/giving" target="_blank" rel="noopener">Giving</a></li>
-
-        @* Example dropdown — customize or remove *@
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">More</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-
-        <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Disabled</a></li>
-      </ul>
-
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+            @if (_loading)
+            {
+                <span>Loading…</span>
+            }
+            else if (!string.IsNullOrEmpty(_error))
+            {
+                <span class="text-danger">Error</span>
+            }
+            else
+            {
+                <span>@(_basic?.Title ?? "Untitled")</span>
+            }
+        </a>
     </div>
-  </div>
 </nav>
+
+@if (!string.IsNullOrEmpty(_error))
+{
+    <div class="alert alert-danger m-3">
+        @_error
+    </div>
+}
 
 @code {
     private BasicInfoObject? _basic;
+    private ThumbnailObject _thumbnail;
+
     private bool _loading = true;
     private string? _error;
 
@@ -63,6 +42,12 @@
         try
         {
             _basic = await Api.GetBasicInfoAsync();
+            if (_basic is null)
+            {
+                _error = "No site info returned.";
+            }
+            _thumbnail = await Api.GetThumbnailfoAsync();
+
         }
         catch (Exception ex)
         {

@@ -18,7 +18,8 @@ builder.Services.AddStackExchangeRedisCache(o =>
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddHttpClient<BethanyApiClient>()
+builder.Services.AddHttpClient<BethanyApiClient>(client =>
+    client.BaseAddress = new Uri("http://apiservice"))
     .AddServiceDiscovery();
 
 var app = builder.Build();

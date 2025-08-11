@@ -1,6 +1,10 @@
+using Aspire.Hosting;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgres = builder.AddPostgres("postgres").WithPgAdmin()
+// define a secret parameter with a default value you control
+var postgres = builder.AddPostgres("postgres", port: 52297)
+    .WithPgAdmin()
     .WithDataVolume();
 var postgresdb = postgres.AddDatabase("bethanydb");
 
