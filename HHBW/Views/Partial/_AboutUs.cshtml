@@ -29,6 +29,8 @@
                         <p class="fst-italic" style="display: inline-block;">
                             <strong style="font-size:30px">@manager.GetInfo.Info.AboutUsSDA.Substring(0, 1)</strong>
                             @manager.GetInfo.Info.AboutUsSDA.Substring(1, @manager.GetInfo.Info.AboutUsSDA.Length - 1)
+                            <br>
+                            @Html.ActionLink("Go to old page", "Index", "Home")
                         </p>
                     </div>
                 </div>
@@ -41,6 +43,8 @@
                         <p class="fst-italic" style="display: inline-block;">
                             <strong style="font-size:30px">@manager.GetInfo.Info.AboutUsBethany.Substring(0, 1)</strong>
                             @manager.GetInfo.Info.AboutUsBethany.Substring(1, @manager.GetInfo.Info.AboutUsBethany.Length - 1)
+                            <br>
+                            @Html.ActionLink("Go to new page", "Ministries", "Home")
                         </p>
                     </div>
                 </div>

@@ -38,7 +38,7 @@
       "Name": "Our Ministries",
       "Icon": "1qWwGcAWJuzg7lqi4qi7vhLWlDtjVAtr3",
       "Description": "Learn more about our ministries at Bethany",
-      "Link": "https://adventistgiving.org/donate/ANWFIA"
+      "Link": "/Home/Ministries"
     },
     {
       "ID": null,
@@ -100,46 +100,53 @@
       "DateTimeOffset": "2024-08-31T13:19:00"
     }
   ],
-  "Ministries": {
-    "Title": "Holistic Ministries",
+  "Ministry": {
+    "Title": "Our Ministries",
     "Image": "1J2b3gk_U3rELJRE-lv_24kdgBanv9dOj",
-    "Description":"Our Holistic Ministries embrace every member of our church family, nurturing your spirit, heart, and mind with love and care.",
+    "Description":"Step into the warm embrace of Houston Haitian Bethany Church, where we unite to worship Jesus, love one another, and serve with open hearts. As a vibrant Seventh-day Adventist community, we’re passionate about nurturing your faith, fostering deep connections, and sharing God’s love in Houston and beyond. Our ministries—Holistic, Outreach, Administration, Club Ministries, and In-reach—are crafted to wrap you in God’s grace, inspire growth, and empower you to shine His light. Join our family, and let’s grow together in faith and purpose!",
     "Ministries": [
-       {
-         "Title": "Men’s Ministry",
-          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
-          "Description": "A strong brotherhood where men grow in faith, support each other, and serve with courage through prayer, Bible study, and fellowship."
-       },
-       {
-         "Title": "Women’s Ministry",
-          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
-          "Description": "A warm, uplifting space for women to connect, pray, and empower one another through retreats, workshops, and shared faith."
-       },
-       {
-         "Title": "Family Ministry",
-          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
-          "Description": "A strong brotherhood where men grow in faith, support each other, and serve with courage through prayer, Bible study, and fellowship."
-       },
-       {
-         "Title": "Youth Ministry (Ages 13-17)",
-          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
-          "Description": "Igniting teens’ passion for God with dynamic worship, service projects, and fun activities that build lifelong faith and leadership."
-       },
-       {
-         "Title": "Young Adult Ministry (Ages 18-40)",
-          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
-          "Description": "A welcoming community for young adults to navigate life’s journey, grow in faith, and serve through fellowship and mentorship."
-       },
-       {
-         "Title": "Children’s Ministry (Ages 0-12)",
-          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
-          "Description": "A joyful, safe haven where young children discover God’s love through engaging stories, songs, and hands-on activities."
-       },
-       {
-         "Title": "Education Ministry",
-          "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
-          "Description": "Empowering personal and professional growth through our English as a Second Language (ESL) program, developing Bethany’s Library, job and career development workshops, skill exploration, and resources for high school, GED, and higher university education for adults."
-       }
+      {
+        "Title": "Holistic Ministries",
+        "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+        "Description": "Our Holistic Ministries embrace every member of our church family, nurturing your spirit, heart, and mind with love and care.",
+        "Ministries": [
+          {
+            "Title": "Men’s Ministry",
+            "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+            "Description": "A strong brotherhood where men grow in faith, support each other, and serve with courage through prayer, Bible study, and fellowship."
+          },
+          {
+            "Title": "Women’s Ministry",
+            "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+            "Description": "A warm, uplifting space for women to connect, pray, and empower one another through retreats, workshops, and shared faith."
+          },
+          {
+            "Title": "Family Ministry",
+            "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+            "Description": "A strong brotherhood where men grow in faith, support each other, and serve with courage through prayer, Bible study, and fellowship."
+          },
+          {
+            "Title": "Youth Ministry (Ages 13-17)",
+            "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+            "Description": "Igniting teens’ passion for God with dynamic worship, service projects, and fun activities that build lifelong faith and leadership."
+          },
+          {
+            "Title": "Young Adult Ministry (Ages 18-40)",
+            "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+            "Description": "A welcoming community for young adults to navigate life’s journey, grow in faith, and serve through fellowship and mentorship."
+          },
+          {
+            "Title": "Children’s Ministry (Ages 0-12)",
+            "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+            "Description": "A joyful, safe haven where young children discover God’s love through engaging stories, songs, and hands-on activities."
+          },
+          {
+            "Title": "Education Ministry",
+            "Image": "1JVxgqk_U3rELJRE-lv_24kdgBanv9dOj",
+            "Description": "Empowering personal and professional growth through our English as a Second Language (ESL) program, developing Bethany’s Library, job and career development workshops, skill exploration, and resources for high school, GED, and higher university education for adults."
+          }
+        ]
+      }
     ]
   }
 }

@@ -11,6 +11,6 @@
         public List<ServiceObject> Services = new List<ServiceObject>();
         public List<TeamMemberObject> TeamMembers = new List<TeamMemberObject>();
         public List<NewsObject> News = new List<NewsObject>();
-        public MinistryObject Ministries = new MinistryObject();
+        public MinistryObject Ministry = new MinistryObject();
     }
 }
