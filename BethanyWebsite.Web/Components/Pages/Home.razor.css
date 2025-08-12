@@ -1,29 +1,44 @@
-﻿.hero-video {
+﻿ /* Make the slide fill the viewport */
+  #carouselExampleCaptions,
+  #carouselExampleCaptions .carousel-inner,
+  #carouselExampleCaptions .carousel-item {
+    height: 100vh;
+  }
+
+  /* Video layer */
+  .bg-video {
     position: absolute;
     inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .bg-video video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    z-index: 0;
-}
+    object-fit: cover;   /* fill without stretching */
+    pointer-events: none;/* clicks pass through */
+  }
 
-.hero-overlay {
+  /* Darken for legibility (optional) */
+  .bg-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0,0,0,.45);
     z-index: 1;
-}
+  }
 
-/* Center text vertically but account for navbar height */
-.hero .container {
-    padding-top: 56px; /* height of your navbar */
-}
+  /* Caption above everything and centered */
+  .carousel-caption {
+    position: absolute;  /* override Bootstrap's bottom caption */
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 2;
+    padding: 1rem;
+  }
 
-/* Ensure the row fills the remaining height after navbar */
-.hero .row {
-    min-height: calc(100vh - 56px);
-}
-
-.hero .col-12 {
-    z-index: 2; /* keep above overlay and video */
+nav {
+    background-color: #00000080;
 }

@@ -4,7 +4,7 @@
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
+      "launchBrowser": true,
       "hotReloadEnabled": true,
       "applicationUrl": "https://localhost:17202;http://localhost:15219",
       "environmentVariables": {
@@ -17,7 +17,7 @@
     "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
+      "launchBrowser": true,
       "hotReloadEnabled": true,
       "applicationUrl": "http://localhost:15219",
       "environmentVariables": {

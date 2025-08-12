@@ -1,29 +1,30 @@
 ﻿@page "/"
+@using BethanyWebsite.Web.Components.Layout
 <PageTitle>Home</PageTitle>
 
-<section class="hero min-vh-100 position-relative overflow-hidden">
-    <!-- Background video -->
-    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="ihttps://upload.wikimedia.org/wikipedia/commons/d/d1/Killing_field_on_the_circle.gif" aria-hidden="true">
-        <source src="~/videos/hero.mp4" type="video/mp4" />
-        <!-- Optional: add a WebM for better compression on some browsers -->
-        <!--<source src="videos/hero.webm" type="video/webm" /> -->
-        <!-- Fallback if video can’t play -->
-        Your browser does not support the video tag.
-    </video>
+<div id="carouselExampleCaptions" class="carousel slide">
+    <div class="carousel-inner">
+        <div class="carousel-item active position-relative">
 
-    <!-- Dark overlay for contrast -->
-    <div class="hero-overlay"></div>
+            <!-- Background video -->
+            <div class="bg-video">
+                <video autoplay muted loop playsinline preload="metadata" poster="/media/DSCN0543.JPG">
+                    <!-- Prefer MP4/H.264 for Chrome/Edge; keep MOV as a fallback if you must -->
+                    <source src="/media/IMG_3258.mp4" type="video/mp4" />
+                    <source src="/media/IMG_3258.mov" type="video/quicktime" />
+                    Your browser does not support the video tag.
+                </video>
+            </div>
 
-    <!-- Content -->
-    <div class="container position-relative z-1 h-100">
-        <div class="row h-100">
-            <div class="col-12 d-flex flex-column justify-content-center align-items-center text-center text-white">
-                <h1 class="display-4 fw-bold">Your Big Headline</h1>
-                <p class="lead mb-4">Short supporting copy that looks good over video.</p>
-                <div class="d-flex gap-3">
-                    <NavLink class="btn btn-primary btn-lg" href="/get-started">Plan A Visit</NavLink>
-                </div>
+            <!-- Optional dark overlay -->
+            <div class="bg-overlay"></div>
+
+            <!-- Centered caption -->
+            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100">
+                <h5 class="display-4 fw-bold">Bethany SDA</h5>
+                <p class="lead">Some representative placeholder content for the first slide.</p>
+                <button type="button" class="btn btn-primary btn-lg">Plan A Visit</button>
             </div>
         </div>
     </div>
-</section>
+</div>

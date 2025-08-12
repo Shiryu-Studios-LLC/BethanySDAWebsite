@@ -1,5 +1,7 @@
 using BethanyWebsite.Web;
 using BethanyWebsite.Web.Components;
+using Microsoft.AspNetCore.Http.Features;
+using Minio;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,22 @@ builder.AddServiceDefaults();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// (Optional) bump default multipart limit (30MB default). Set what you need.
+builder.Services.Configure<FormOptions>(o =>
+{
+    o.MultipartBodyLengthLimit = 100 * 1024 * 1024; // 100 MB
+});
+
+// Build MinIO client from config env injected by AppHost
+var endpoint = builder.Configuration["Minio:Endpoint"] ?? "http://localhost:9000";
+var endpointUri = new Uri(endpoint);
+
+builder.Services.AddSingleton<IMinioClient>(_ =>
+    new MinioClient()
+        .WithEndpoint(endpointUri.Host, endpointUri.Port)
+        .WithCredentials("minioadmin", "minioadmin123!") // dev creds
+        .Build());
 
 builder.Services.AddOutputCache();
 
@@ -41,5 +59,6 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.MapDefaultEndpoints();
+app.MapDefaultAdditionalEndpoints();
 
 app.Run();
