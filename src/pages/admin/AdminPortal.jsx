@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
-import { IconPhoto, IconHome, IconCalendar, IconMicrophone, IconFileText, IconSettings } from '@tabler/icons-react'
+import { IconPhoto, IconHome, IconCalendar, IconMicrophone, IconFileText, IconSettings, IconLogout } from '@tabler/icons-react'
+import { useAuth } from '../../contexts/AuthContext'
 
 export default function AdminPortal() {
+  const { user, logout } = useAuth()
   const features = [
     {
       title: 'Media Library',
@@ -54,7 +56,15 @@ export default function AdminPortal() {
           <div className="row align-items-center">
             <div className="col">
               <h2 className="page-title">Admin Portal</h2>
-              <div className="text-muted">Manage church content without editing code</div>
+              <div className="text-muted">
+                {user?.email ? `Logged in as ${user.email}` : 'Manage church content without editing code'}
+              </div>
+            </div>
+            <div className="col-auto">
+              <button onClick={logout} className="btn btn-outline-danger">
+                <IconLogout size={16} className="me-1" />
+                Logout
+              </button>
             </div>
           </div>
         </div>

@@ -10,9 +10,9 @@ export default function Footer() {
             © {new Date().getFullYear()} Bethany SDA Church. All rights reserved.
           </p>
           <Link
-            to="/admin"
+            to="/login"
             className="text-muted text-decoration-none small"
-            title="Admin Portal"
+            title="Staff Login"
           >
             <IconLock size={14} className="me-1" />
             Staff Login
