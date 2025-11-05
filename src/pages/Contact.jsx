@@ -1,6 +1,34 @@
+import { useState, useEffect } from 'react'
 import { IconMapPin, IconPhone, IconMail, IconClock, IconBrandFacebook, IconBrandYoutube, IconBrandInstagram } from '@tabler/icons-react'
 
 export default function Contact() {
+  const [settings, setSettings] = useState({
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    sabbathSchool: 'Saturdays at 9:30 AM',
+    worshipService: 'Saturdays at 11:00 AM',
+    prayerMeeting: 'Wednesdays at 7:00 PM',
+    facebook: '',
+    youtube: '',
+    instagram: ''
+  })
+
+  useEffect(() => {
+    const stored = localStorage.getItem('siteSettings')
+    if (stored) {
+      const parsedSettings = JSON.parse(stored)
+      setSettings(prev => ({ ...prev, ...parsedSettings }))
+    }
+  }, [])
+
+  const fullAddress = settings.address && settings.city && settings.state
+    ? `${settings.address}, ${settings.city}, ${settings.state} ${settings.zipCode || ''}`.trim()
+    : 'Houston, Texas'
+
   return (
     <div className="page-body">
       {/* Hero Section */}
@@ -29,11 +57,13 @@ export default function Contact() {
                   </div>
                   <h3 className="card-title mb-3">Visit Us</h3>
                   <p className="text-muted mb-2">
-                    Houston, Texas
+                    {fullAddress}
                   </p>
-                  <p className="text-muted small">
-                    (Exact address coming soon)
-                  </p>
+                  {!settings.address && (
+                    <p className="text-muted small">
+                      (Address can be configured in Site Settings)
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -46,7 +76,7 @@ export default function Contact() {
                   </div>
                   <h3 className="card-title mb-3">Call Us</h3>
                   <p className="text-muted mb-2">
-                    (Phone number coming soon)
+                    {settings.phone || '(Phone number coming soon)'}
                   </p>
                   <p className="text-muted small">
                     Available during office hours
@@ -63,7 +93,7 @@ export default function Contact() {
                   </div>
                   <h3 className="card-title mb-3">Email Us</h3>
                   <p className="text-muted mb-2">
-                    (Email coming soon)
+                    {settings.email || '(Email coming soon)'}
                   </p>
                   <p className="text-muted small">
                     We'll respond within 24-48 hours
@@ -150,17 +180,25 @@ export default function Contact() {
           <h2 className="mb-4">Connect With Us</h2>
           <p className="lead mb-4">Follow us on social media to stay updated with church news and events</p>
           <div className="d-flex justify-content-center gap-3">
-            <a href="#" className="btn btn-icon btn-lg bg-facebook text-white">
-              <IconBrandFacebook size={24} />
-            </a>
-            <a href="#" className="btn btn-icon btn-lg bg-youtube text-white">
-              <IconBrandYoutube size={24} />
-            </a>
-            <a href="#" className="btn btn-icon btn-lg bg-instagram text-white">
-              <IconBrandInstagram size={24} />
-            </a>
+            {settings.facebook && (
+              <a href={settings.facebook} target="_blank" rel="noopener noreferrer" className="btn btn-icon btn-lg bg-facebook text-white">
+                <IconBrandFacebook size={24} />
+              </a>
+            )}
+            {settings.youtube && (
+              <a href={settings.youtube} target="_blank" rel="noopener noreferrer" className="btn btn-icon btn-lg bg-youtube text-white">
+                <IconBrandYoutube size={24} />
+              </a>
+            )}
+            {settings.instagram && (
+              <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-icon btn-lg bg-instagram text-white">
+                <IconBrandInstagram size={24} />
+              </a>
+            )}
+            {!settings.facebook && !settings.youtube && !settings.instagram && (
+              <p className="text-muted mt-3 small">Social media links can be configured in Site Settings</p>
+            )}
           </div>
-          <p className="text-muted mt-3 small">Social media links coming soon</p>
         </div>
       </section>
     </div>

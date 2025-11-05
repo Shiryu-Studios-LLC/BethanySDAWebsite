@@ -1,7 +1,31 @@
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import { IconClock, IconMapPin, IconCalendar, IconUsers, IconHome, IconHeart } from '@tabler/icons-react'
 
 export default function Visit() {
+  const [settings, setSettings] = useState({
+    visitPageTitle: 'Plan Your Visit',
+    visitPageDescription: 'We\'d love to meet you! Here\'s everything you need to know for your first visit to Bethany SDA Church.',
+    sabbathSchool: 'Saturdays at 9:30 AM',
+    worshipService: 'Saturdays at 11:00 AM',
+    prayerMeeting: 'Wednesdays at 7:00 PM',
+    address: '',
+    city: '',
+    state: ''
+  })
+
+  useEffect(() => {
+    const stored = localStorage.getItem('siteSettings')
+    if (stored) {
+      const parsedSettings = JSON.parse(stored)
+      setSettings(prev => ({ ...prev, ...parsedSettings }))
+    }
+  }, [])
+
+  const fullAddress = settings.address && settings.city && settings.state
+    ? `${settings.address}, ${settings.city}, ${settings.state} ${settings.zipCode || ''}`.trim()
+    : 'Houston, Texas'
+
   return (
     <div className="page-body">
       {/* Hero Section */}
@@ -9,9 +33,9 @@ export default function Visit() {
         <div className="container py-5">
           <div className="row justify-content-center text-center">
             <div className="col-lg-8">
-              <h1 className="display-4 fw-bold mb-4">Plan Your Visit</h1>
+              <h1 className="display-4 fw-bold mb-4">{settings.visitPageTitle}</h1>
               <p className="lead mb-0">
-                We'd love to meet you! Here's everything you need to know for your first visit to Bethany SDA Church.
+                {settings.visitPageDescription}
               </p>
             </div>
           </div>
@@ -28,7 +52,7 @@ export default function Visit() {
                 <div className="card-body text-center">
                   <IconClock size={48} className="text-primary mb-3" />
                   <h3 className="h4 mb-3">Sabbath School</h3>
-                  <p className="mb-2"><strong>Saturdays at 9:30 AM</strong></p>
+                  <p className="mb-2"><strong>{settings.sabbathSchool}</strong></p>
                   <p className="text-muted">
                     Bible study and discussion groups for all ages. Join us as we dive deep into God's Word together.
                   </p>
@@ -40,7 +64,7 @@ export default function Visit() {
                 <div className="card-body text-center">
                   <IconClock size={48} className="text-primary mb-3" />
                   <h3 className="h4 mb-3">Divine Worship</h3>
-                  <p className="mb-2"><strong>Saturdays at 11:00 AM</strong></p>
+                  <p className="mb-2"><strong>{settings.worshipService}</strong></p>
                   <p className="text-muted">
                     Our main worship service featuring inspiring music, prayer, and a message from God's Word.
                   </p>
@@ -52,7 +76,7 @@ export default function Visit() {
                 <div className="card-body text-center">
                   <IconClock size={48} className="text-primary mb-3" />
                   <h3 className="h4 mb-3">Prayer Meeting</h3>
-                  <p className="mb-2"><strong>Wednesdays at 7:00 PM</strong></p>
+                  <p className="mb-2"><strong>{settings.prayerMeeting}</strong></p>
                   <p className="text-muted">
                     Mid-week prayer and Bible study. A time to connect with God and strengthen our faith together.
                   </p>
@@ -135,8 +159,8 @@ export default function Visit() {
                 <div>
                   <h5 className="mb-2">Address</h5>
                   <p className="mb-0">
-                    Houston, Texas<br />
-                    <small className="text-muted">(Exact address coming soon)</small>
+                    {fullAddress}
+                    {!settings.address && <><br /><small className="text-muted">(Address can be configured in Site Settings)</small></>}
                   </p>
                 </div>
               </div>

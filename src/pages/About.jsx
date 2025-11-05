@@ -1,7 +1,23 @@
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import { IconHeart, IconBible, IconUsers, IconWorld } from '@tabler/icons-react'
 
 export default function About() {
+  const [settings, setSettings] = useState({
+    churchName: 'Bethany SDA Church',
+    missionStatement: 'To glorify God by making disciples of Jesus Christ, nurturing spiritual growth, and serving our community with love.',
+    ourHistory: 'Bethany SDA Church is a vibrant community of believers in Houston, Texas, celebrating our Haitian heritage while welcoming all who seek to worship God.',
+    ourBeliefs: ''
+  })
+
+  useEffect(() => {
+    const stored = localStorage.getItem('siteSettings')
+    if (stored) {
+      const parsedSettings = JSON.parse(stored)
+      setSettings(prev => ({ ...prev, ...parsedSettings }))
+    }
+  }, [])
+
   const beliefs = [
     {
       icon: IconBible,
@@ -32,9 +48,9 @@ export default function About() {
         <div className="container py-5">
           <div className="row justify-content-center text-center">
             <div className="col-lg-8">
-              <h1 className="display-4 fw-bold mb-4">About Us</h1>
+              <h1 className="display-4 fw-bold mb-4">About {settings.churchName}</h1>
               <p className="lead mb-0">
-                Learn more about Bethany SDA Church and our mission to share God's love in Houston.
+                Learn more about {settings.churchName} and our mission to share God's love in Houston.
               </p>
             </div>
           </div>
@@ -47,20 +63,26 @@ export default function About() {
           <div className="row align-items-center">
             <div className="col-lg-6 mb-4 mb-lg-0">
               <h2 className="mb-4">Our Story</h2>
-              <p className="lead mb-4">
-                Bethany SDA Church is a vibrant community of believers in Houston, Texas, celebrating
-                our Haitian heritage while welcoming all who seek to worship God.
-              </p>
-              <p className="mb-4">
-                We are part of the worldwide Seventh-day Adventist Church, which has a presence in
-                over 200 countries and territories. Our church family is united by a common faith in
-                Jesus Christ and a commitment to sharing His love with our community.
-              </p>
-              <p className="mb-0">
-                As a Haitian Seventh-day Adventist congregation, we treasure our cultural heritage
-                while embracing the diversity of God's family. We conduct services in multiple languages
-                and celebrate the rich traditions that make our community unique.
-              </p>
+              {settings.ourHistory ? (
+                <div dangerouslySetInnerHTML={{ __html: settings.ourHistory.replace(/\n/g, '<br />') }} />
+              ) : (
+                <>
+                  <p className="lead mb-4">
+                    Bethany SDA Church is a vibrant community of believers in Houston, Texas, celebrating
+                    our Haitian heritage while welcoming all who seek to worship God.
+                  </p>
+                  <p className="mb-4">
+                    We are part of the worldwide Seventh-day Adventist Church, which has a presence in
+                    over 200 countries and territories. Our church family is united by a common faith in
+                    Jesus Christ and a commitment to sharing His love with our community.
+                  </p>
+                  <p className="mb-0">
+                    As a Haitian Seventh-day Adventist congregation, we treasure our cultural heritage
+                    while embracing the diversity of God's family. We conduct services in multiple languages
+                    and celebrate the rich traditions that make our community unique.
+                  </p>
+                </>
+              )}
             </div>
             <div className="col-lg-6">
               <div className="card">
@@ -124,8 +146,7 @@ export default function About() {
             <div className="col-lg-8 text-center">
               <h2 className="mb-4">Our Mission</h2>
               <p className="lead mb-4">
-                To glorify God by making disciples of Jesus Christ, nurturing spiritual growth,
-                and serving our community with love.
+                {settings.missionStatement}
               </p>
               <div className="card bg-primary text-white">
                 <div className="card-body p-4">

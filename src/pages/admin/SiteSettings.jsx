@@ -31,10 +31,14 @@ export default function SiteSettings() {
     instagram: '',
     twitter: '',
 
-    // Website Settings
-    heroVideoUrl: '',
-    heroImageUrl: '',
-    welcomeMessage: ''
+    // Visit Page Settings
+    visitPageTitle: '',
+    visitPageDescription: '',
+
+    // About Page Settings
+    missionStatement: '',
+    ourHistory: '',
+    ourBeliefs: ''
   })
 
   useEffect(() => {
@@ -352,49 +356,83 @@ export default function SiteSettings() {
             </div>
           </div>
 
-          {/* Homepage Settings */}
+          {/* Visit Page Settings */}
           <div className="card mt-4">
             <div className="card-header">
               <h3 className="card-title">
-                <IconSettings className="me-2" size={20} />
-                Homepage Settings
+                <IconMapPin className="me-2" size={20} />
+                Visit Page Settings
               </h3>
             </div>
             <div className="card-body">
               <div className="row">
-                <div className="col-md-6 mb-3">
-                  <label className="form-label">Hero Video URL</label>
+                <div className="col-12 mb-3">
+                  <label className="form-label">Page Title</label>
                   <input
-                    type="url"
+                    type="text"
                     className="form-control"
-                    name="heroVideoUrl"
-                    value={settings.heroVideoUrl}
+                    name="visitPageTitle"
+                    value={settings.visitPageTitle}
                     onChange={handleInputChange}
-                    placeholder="https://example.com/video.mp4"
+                    placeholder="e.g., Plan Your Visit"
                   />
-                  <small className="form-hint">Video to display on homepage hero section</small>
-                </div>
-                <div className="col-md-6 mb-3">
-                  <label className="form-label">Hero Image URL (Fallback)</label>
-                  <input
-                    type="url"
-                    className="form-control"
-                    name="heroImageUrl"
-                    value={settings.heroImageUrl}
-                    onChange={handleInputChange}
-                    placeholder="https://example.com/image.jpg"
-                  />
-                  <small className="form-hint">Image to display if video is not available</small>
                 </div>
                 <div className="col-12 mb-3">
-                  <label className="form-label">Welcome Message</label>
+                  <label className="form-label">Page Description</label>
                   <textarea
                     className="form-control"
-                    name="welcomeMessage"
-                    rows="4"
-                    value={settings.welcomeMessage}
+                    name="visitPageDescription"
+                    rows="3"
+                    value={settings.visitPageDescription}
                     onChange={handleInputChange}
-                    placeholder="Welcome message to display on homepage..."
+                    placeholder="Description for the visit page..."
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* About Page Settings */}
+          <div className="card mt-4">
+            <div className="card-header">
+              <h3 className="card-title">
+                <IconBuildingChurch className="me-2" size={20} />
+                About Page Settings
+              </h3>
+            </div>
+            <div className="card-body">
+              <div className="row">
+                <div className="col-12 mb-3">
+                  <label className="form-label">Mission Statement</label>
+                  <textarea
+                    className="form-control"
+                    name="missionStatement"
+                    rows="3"
+                    value={settings.missionStatement}
+                    onChange={handleInputChange}
+                    placeholder="Your church's mission statement..."
+                  />
+                </div>
+                <div className="col-12 mb-3">
+                  <label className="form-label">Our History</label>
+                  <textarea
+                    className="form-control"
+                    name="ourHistory"
+                    rows="4"
+                    value={settings.ourHistory}
+                    onChange={handleInputChange}
+                    placeholder="History of your church..."
+                  />
+                </div>
+                <div className="col-12 mb-3">
+                  <label className="form-label">Our Beliefs</label>
+                  <textarea
+                    className="form-control"
+                    name="ourBeliefs"
+                    rows="4"
+                    value={settings.ourBeliefs}
+                    onChange={handleInputChange}
+                    placeholder="Core beliefs and values..."
                   />
                 </div>
               </div>

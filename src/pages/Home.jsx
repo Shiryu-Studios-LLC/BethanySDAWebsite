@@ -1,8 +1,30 @@
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import { IconCalendar, IconMapPin, IconClock, IconChevronDown } from '@tabler/icons-react'
 import './Home.css'
 
 export default function Home() {
+  const [settings, setSettings] = useState({
+    churchName: 'Bethany SDA Church',
+    tagline: 'Houston\'s Haitian Seventh-day Adventist Community',
+    sabbathSchool: 'Saturdays at 9:30 AM',
+    worshipService: 'Saturdays at 11:00 AM',
+    prayerMeeting: 'Wednesdays at 7:00 PM',
+    address: 'Houston, Texas'
+  })
+
+  useEffect(() => {
+    const stored = localStorage.getItem('siteSettings')
+    if (stored) {
+      const parsedSettings = JSON.parse(stored)
+      setSettings(prev => ({ ...prev, ...parsedSettings }))
+    }
+  }, [])
+
+  const fullAddress = settings.address && settings.city && settings.state
+    ? `${settings.address}, ${settings.city}, ${settings.state} ${settings.zipCode || ''}`.trim()
+    : settings.address || 'Houston, Texas'
+
   return (
     <div className="page-body p-0">
       {/* Hero Section */}
@@ -27,10 +49,10 @@ export default function Home() {
             <div className="row justify-content-center">
               <div className="col-lg-10 text-center">
                 <h1 className="hero-title animate-fade-in">
-                  Welcome to Bethany SDA Church
+                  Welcome to {settings.churchName}
                 </h1>
                 <p className="hero-subtitle animate-fade-in-delay">
-                  Houston's Haitian Seventh-day Adventist Community
+                  {settings.tagline}
                 </p>
                 <p className="hero-description animate-fade-in-delay-2">
                   Join us in worship, fellowship, and service as we grow together in faith
@@ -64,21 +86,21 @@ export default function Home() {
               <div className="service-time-card">
                 <IconClock size={48} className="mb-3" />
                 <h3 className="h4 mb-2">Sabbath School</h3>
-                <p className="mb-0">Saturdays at 9:30 AM</p>
+                <p className="mb-0">{settings.sabbathSchool}</p>
               </div>
             </div>
             <div className="col-md-4 mb-4 mb-md-0">
               <div className="service-time-card">
                 <IconClock size={48} className="mb-3" />
                 <h3 className="h4 mb-2">Divine Worship</h3>
-                <p className="mb-0">Saturdays at 11:00 AM</p>
+                <p className="mb-0">{settings.worshipService}</p>
               </div>
             </div>
             <div className="col-md-4">
               <div className="service-time-card">
                 <IconClock size={48} className="mb-3" />
                 <h3 className="h4 mb-2">Prayer Meeting</h3>
-                <p className="mb-0">Wednesdays at 7:00 PM</p>
+                <p className="mb-0">{settings.prayerMeeting}</p>
               </div>
             </div>
           </div>
@@ -134,7 +156,7 @@ export default function Home() {
                   <h5 className="card-title mb-3">Our Location</h5>
                   <p className="mb-2">
                     <IconMapPin size={20} className="me-2" />
-                    Houston, Texas
+                    {fullAddress}
                   </p>
                   <p className="text-muted mb-4">
                     We'd love to see you this weekend!
