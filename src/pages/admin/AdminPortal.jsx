@@ -1,9 +1,58 @@
 import { Link } from 'react-router-dom'
-import { IconPhoto, IconHome, IconCalendar, IconMicrophone, IconFileText, IconSettings, IconLogout } from '@tabler/icons-react'
+import { useState, useEffect } from 'react'
+import { IconPhoto, IconHome, IconCalendar, IconMicrophone, IconFileText, IconSettings, IconLogout, IconVideo } from '@tabler/icons-react'
 import { useAuth } from '../../contexts/AuthContext'
 
 export default function AdminPortal() {
   const { user, logout } = useAuth()
+  const [stats, setStats] = useState({
+    images: 0,
+    videos: 0,
+    documents: 0,
+    totalFiles: 0
+  })
+  const [loadingStats, setLoadingStats] = useState(true)
+  // Load stats on component mount
+  useEffect(() => {
+    loadStats()
+  }, [])
+
+  const loadStats = async () => {
+    try {
+      setLoadingStats(true)
+      const response = await fetch('/api/media')
+
+      if (response.ok) {
+        const data = await response.json()
+        const files = data.files || []
+
+        // Count different file types
+        const imageCount = files.filter(f =>
+          f.fileKey.match(/\.(jpg|jpeg|png|gif|webp)$/i)
+        ).length
+
+        const videoCount = files.filter(f =>
+          f.fileKey.match(/\.(mp4|webm|ogg|mkv|avi|mov)$/i)
+        ).length
+
+        const documentCount = files.filter(f =>
+          f.fileKey.match(/\.(pdf|doc|docx)$/i)
+        ).length
+
+        setStats({
+          images: imageCount,
+          videos: videoCount,
+          documents: documentCount,
+          totalFiles: files.length
+        })
+      }
+    } catch (error) {
+      console.error('Error loading stats:', error)
+    } finally {
+      setLoadingStats(false)
+    }
+  }
+
   const features = [
     {
       title: 'Media Library',
@@ -101,7 +150,13 @@ export default function AdminPortal() {
             <div className="card">
               <div className="card-body text-center">
                 <IconPhoto size={48} className="text-primary mb-2" />
-                <h3 className="m-0">--</h3>
+                <h3 className="m-0">
+                  {loadingStats ? (
+                    <span className="spinner-border spinner-border-sm" role="status"></span>
+                  ) : (
+                    stats.images
+                  )}
+                </h3>
                 <div className="text-muted">Images</div>
               </div>
             </div>
@@ -109,8 +164,14 @@ export default function AdminPortal() {
           <div className="col-md-3">
             <div className="card">
               <div className="card-body text-center">
-                <IconFileText size={48} className="text-success mb-2" />
-                <h3 className="m-0">--</h3>
+                <IconVideo size={48} className="text-success mb-2" />
+                <h3 className="m-0">
+                  {loadingStats ? (
+                    <span className="spinner-border spinner-border-sm" role="status"></span>
+                  ) : (
+                    stats.videos
+                  )}
+                </h3>
                 <div className="text-muted">Videos</div>
               </div>
             </div>
@@ -118,18 +179,30 @@ export default function AdminPortal() {
           <div className="col-md-3">
             <div className="card">
               <div className="card-body text-center">
-                <IconCalendar size={48} className="text-info mb-2" />
-                <h3 className="m-0">--</h3>
-                <div className="text-muted">Upcoming Events</div>
+                <IconFileText size={48} className="text-info mb-2" />
+                <h3 className="m-0">
+                  {loadingStats ? (
+                    <span className="spinner-border spinner-border-sm" role="status"></span>
+                  ) : (
+                    stats.documents
+                  )}
+                </h3>
+                <div className="text-muted">Documents</div>
               </div>
             </div>
           </div>
           <div className="col-md-3">
             <div className="card">
               <div className="card-body text-center">
-                <IconMicrophone size={48} className="text-warning mb-2" />
-                <h3 className="m-0">--</h3>
-                <div className="text-muted">Sermons</div>
+                <IconPhoto size={48} className="text-warning mb-2" />
+                <h3 className="m-0">
+                  {loadingStats ? (
+                    <span className="spinner-border spinner-border-sm" role="status"></span>
+                  ) : (
+                    stats.totalFiles
+                  )}
+                </h3>
+                <div className="text-muted">Total Files</div>
               </div>
             </div>
           </div>
