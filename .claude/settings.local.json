@@ -8,7 +8,11 @@
       "Bash(git commit:*)",
       "Bash(wrangler --version:*)",
       "Bash(npm install:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(code .)",
+      "Bash(where:*)",
+      "Bash(powershell:*)",
+      "Bash(\"H:\\Programs\\MicrosoftVisualStudio\\Code\\bin\\code\" .)"
     ],
     "deny": [],
     "ask": []
