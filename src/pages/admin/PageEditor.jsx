@@ -361,14 +361,16 @@ export default function PageEditor() {
         onClose={() => setAlert({ message: '', type: '' })}
       />
 
-      {/* Confirm Delete Modal */}
-      <ConfirmModal
-        isOpen={confirmDelete}
-        title="Delete Page"
-        message={`Are you sure you want to delete "${pageData.title}"? This action cannot be undone.`}
-        onConfirm={handleDelete}
-        onCancel={() => setConfirmDelete(false)}
-      />
+      {/* Confirm Delete Modal - Only for existing pages */}
+      {!isNewPage && (
+        <ConfirmModal
+          isOpen={confirmDelete}
+          title="Delete Page"
+          message={`Are you sure you want to delete "${pageData.title}"? This action cannot be undone.`}
+          onConfirm={handleDelete}
+          onCancel={() => setConfirmDelete(false)}
+        />
+      )}
     </div>
   )
 }
