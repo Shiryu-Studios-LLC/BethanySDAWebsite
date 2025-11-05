@@ -2,6 +2,12 @@ name = "bethany-sda-church"
 compatibility_date = "2025-01-01"
 pages_build_output_dir = "dist"
 
+# D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "bethany-sda-db"
+database_id = "YOUR_D1_DATABASE_ID"  # Replace with actual ID after creating database
+
 # R2 Bucket Binding for Media Library
 [[r2_buckets]]
 binding = "MEDIA_BUCKET"
