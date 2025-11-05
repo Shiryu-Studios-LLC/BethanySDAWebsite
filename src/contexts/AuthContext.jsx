@@ -63,26 +63,15 @@ export function AuthProvider({ children }) {
 
     // Check if we're on Cloudflare (production) or local development
     if (window.location.hostname.includes('pages.dev') || window.location.hostname.includes('cloudflare')) {
-      // In production, we need to revoke the Cloudflare Access token
-      // We'll open the logout endpoint in a hidden iframe to clear the session
-      // Then redirect to home
-      try {
-        // Create a hidden iframe to call the logout endpoint
-        const iframe = document.createElement('iframe')
-        iframe.style.display = 'none'
-        iframe.src = '/cdn-cgi/access/logout'
-        document.body.appendChild(iframe)
+      // In production, we need to revoke the Cloudflare Access session
+      // The logout endpoint will redirect back to wherever we came from
+      // To avoid going back to /admin, we first navigate to home, then call logout
 
-        // Wait a moment for the logout to complete, then redirect to home
-        setTimeout(() => {
-          document.body.removeChild(iframe)
-          window.location.href = '/'
-        }, 1000)
-      } catch (error) {
-        console.error('Logout error:', error)
-        // If there's an error, just redirect to home
-        window.location.href = '/'
-      }
+      // Store a flag that we're logging out
+      sessionStorage.setItem('logging_out', 'true')
+
+      // Navigate away from /admin first, then trigger logout
+      window.location.href = '/cdn-cgi/access/logout'
     } else {
       // Local development - just redirect to home
       window.location.href = '/'
