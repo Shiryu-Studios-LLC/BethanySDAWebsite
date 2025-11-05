@@ -12,6 +12,7 @@ import MediaLibrary from './pages/admin/MediaLibrary'
 import Sermons from './pages/admin/Sermons'
 import Bulletins from './pages/admin/Bulletins'
 import AdminEvents from './pages/admin/AdminEvents'
+import SiteSettings from './pages/admin/SiteSettings'
 
 function App() {
   return (
@@ -60,6 +61,14 @@ function App() {
           element={
             <ProtectedRoute>
               <AdminEvents />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/settings"
+          element={
+            <ProtectedRoute>
+              <SiteSettings />
             </ProtectedRoute>
           }
         />
