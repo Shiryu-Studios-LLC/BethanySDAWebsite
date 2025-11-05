@@ -6,7 +6,7 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "bethany-sda-db"
-database_id = "YOUR_D1_DATABASE_ID"  # Replace with actual ID after creating database
+database_id = "108f6db0-6cb7-499b-a4c2-dd22f0ff1cca"
 
 # R2 Bucket Binding for Media Library
 [[r2_buckets]]
