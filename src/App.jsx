@@ -9,6 +9,7 @@ import Contact from './pages/Contact'
 import Login from './pages/Login'
 import AdminPortal from './pages/admin/AdminPortal'
 import MediaLibrary from './pages/admin/MediaLibrary'
+import Sermons from './pages/admin/Sermons'
 
 function App() {
   return (
@@ -33,6 +34,14 @@ function App() {
           element={
             <ProtectedRoute>
               <MediaLibrary />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/sermons"
+          element={
+            <ProtectedRoute>
+              <Sermons />
             </ProtectedRoute>
           }
         />
