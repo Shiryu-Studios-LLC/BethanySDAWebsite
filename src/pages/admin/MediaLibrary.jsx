@@ -66,7 +66,7 @@ export default function MediaLibrary() {
 
   const getFileIcon = (fileName) => {
     if (fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i)) return <IconPhoto size={20} />
-    if (fileName.match(/\.(mp4|webm|ogg)$/i)) return <IconVideo size={20} />
+    if (fileName.match(/\.(mp4|webm|ogg|mkv|avi|mov)$/i)) return <IconVideo size={20} />
     if (fileName.match(/\.(pdf|doc|docx)$/i)) return <IconFileText size={20} />
     return <IconFile size={20} />
   }
@@ -223,7 +223,7 @@ export default function MediaLibrary() {
                     className="form-control"
                     multiple
                     onChange={handleFileSelection}
-                    accept="image/*,video/*,.pdf,.doc,.docx"
+                    accept="image/*,video/*,.mkv,.avi,.mov,.pdf,.doc,.docx"
                   />
                   <small className="form-hint">You can select multiple files</small>
                 </div>
@@ -333,7 +333,7 @@ export default function MediaLibrary() {
                                 className="w-100 h-100"
                                 style={{ objectFit: 'cover' }}
                               />
-                            ) : media.fileKey.match(/\.(mp4|webm|ogg)$/i) ? (
+                            ) : media.fileKey.match(/\.(mp4|webm|ogg|mkv|avi|mov)$/i) ? (
                               <video
                                 src={media.publicUrl}
                                 className="w-100 h-100"
