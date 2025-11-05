@@ -1,3 +1,12 @@
 name = "bethany-sda-church"
 compatibility_date = "2025-01-01"
 pages_build_output_dir = "dist"
+
+# R2 Bucket Binding for Media Library
+[[r2_buckets]]
+binding = "MEDIA_BUCKET"
+bucket_name = "bethany-sda-media"
+
+# Environment Variables
+[vars]
+R2_PUBLIC_URL = "https://pub-fc5bfa77df6042a081860f61dded7bb3.r2.dev"
