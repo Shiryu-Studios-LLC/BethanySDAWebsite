@@ -56,25 +56,15 @@ export function AuthProvider({ children }) {
     window.location.href = '/login'
   }
 
-  const logout = async () => {
+  const logout = () => {
     // Clear authentication state
     setIsAuthenticated(false)
     setUser(null)
 
     // Check if we're on Cloudflare (production) or local development
     if (window.location.hostname.includes('pages.dev') || window.location.hostname.includes('cloudflare')) {
-      // In production, we need to revoke the Cloudflare Access token
-      // Make a fetch request to the logout endpoint to clear the session
-      try {
-        await fetch('/cdn-cgi/access/logout', {
-          method: 'GET',
-          credentials: 'include'
-        })
-      } catch (error) {
-        console.error('Logout error:', error)
-      }
-
-      // Then redirect to logout page which will redirect to home
+      // In production, navigate to logout page
+      // That page will handle the Cloudflare logout
       window.location.href = '/logout'
     } else {
       // Local development - just redirect to home
