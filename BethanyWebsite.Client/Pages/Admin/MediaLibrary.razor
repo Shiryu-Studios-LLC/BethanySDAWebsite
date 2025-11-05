@@ -1,0 +1,343 @@
+@page "/admin/media"
+@inject IHttpClientFactory HttpClientFactory
+@inject IJSRuntime JS
+
+<PageTitle>Media Library - Admin Portal</PageTitle>
+
+<div class="container mt-5 pt-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1><i class="bi bi-images"></i> Media Library</h1>
+                    <p class="text-muted">Upload and manage your church's images and videos</p>
+                </div>
+                <NavLink class="btn btn-outline-secondary" href="/admin">
+                    <i class="bi bi-arrow-left"></i> Back to Admin
+                </NavLink>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <i class="bi bi-upload"></i> Upload New Media
+                    </h5>
+
+                    <div class="mb-3">
+                        <label for="folderSelect" class="form-label">Folder</label>
+                        <select class="form-select" id="folderSelect" @bind="selectedFolder">
+                            <option value="images/hero">Hero Images</option>
+                            <option value="images/events">Events</option>
+                            <option value="images/gallery">Gallery</option>
+                            <option value="images/team">Team</option>
+                            <option value="videos/hero">Hero Videos</option>
+                            <option value="videos/sermons">Sermons</option>
+                            <option value="documents/bulletins">Bulletins</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fileInput" class="form-label">Select Files</label>
+                        <InputFile OnChange="HandleFileSelection" class="form-control" id="fileInput" multiple />
+                        <div class="form-text">
+                            Supported: Images (JPG, PNG, GIF), Videos (MP4, WebM), Documents (PDF)
+                        </div>
+                    </div>
+
+                    @if (selectedFiles.Any())
+                    {
+                        <div class="alert alert-info">
+                            <strong>@selectedFiles.Count file(s) selected:</strong>
+                            @string.Join(", ", selectedFiles.Select(f => f.Name))
+                        </div>
+                    }
+
+                    @if (uploadProgress > 0 && uploadProgress < 100)
+                    {
+                        <div class="progress mb-3">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                 role="progressbar"
+                                 style="width: @uploadProgress%"
+                                 aria-valuenow="@uploadProgress"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+                                @uploadProgress%
+                            </div>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(uploadMessage))
+                    {
+                        <div class="alert @(uploadSuccess ? "alert-success" : "alert-danger")">
+                            @uploadMessage
+                        </div>
+                    }
+
+                    <button class="btn btn-primary" @onclick="UploadFiles" disabled="@(uploading || !selectedFiles.Any())">
+                        <i class="bi bi-cloud-upload"></i>
+                        @if (uploading)
+                        {
+                            <span>Uploading...</span>
+                        }
+                        else
+                        {
+                            <span>Upload @selectedFiles.Count File(s)</span>
+                        }
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Media Grid -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <i class="bi bi-folder2-open"></i> Media Files
+                    </h5>
+
+                    @if (loading)
+                    {
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading media files...</p>
+                        </div>
+                    }
+                    else if (mediaFiles.Any())
+                    {
+                        <div class="row g-3">
+                            @foreach (var media in mediaFiles)
+                            {
+                                <div class="col-md-3">
+                                    <div class="card media-card">
+                                        <div class="media-thumbnail">
+                                            @if (IsImage(media.fileName))
+                                            {
+                                                <img src="@media.publicUrl" alt="@media.fileName" class="card-img-top" />
+                                            }
+                                            else if (IsVideo(media.fileName))
+                                            {
+                                                <div class="video-placeholder">
+                                                    <i class="bi bi-play-circle"></i>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="file-placeholder">
+                                                    <i class="bi bi-file-earmark"></i>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text small text-truncate" title="@media.fileName">
+                                                @media.fileName
+                                            </p>
+                                            <div class="btn-group btn-group-sm w-100" role="group">
+                                                <button class="btn btn-outline-primary" @onclick="() => CopyUrl(media.publicUrl)">
+                                                    <i class="bi bi-link-45deg"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger" @onclick="() => DeleteFile(media.fileKey)">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5 text-muted">
+                            <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+                            <p class="mt-2">No media files found. Upload some files to get started!</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .media-card {
+        transition: transform 0.2s;
+    }
+
+    .media-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    .media-thumbnail {
+        height: 200px;
+        overflow: hidden;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .media-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .video-placeholder,
+    .file-placeholder {
+        font-size: 4rem;
+        color: #6c757d;
+    }
+</style>
+
+@code {
+    private string selectedFolder = "images/hero";
+    private List<IBrowserFile> selectedFiles = new();
+    private List<MediaFile> mediaFiles = new();
+    private bool loading = false;
+    private bool uploading = false;
+    private int uploadProgress = 0;
+    private string uploadMessage = "";
+    private bool uploadSuccess = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMediaFiles();
+    }
+
+    private void HandleFileSelection(InputFileChangeEventArgs e)
+    {
+        selectedFiles = e.GetMultipleFiles(10).ToList();
+        uploadMessage = "";
+    }
+
+    private async Task UploadFiles()
+    {
+        if (!selectedFiles.Any()) return;
+
+        uploading = true;
+        uploadProgress = 0;
+        uploadMessage = "";
+
+        try
+        {
+            var httpClient = HttpClientFactory.CreateClient("BethanyAPI");
+            var totalFiles = selectedFiles.Count;
+            var uploadedCount = 0;
+
+            foreach (var file in selectedFiles)
+            {
+                using var content = new MultipartFormDataContent();
+                var fileContent = new StreamContent(file.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024)); // 50MB max
+                fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+                content.Add(fileContent, "file", file.Name);
+                content.Add(new StringContent(selectedFolder), "folder");
+
+                var response = await httpClient.PostAsync("/api/media/upload", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    uploadedCount++;
+                    uploadProgress = (int)((float)uploadedCount / totalFiles * 100);
+                }
+            }
+
+            uploadSuccess = true;
+            uploadMessage = $"Successfully uploaded {uploadedCount} of {totalFiles} file(s)!";
+            selectedFiles.Clear();
+
+            // Reload media files
+            await LoadMediaFiles();
+        }
+        catch (Exception ex)
+        {
+            uploadSuccess = false;
+            uploadMessage = $"Error uploading files: {ex.Message}";
+        }
+        finally
+        {
+            uploading = false;
+            uploadProgress = 0;
+        }
+    }
+
+    private async Task LoadMediaFiles()
+    {
+        loading = true;
+        try
+        {
+            var httpClient = HttpClientFactory.CreateClient("BethanyAPI");
+            var response = await httpClient.GetAsync("/api/media/list");
+
+            if (response.IsSuccessStatusCode)
+            {
+                mediaFiles = await response.Content.ReadFromJsonAsync<List<MediaFile>>() ?? new();
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle error - R2 might not be configured yet
+            Console.WriteLine($"Error loading media: {ex.Message}");
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private async Task DeleteFile(string fileKey)
+    {
+        if (!await JS.InvokeAsync<bool>("confirm", "Are you sure you want to delete this file?"))
+            return;
+
+        try
+        {
+            var httpClient = HttpClientFactory.CreateClient("BethanyAPI");
+            var response = await httpClient.DeleteAsync($"/api/media/{fileKey}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadMediaFiles();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting file: {ex.Message}");
+        }
+    }
+
+    private async Task CopyUrl(string url)
+    {
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", url);
+        // TODO: Show toast notification
+    }
+
+    private bool IsImage(string fileName) =>
+        fileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+        fileName.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+        fileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
+        fileName.EndsWith(".gif", StringComparison.OrdinalIgnoreCase) ||
+        fileName.EndsWith(".webp", StringComparison.OrdinalIgnoreCase);
+
+    private bool IsVideo(string fileName) =>
+        fileName.EndsWith(".mp4", StringComparison.OrdinalIgnoreCase) ||
+        fileName.EndsWith(".webm", StringComparison.OrdinalIgnoreCase) ||
+        fileName.EndsWith(".mov", StringComparison.OrdinalIgnoreCase);
+
+    private class MediaFile
+    {
+        public string fileKey { get; set; } = "";
+        public string publicUrl { get; set; } = "";
+        public string fileName { get; set; } = "";
+    }
+}
