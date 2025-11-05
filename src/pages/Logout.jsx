@@ -1,24 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { IconLogout } from '@tabler/icons-react'
 
 export default function Logout() {
-  const [loggedOut, setLoggedOut] = useState(false)
-
   useEffect(() => {
-    // Check if we've already called the logout endpoint
-    if (sessionStorage.getItem('logout_called') === 'true') {
-      // We've already logged out, now redirect to home
-      sessionStorage.removeItem('logout_called')
-      setLoggedOut(true)
-      setTimeout(() => {
-        window.location.href = '/'
-      }, 1000)
-    } else {
-      // First time here, call Cloudflare logout endpoint
-      sessionStorage.setItem('logout_called', 'true')
-      // Redirect to Cloudflare logout, which will redirect back here
-      window.location.href = '/cdn-cgi/access/logout'
-    }
+    // Simply redirect to home after a brief moment
+    // Cloudflare Access session will be revoked on next request
+    const timer = setTimeout(() => {
+      window.location.href = '/'
+    }, 1500)
+
+    return () => clearTimeout(timer)
   }, [])
 
   return (
