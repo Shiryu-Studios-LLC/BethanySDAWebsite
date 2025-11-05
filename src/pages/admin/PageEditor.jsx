@@ -12,6 +12,7 @@ import { Color } from '@tiptap/extension-color'
 import Youtube from '@tiptap/extension-youtube'
 import AlertModal from '../../components/AlertModal'
 import ConfirmModal from '../../components/ConfirmModal'
+import PromptModal from '../../components/PromptModal'
 import '../../tiptap.css'
 
 export default function PageEditor() {
@@ -23,6 +24,14 @@ export default function PageEditor() {
   const [loading, setLoading] = useState(!isNewPage)
   const [alert, setAlert] = useState({ message: '', type: '' })
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [promptModal, setPromptModal] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    defaultValue: '',
+    placeholder: '',
+    onConfirm: null
+  })
   const [pageData, setPageData] = useState({
     title: '',
     slug: '',
@@ -67,29 +76,85 @@ export default function PageEditor() {
   // Helper functions for editor actions
   const setLink = useCallback(() => {
     const previousUrl = editor.getAttributes('link').href
-    const url = window.prompt('Enter URL:', previousUrl)
-
-    if (url === null) return
-    if (url === '') {
-      editor.chain().focus().extendMarkRange('link').unsetLink().run()
-      return
-    }
-
-    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+    setPromptModal({
+      isOpen: true,
+      title: 'Add Link',
+      message: 'Enter the URL for the link:',
+      defaultValue: previousUrl || '',
+      placeholder: 'https://example.com',
+      onConfirm: (url) => {
+        if (url === '') {
+          editor.chain().focus().extendMarkRange('link').unsetLink().run()
+        } else {
+          editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+        }
+        setPromptModal(prev => ({ ...prev, isOpen: false }))
+      }
+    })
   }, [editor])
 
   const addImage = useCallback(() => {
-    const url = window.prompt('Enter image URL:')
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run()
-    }
+    setPromptModal({
+      isOpen: true,
+      title: 'Add Image',
+      message: 'Enter the image URL:',
+      defaultValue: '',
+      placeholder: 'https://example.com/image.jpg',
+      onConfirm: (url) => {
+        if (url) {
+          editor.chain().focus().setImage({ src: url }).run()
+        }
+        setPromptModal(prev => ({ ...prev, isOpen: false }))
+      }
+    })
   }, [editor])
 
   const addYouTubeVideo = useCallback(() => {
-    const url = window.prompt('Enter YouTube URL:')
-    if (url) {
-      editor.chain().focus().setYoutubeVideo({ src: url }).run()
-    }
+    setPromptModal({
+      isOpen: true,
+      title: 'Embed YouTube Video',
+      message: 'Enter the YouTube video URL:',
+      defaultValue: '',
+      placeholder: 'https://www.youtube.com/watch?v=...',
+      onConfirm: (url) => {
+        if (url) {
+          editor.chain().focus().setYoutubeVideo({ src: url }).run()
+        }
+        setPromptModal(prev => ({ ...prev, isOpen: false }))
+      }
+    })
+  }, [editor])
+
+  const addButton = useCallback(() => {
+    setPromptModal({
+      isOpen: true,
+      title: 'Create Button',
+      message: 'Enter button text:',
+      defaultValue: 'Click Here',
+      placeholder: 'Button text',
+      onConfirm: (text) => {
+        if (text) {
+          // Ask for URL in a second prompt
+          setPromptModal({
+            isOpen: true,
+            title: 'Button URL',
+            message: 'Enter the button URL:',
+            defaultValue: '/',
+            placeholder: '/page-url or https://...',
+            onConfirm: (url) => {
+              if (url) {
+                editor.chain().focus().insertContent(
+                  `<p><a href="${url}" class="btn btn-primary">${text}</a></p>`
+                ).run()
+              }
+              setPromptModal(prev => ({ ...prev, isOpen: false }))
+            }
+          })
+        } else {
+          setPromptModal(prev => ({ ...prev, isOpen: false }))
+        }
+      }
+    })
   }, [editor])
 
   useEffect(() => {
@@ -477,15 +542,7 @@ export default function PageEditor() {
                   <div className="btn-group" role="group">
                     <button
                       type="button"
-                      onClick={() => {
-                        const text = window.prompt('Button text:', 'Click Here')
-                        const url = window.prompt('Button URL:', '/')
-                        if (text && url) {
-                          editor?.chain().focus().insertContent(
-                            `<p><a href="${url}" class="btn btn-primary">${text}</a></p>`
-                          ).run()
-                        }
-                      }}
+                      onClick={addButton}
                       className="btn btn-sm btn-outline-secondary"
                       title="Add Button"
                     >
@@ -594,6 +651,17 @@ export default function PageEditor() {
           onCancel={() => setConfirmDelete(false)}
         />
       )}
+
+      {/* Prompt Modal */}
+      <PromptModal
+        isOpen={promptModal.isOpen}
+        title={promptModal.title}
+        message={promptModal.message}
+        defaultValue={promptModal.defaultValue}
+        placeholder={promptModal.placeholder}
+        onConfirm={promptModal.onConfirm || (() => {})}
+        onCancel={() => setPromptModal(prev => ({ ...prev, isOpen: false }))}
+      />
     </div>
   )
 }
