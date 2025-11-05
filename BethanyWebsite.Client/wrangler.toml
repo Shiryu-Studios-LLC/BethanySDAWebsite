@@ -1,0 +1,17 @@
+name = "bethany-sda-church"
+compatibility_date = "2025-01-01"
+
+[build]
+command = "dotnet publish -c Release -o output"
+cwd = "."
+watch_dirs = ["Pages", "Layout", "wwwroot"]
+
+[build.upload]
+format = "service-worker"
+dir = "bin/Release/net9.0/publish/wwwroot"
+
+[env.production]
+name = "bethany-sda-church"
+
+[env.preview]
+name = "bethany-sda-church-preview"
