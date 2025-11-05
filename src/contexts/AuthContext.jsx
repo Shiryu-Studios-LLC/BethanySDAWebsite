@@ -15,22 +15,31 @@ export function AuthProvider({ children }) {
 
   const checkAuthStatus = async () => {
     try {
-      // Cloudflare Access protects the /admin route and sets a CF_Authorization cookie
-      // If the user can access this page, they're authenticated
-      // Cloudflare Access also provides user identity in headers, but we can't access them directly in client-side code
+      // Check if we're on Cloudflare (production) or local development
+      const isProduction = window.location.hostname.includes('pages.dev') ||
+                          window.location.hostname.includes('cloudflare')
 
-      // We'll make a request to get user info from Cloudflare Access
-      // The /cdn-cgi/access/get-identity endpoint returns user information
-      const response = await fetch('/cdn-cgi/access/get-identity')
+      if (isProduction) {
+        // In production, use Cloudflare Access to check authentication
+        // Cloudflare Access protects the /admin route and sets a CF_Authorization cookie
+        // The /cdn-cgi/access/get-identity endpoint returns user information
+        const response = await fetch('/cdn-cgi/access/get-identity')
 
-      if (response.ok) {
-        const identity = await response.json()
-        setUser({ email: identity.email, name: identity.name })
-        setIsAuthenticated(true)
+        if (response.ok) {
+          const identity = await response.json()
+          setUser({ email: identity.email, name: identity.name })
+          setIsAuthenticated(true)
+        } else {
+          // If we can't get identity, user is not authenticated
+          setIsAuthenticated(false)
+          setUser(null)
+        }
       } else {
-        // If we can't get identity, user is not authenticated
-        setIsAuthenticated(false)
-        setUser(null)
+        // In local development, bypass Cloudflare Access check
+        // This allows testing the UI without Cloudflare Access
+        console.log('Local development mode - bypassing Cloudflare Access')
+        setUser({ email: 'dev@localhost', name: 'Local Developer' })
+        setIsAuthenticated(true)
       }
     } catch (error) {
       console.error('Auth check failed:', error)
@@ -52,9 +61,17 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(false)
     setUser(null)
 
-    // Redirect to Cloudflare Access logout endpoint
-    // This will clear the Cloudflare Access session and redirect to home
-    window.location.href = '/cdn-cgi/access/logout'
+    // Check if we're on Cloudflare (production) or local development
+    // In production, use Cloudflare Access logout endpoint
+    // In local development, just redirect to home
+    if (window.location.hostname.includes('pages.dev') || window.location.hostname.includes('cloudflare')) {
+      // Redirect to Cloudflare Access logout endpoint
+      // This will clear the Cloudflare Access session and redirect to home
+      window.location.href = '/cdn-cgi/access/logout'
+    } else {
+      // Local development - just redirect to home
+      window.location.href = '/'
+    }
   }
 
   const value = {
