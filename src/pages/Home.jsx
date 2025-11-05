@@ -13,11 +13,26 @@ export default function Home() {
     address: 'Houston, Texas'
   })
 
+  const [homepageSettings, setHomepageSettings] = useState({
+    heroVideoUrl: '/videos/hero.mp4',
+    heroImageUrl: '',
+    welcomeMessage: 'Join us in worship, fellowship, and service as we grow together in faith',
+    liveStreamUrl: '',
+    showLiveStream: false
+  })
+
+  const [showLiveModal, setShowLiveModal] = useState(false)
+
   useEffect(() => {
     const stored = localStorage.getItem('siteSettings')
     if (stored) {
       const parsedSettings = JSON.parse(stored)
       setSettings(prev => ({ ...prev, ...parsedSettings }))
+    }
+
+    const homepageStored = localStorage.getItem('homepageSettings')
+    if (homepageStored) {
+      setHomepageSettings(JSON.parse(homepageStored))
     }
   }, [])
 
@@ -25,23 +40,87 @@ export default function Home() {
     ? `${settings.address}, ${settings.city}, ${settings.state} ${settings.zipCode || ''}`.trim()
     : settings.address || 'Houston, Texas'
 
+  const extractYouTubeId = (url) => {
+    if (!url) return null
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+      /youtube\.com\/live\/([^&\n?#]+)/
+    ]
+    for (const pattern of patterns) {
+      const match = url.match(pattern)
+      if (match) return match[1]
+    }
+    return null
+  }
+
+  const youtubeId = extractYouTubeId(homepageSettings.liveStreamUrl)
+  const isLiveStreamActive = homepageSettings.showLiveStream && youtubeId
+
   return (
     <div className="page-body p-0">
       {/* Hero Section */}
-      <section className="hero-section">
-        {/* Background Video */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="hero-video"
-        >
-          <source src="/videos/hero.mp4" type="video/mp4" />
-        </video>
+      <section className="hero-section" style={{ cursor: isLiveStreamActive ? 'pointer' : 'default' }} onClick={() => isLiveStreamActive && setShowLiveModal(true)}>
+        {/* Background Video or Live Stream */}
+        {isLiveStreamActive ? (
+          <>
+            {/* YouTube Live Stream (muted, no controls) */}
+            <iframe
+              className="hero-video"
+              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0&loop=1&playlist=${youtubeId}`}
+              title="Live Stream"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                width: '100vw',
+                height: '100vh',
+                transform: 'translate(-50%, -50%)',
+                pointerEvents: 'none'
+              }}
+            ></iframe>
+            {/* LIVE NOW Badge */}
+            <div style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              background: 'rgba(220, 38, 38, 0.95)',
+              color: 'white',
+              padding: '8px 16px',
+              borderRadius: '4px',
+              fontWeight: 'bold',
+              fontSize: '14px',
+              zIndex: 3,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
+            }}>
+              <span style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                background: 'white',
+                animation: 'pulse 2s infinite'
+              }}></span>
+              LIVE NOW
+            </div>
+          </>
+        ) : (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="hero-video"
+          >
+            <source src={homepageSettings.heroVideoUrl || "/videos/hero.mp4"} type="video/mp4" />
+          </video>
+        )}
 
         {/* Gradient Overlay */}
-        <div className="hero-overlay"></div>
+        <div className="hero-overlay" style={{ pointerEvents: 'none' }}></div>
 
         {/* Content */}
         <div className="hero-content">
@@ -170,6 +249,57 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Live Stream Modal */}
+      {showLiveModal && isLiveStreamActive && (
+        <>
+          <div className="modal-backdrop fade show" onClick={() => setShowLiveModal(false)} style={{ zIndex: 1050 }}></div>
+          <div className="modal fade show d-block" tabIndex="-1" style={{ zIndex: 1055 }}>
+            <div className="modal-dialog modal-xl modal-dialog-centered">
+              <div className="modal-content bg-dark">
+                <div className="modal-header border-0">
+                  <h5 className="modal-title text-white d-flex align-items-center gap-2">
+                    <span style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      background: '#dc2626',
+                      animation: 'pulse 2s infinite'
+                    }}></span>
+                    LIVE NOW - {settings.churchName}
+                  </h5>
+                  <button type="button" className="btn-close btn-close-white" onClick={() => setShowLiveModal(false)}></button>
+                </div>
+                <div className="modal-body p-0">
+                  <div className="ratio ratio-16x9">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=0&controls=1&modestbranding=1&rel=0`}
+                      title="Live Stream - Full Player"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                </div>
+                <div className="modal-footer border-0 bg-dark">
+                  <p className="text-white-50 small mb-0">Click anywhere outside to close</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      <style>{`
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.3;
+          }
+        }
+      `}</style>
     </div>
   )
 }
