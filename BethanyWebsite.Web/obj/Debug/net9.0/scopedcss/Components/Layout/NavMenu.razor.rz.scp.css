@@ -1,7 +1,0 @@
-.fade-on-scroll[b-poiqbpx7q3] {
-    transition: background-color .2s ease;
-}
-
-.fade-on-scroll.scrolled[b-poiqbpx7q3] {
-    background-color: rgb(0, 0, 0, 0.87) !important;
-}
