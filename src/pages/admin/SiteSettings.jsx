@@ -372,106 +372,106 @@ export default function SiteSettings() {
               Pages
             </h3>
             <p className="text-muted mb-4">Configure content and settings for individual pages</p>
-          </div>
 
-          {/* Home Page Settings */}
-          <div className="card mt-3">
-            <div className="card-header bg-light">
-              <div className="d-flex justify-content-between align-items-center">
-                <h3 className="card-title mb-0">
-                  <IconHome className="me-2" size={20} />
-                  Home Page Settings
+            {/* Home Page Settings */}
+            <div className="card mt-3">
+              <div className="card-header bg-light">
+                <div className="d-flex justify-content-between align-items-center">
+                  <h3 className="card-title mb-0">
+                    <IconHome className="me-2" size={20} />
+                    Home Page Settings
+                  </h3>
+                  <Link to="/admin/homepage" className="btn btn-sm btn-primary">
+                    Configure Homepage
+                  </Link>
+                </div>
+              </div>
+              <div className="card-body">
+                <p className="text-muted mb-0">
+                  Manage homepage hero section, live stream settings, and featured content.
+                </p>
+              </div>
+            </div>
+
+            {/* Visit Page Settings */}
+            <div className="card mt-3">
+              <div className="card-header">
+                <h3 className="card-title">
+                  <IconMapPin className="me-2" size={20} />
+                  Visit Page Settings
                 </h3>
-                <Link to="/admin/homepage" className="btn btn-sm btn-primary">
-                  Configure Homepage
-                </Link>
               </div>
-            </div>
-            <div className="card-body">
-              <p className="text-muted mb-0">
-                Manage homepage hero section, live stream settings, and featured content.
-              </p>
-            </div>
-          </div>
-
-          {/* Visit Page Settings */}
-          <div className="card mt-3">
-            <div className="card-header">
-              <h3 className="card-title">
-                <IconMapPin className="me-2" size={20} />
-                Visit Page Settings
-              </h3>
-            </div>
-            <div className="card-body">
-              <div className="row">
-                <div className="col-12 mb-3">
-                  <label className="form-label">Page Title</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="visitPageTitle"
-                    value={settings.visitPageTitle}
-                    onChange={handleInputChange}
-                    placeholder="e.g., Plan Your Visit"
-                  />
-                </div>
-                <div className="col-12 mb-3">
-                  <label className="form-label">Page Description</label>
-                  <textarea
-                    className="form-control"
-                    name="visitPageDescription"
-                    rows="3"
-                    value={settings.visitPageDescription}
-                    onChange={handleInputChange}
-                    placeholder="Description for the visit page..."
-                  />
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-12 mb-3">
+                    <label className="form-label">Page Title</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="visitPageTitle"
+                      value={settings.visitPageTitle}
+                      onChange={handleInputChange}
+                      placeholder="e.g., Plan Your Visit"
+                    />
+                  </div>
+                  <div className="col-12 mb-3">
+                    <label className="form-label">Page Description</label>
+                    <textarea
+                      className="form-control"
+                      name="visitPageDescription"
+                      rows="3"
+                      value={settings.visitPageDescription}
+                      onChange={handleInputChange}
+                      placeholder="Description for the visit page..."
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* About Page Settings */}
-          <div className="card mt-3">
-            <div className="card-header">
-              <h3 className="card-title">
-                <IconInfoCircle className="me-2" size={20} />
-                About Page Settings
-              </h3>
-            </div>
-            <div className="card-body">
-              <div className="row">
-                <div className="col-12 mb-3">
-                  <label className="form-label">Mission Statement</label>
-                  <textarea
-                    className="form-control"
-                    name="missionStatement"
-                    rows="3"
-                    value={settings.missionStatement}
-                    onChange={handleInputChange}
-                    placeholder="Your church's mission statement..."
-                  />
-                </div>
-                <div className="col-12 mb-3">
-                  <label className="form-label">Our History</label>
-                  <textarea
-                    className="form-control"
-                    name="ourHistory"
-                    rows="4"
-                    value={settings.ourHistory}
-                    onChange={handleInputChange}
-                    placeholder="History of your church..."
-                  />
-                </div>
-                <div className="col-12 mb-3">
-                  <label className="form-label">Our Beliefs</label>
-                  <textarea
-                    className="form-control"
-                    name="ourBeliefs"
-                    rows="4"
-                    value={settings.ourBeliefs}
-                    onChange={handleInputChange}
-                    placeholder="Core beliefs and values..."
-                  />
+            {/* About Page Settings */}
+            <div className="card mt-3">
+              <div className="card-header">
+                <h3 className="card-title">
+                  <IconInfoCircle className="me-2" size={20} />
+                  About Page Settings
+                </h3>
+              </div>
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-12 mb-3">
+                    <label className="form-label">Mission Statement</label>
+                    <textarea
+                      className="form-control"
+                      name="missionStatement"
+                      rows="3"
+                      value={settings.missionStatement}
+                      onChange={handleInputChange}
+                      placeholder="Your church's mission statement..."
+                    />
+                  </div>
+                  <div className="col-12 mb-3">
+                    <label className="form-label">Our History</label>
+                    <textarea
+                      className="form-control"
+                      name="ourHistory"
+                      rows="4"
+                      value={settings.ourHistory}
+                      onChange={handleInputChange}
+                      placeholder="History of your church..."
+                    />
+                  </div>
+                  <div className="col-12 mb-3">
+                    <label className="form-label">Our Beliefs</label>
+                    <textarea
+                      className="form-control"
+                      name="ourBeliefs"
+                      rows="4"
+                      value={settings.ourBeliefs}
+                      onChange={handleInputChange}
+                      placeholder="Core beliefs and values..."
+                    />
+                  </div>
                 </div>
               </div>
             </div>
