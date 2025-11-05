@@ -219,7 +219,7 @@ export default function Homepage() {
             </div>
           </div>
 
- {/* Page-Specific Settings Section */}
+          {/* Page-Specific Settings Section */}
           <div className="mt-5 pt-4 border-top">
             <h3 className="mb-3">
               <IconFileText className="me-2" size={24} />

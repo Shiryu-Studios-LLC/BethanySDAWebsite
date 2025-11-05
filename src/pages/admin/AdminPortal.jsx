@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { IconPhoto, IconHome, IconCalendar, IconMicrophone, IconFileText, IconSettings, IconLogout, IconVideo } from '@tabler/icons-react'
+import { IconPhoto, IconPage, IconCalendar, IconMicrophone, IconFileText, IconSettings, IconLogout, IconVideo } from '@tabler/icons-react'
 import { useAuth } from '../../contexts/AuthContext'
 
 export default function AdminPortal() {
@@ -62,10 +62,10 @@ export default function AdminPortal() {
       color: 'primary'
     },
     {
-      title: 'Homepage',
-      description: 'Edit homepage content, hero video, and featured announcements.',
-      icon: IconHome,
-      link: '/admin/homepage',
+      title: 'Pages',
+      description: 'Edit Page content, for all site pages.',
+      icon: IconPage,
+      link: '/admin/pages',
       color: 'success'
     },
     {
