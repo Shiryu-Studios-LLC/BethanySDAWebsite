@@ -1,8 +1,9 @@
 name = "bethany-sda-church"
 compatibility_date = "2025-01-01"
+pages_build_output_dir = "bin/Release/net9.0/publish/wwwroot"
 
 [build]
-command = "dotnet publish -c Release -o output"
+command = "dotnet publish -c Release"
 cwd = "."
 watch_dirs = ["Pages", "Layout", "wwwroot"]
 
