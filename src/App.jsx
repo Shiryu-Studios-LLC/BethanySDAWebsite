@@ -14,6 +14,8 @@ import Bulletins from './pages/admin/Bulletins'
 import AdminEvents from './pages/admin/AdminEvents'
 import SiteSettings from './pages/admin/SiteSettings'
 import Homepage from './pages/admin/Homepage'
+import VisitPageSettings from './pages/admin/VisitPageSettings'
+import AboutPageSettings from './pages/admin/AboutPageSettings'
 
 function App() {
   return (
@@ -78,6 +80,22 @@ function App() {
           element={
             <ProtectedRoute>
               <Homepage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/visit-page"
+          element={
+            <ProtectedRoute>
+              <VisitPageSettings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/about-page"
+          element={
+            <ProtectedRoute>
+              <AboutPageSettings />
             </ProtectedRoute>
           }
         />

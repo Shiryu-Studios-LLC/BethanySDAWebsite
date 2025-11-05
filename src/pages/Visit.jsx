@@ -15,9 +15,17 @@ export default function Visit() {
   })
 
   useEffect(() => {
-    const stored = localStorage.getItem('siteSettings')
-    if (stored) {
-      const parsedSettings = JSON.parse(stored)
+    // Load general site settings
+    const siteStored = localStorage.getItem('siteSettings')
+    if (siteStored) {
+      const parsedSettings = JSON.parse(siteStored)
+      setSettings(prev => ({ ...prev, ...parsedSettings }))
+    }
+
+    // Load visit page specific settings
+    const visitStored = localStorage.getItem('visitPageSettings')
+    if (visitStored) {
+      const parsedSettings = JSON.parse(visitStored)
       setSettings(prev => ({ ...prev, ...parsedSettings }))
     }
   }, [])

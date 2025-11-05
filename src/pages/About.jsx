@@ -11,9 +11,17 @@ export default function About() {
   })
 
   useEffect(() => {
-    const stored = localStorage.getItem('siteSettings')
-    if (stored) {
-      const parsedSettings = JSON.parse(stored)
+    // Load general site settings (church name)
+    const siteStored = localStorage.getItem('siteSettings')
+    if (siteStored) {
+      const parsedSettings = JSON.parse(siteStored)
+      setSettings(prev => ({ ...prev, ...parsedSettings }))
+    }
+
+    // Load about page specific settings
+    const aboutStored = localStorage.getItem('aboutPageSettings')
+    if (aboutStored) {
+      const parsedSettings = JSON.parse(aboutStored)
       setSettings(prev => ({ ...prev, ...parsedSettings }))
     }
   }, [])
