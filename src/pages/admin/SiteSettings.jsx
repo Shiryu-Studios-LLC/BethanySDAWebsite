@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { IconArrowLeft, IconSettings, IconBuildingChurch, IconMail, IconPhone, IconMapPin, IconBrandFacebook, IconBrandYoutube, IconBrandInstagram, IconBrandTwitter, IconClock, IconCheck } from '@tabler/icons-react'
+import { IconArrowLeft, IconSettings, IconBuildingChurch, IconMail, IconPhone, IconMapPin, IconBrandFacebook, IconBrandYoutube, IconBrandInstagram, IconBrandTwitter, IconClock, IconCheck, IconFileText, IconHome, IconInfoCircle } from '@tabler/icons-react'
 import AlertModal from '../../components/AlertModal'
 
 export default function SiteSettings() {
@@ -103,8 +103,17 @@ export default function SiteSettings() {
         </div>
 
         <form onSubmit={handleSubmit}>
+          {/* General Site Settings Section */}
+          <div className="mt-4">
+            <h3 className="mb-3">
+              <IconSettings className="me-2" size={24} />
+              General Site Settings
+            </h3>
+            <p className="text-muted mb-4">Configure site-wide information that appears across all pages</p>
+          </div>
+
           {/* Church Information */}
-          <div className="card mt-4">
+          <div className="card mt-3">
             <div className="card-header">
               <h3 className="card-title">
                 <IconBuildingChurch className="me-2" size={20} />
@@ -151,7 +160,7 @@ export default function SiteSettings() {
           </div>
 
           {/* Contact Information */}
-          <div className="card mt-4">
+          <div className="card mt-3">
             <div className="card-header">
               <h3 className="card-title">
                 <IconMail className="me-2" size={20} />
@@ -240,7 +249,7 @@ export default function SiteSettings() {
           </div>
 
           {/* Service Times */}
-          <div className="card mt-4">
+          <div className="card mt-3">
             <div className="card-header">
               <h3 className="card-title">
                 <IconClock className="me-2" size={20} />
@@ -287,7 +296,7 @@ export default function SiteSettings() {
           </div>
 
           {/* Social Media */}
-          <div className="card mt-4">
+          <div className="card mt-3">
             <div className="card-header">
               <h3 className="card-title">
                 <IconBrandFacebook className="me-2" size={20} />
@@ -356,8 +365,37 @@ export default function SiteSettings() {
             </div>
           </div>
 
+          {/* Page-Specific Settings Section */}
+          <div className="mt-5 pt-4 border-top">
+            <h3 className="mb-3">
+              <IconFileText className="me-2" size={24} />
+              Pages
+            </h3>
+            <p className="text-muted mb-4">Configure content and settings for individual pages</p>
+          </div>
+
+          {/* Home Page Settings */}
+          <div className="card mt-3">
+            <div className="card-header bg-light">
+              <div className="d-flex justify-content-between align-items-center">
+                <h3 className="card-title mb-0">
+                  <IconHome className="me-2" size={20} />
+                  Home Page Settings
+                </h3>
+                <Link to="/admin/homepage" className="btn btn-sm btn-primary">
+                  Configure Homepage
+                </Link>
+              </div>
+            </div>
+            <div className="card-body">
+              <p className="text-muted mb-0">
+                Manage homepage hero section, live stream settings, and featured content.
+              </p>
+            </div>
+          </div>
+
           {/* Visit Page Settings */}
-          <div className="card mt-4">
+          <div className="card mt-3">
             <div className="card-header">
               <h3 className="card-title">
                 <IconMapPin className="me-2" size={20} />
@@ -393,10 +431,10 @@ export default function SiteSettings() {
           </div>
 
           {/* About Page Settings */}
-          <div className="card mt-4">
+          <div className="card mt-3">
             <div className="card-header">
               <h3 className="card-title">
-                <IconBuildingChurch className="me-2" size={20} />
+                <IconInfoCircle className="me-2" size={20} />
                 About Page Settings
               </h3>
             </div>
