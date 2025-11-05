@@ -6,6 +6,23 @@ builder.AddServiceDefaults();
 // Add services to the container.
 builder.Services.AddProblemDetails();
 
+// Configure CORS for Blazor WebAssembly client
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazorClient", policy =>
+    {
+        policy.WithOrigins(
+            "https://localhost:5001",  // Local WASM dev server
+            "http://localhost:5000",    // Local WASM dev server (HTTP)
+            "https://*.pages.dev"       // Cloudflare Pages preview/production
+        )
+        .SetIsOriginAllowedToAllowWildcardSubdomains()
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
+    });
+});
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -13,6 +30,9 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
+
+// Enable CORS
+app.UseCors("AllowBlazorClient");
 
 if (app.Environment.IsDevelopment())
 {
