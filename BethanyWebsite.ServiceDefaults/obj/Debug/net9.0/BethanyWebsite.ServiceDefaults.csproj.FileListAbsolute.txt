@@ -1,0 +1,13 @@
+E:\VSProj\BethanySDAWebsite\BethanyWebsite.ServiceDefaults\bin\Debug\net9.0\BethanyWebsite.ServiceDefaults.deps.json
+E:\VSProj\BethanySDAWebsite\BethanyWebsite.ServiceDefaults\bin\Debug\net9.0\BethanyWebsite.ServiceDefaults.dll
+E:\VSProj\BethanySDAWebsite\BethanyWebsite.ServiceDefaults\bin\Debug\net9.0\BethanyWebsite.ServiceDefaults.pdb
+E:\VSProj\BethanySDAWebsite\BethanyWebsite.ServiceDefaults\obj\Debug\net9.0\BethanyWebsite.ServiceDefaults.csproj.AssemblyReference.cache
+E:\VSProj\BethanySDAWebsite\BethanyWebsite.ServiceDefaults\obj\Debug\net9.0\BethanyWebsite.ServiceDefaults.GeneratedMSBuildEditorConfig.editorconfig
+E:\VSProj\BethanySDAWebsite\BethanyWebsite.ServiceDefaults\obj\Debug\net9.0\BethanyWebsite.ServiceDefaults.AssemblyInfoInputs.cache
+E:\VSProj\BethanySDAWebsite\BethanyWebsite.ServiceDefaults\obj\Debug\net9.0\BethanyWebsite.ServiceDefaults.AssemblyInfo.cs
+E:\VSProj\BethanySDAWebsite\BethanyWebsite.ServiceDefaults\obj\Debug\net9.0\BethanyWebsite.ServiceDefaults.csproj.CoreCompileInputs.cache
+E:\VSProj\BethanySDAWebsite\BethanyWebsite.ServiceDefaults\obj\Debug\net9.0\BethanyWebsite.ServiceDefaults.sourcelink.json
+E:\VSProj\BethanySDAWebsite\BethanyWebsite.ServiceDefaults\obj\Debug\net9.0\BethanyWebsite.ServiceDefaults.dll
+E:\VSProj\BethanySDAWebsite\BethanyWebsite.ServiceDefaults\obj\Debug\net9.0\refint\BethanyWebsite.ServiceDefaults.dll
+E:\VSProj\BethanySDAWebsite\BethanyWebsite.ServiceDefaults\obj\Debug\net9.0\BethanyWebsite.ServiceDefaults.pdb
+E:\VSProj\BethanySDAWebsite\BethanyWebsite.ServiceDefaults\obj\Debug\net9.0\ref\BethanyWebsite.ServiceDefaults.dll

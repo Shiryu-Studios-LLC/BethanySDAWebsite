@@ -1,0 +1,130 @@
+[
+  {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003C\u003CMain\u003E$\u003Eb__0_0",
+    "RelativePath": "health",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HHBAspire.ApiService.Endpoints.SiteInfoEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapSiteInfo\u003Eb__0_0",
+    "RelativePath": "siteinfo/basicinfo",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HHBAspire.ApiService.Endpoints.SiteInfoEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapSiteInfo\u003Eb__0_6",
+    "RelativePath": "siteinfo/ministries",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HHBAspire.ApiService.Endpoints.SiteInfoEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapSiteInfo\u003Eb__0_5",
+    "RelativePath": "siteinfo/news",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HHBAspire.ApiService.Endpoints.SiteInfoEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapSiteInfo\u003Eb__0_3",
+    "RelativePath": "siteinfo/services",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HHBAspire.ApiService.Endpoints.SiteInfoEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapSiteInfo\u003Eb__0_2",
+    "RelativePath": "siteinfo/slides",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HHBAspire.ApiService.Endpoints.SiteInfoEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapSiteInfo\u003Eb__0_4",
+    "RelativePath": "siteinfo/team",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HHBAspire.ApiService.Endpoints.SiteInfoEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapSiteInfo\u003Eb__0_1",
+    "RelativePath": "siteinfo/thumbnailinfo",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  }
+]

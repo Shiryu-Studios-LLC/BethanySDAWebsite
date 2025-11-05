@@ -1,0 +1,177 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\VSProj\\BethanySDAWebsite\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|e:\\vsproj\\bethanysdawebsite\\bethanywebsite.web\\components\\pages\\home.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|solutionrelative:bethanywebsite.web\\components\\pages\\home.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|e:\\vsproj\\bethanysdawebsite\\bethanywebsite.web\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|solutionrelative:bethanywebsite.web\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|e:\\vsproj\\bethanysdawebsite\\bethanywebsite.web\\components\\layout\\mainlayout.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|solutionrelative:bethanywebsite.web\\components\\layout\\mainlayout.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|e:\\vsproj\\bethanysdawebsite\\bethanywebsite.web\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|solutionrelative:bethanywebsite.web\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|e:\\vsproj\\bethanysdawebsite\\bethanywebsite.web\\components\\pages\\counter.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|solutionrelative:bethanywebsite.web\\components\\pages\\counter.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|e:\\vsproj\\bethanysdawebsite\\bethanywebsite.web\\components\\layout\\navmenu.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|solutionrelative:bethanywebsite.web\\components\\layout\\navmenu.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|e:\\vsproj\\bethanysdawebsite\\bethanywebsite.web\\components\\pages\\giving.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|solutionrelative:bethanywebsite.web\\components\\pages\\giving.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|e:\\vsproj\\bethanysdawebsite\\bethanywebsite.web\\components\\pages\\giving.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|solutionrelative:bethanywebsite.web\\components\\pages\\giving.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|e:\\vsproj\\bethanysdawebsite\\bethanywebsite.web\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CA42F570-B81F-6650-9E50-A1424992F09D}|BethanyWebsite.Web\\BethanyWebsite.Web.csproj|solutionrelative:bethanywebsite.web\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Counter.razor",
+              "DocumentMoniker": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Pages\\Counter.razor",
+              "RelativeDocumentMoniker": "BethanyWebsite.Web\\Components\\Pages\\Counter.razor",
+              "ToolTip": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Pages\\Counter.razor",
+              "RelativeToolTip": "BethanyWebsite.Web\\Components\\Pages\\Counter.razor",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-12T03:35:17.3Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "BethanyWebsite.Web\\Components\\Layout\\MainLayout.razor",
+              "ToolTip": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "BethanyWebsite.Web\\Components\\Layout\\MainLayout.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-12T03:32:39.846Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainLayout.razor.css",
+              "DocumentMoniker": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Layout\\MainLayout.razor.css",
+              "RelativeDocumentMoniker": "BethanyWebsite.Web\\Components\\Layout\\MainLayout.razor.css",
+              "ToolTip": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Layout\\MainLayout.razor.css",
+              "RelativeToolTip": "BethanyWebsite.Web\\Components\\Layout\\MainLayout.razor.css",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-08-12T03:32:33.681Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Home.razor.css",
+              "DocumentMoniker": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Pages\\Home.razor.css",
+              "RelativeDocumentMoniker": "BethanyWebsite.Web\\Components\\Pages\\Home.razor.css",
+              "ToolTip": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Pages\\Home.razor.css",
+              "RelativeToolTip": "BethanyWebsite.Web\\Components\\Pages\\Home.razor.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-08-12T03:31:42.93Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Home.razor",
+              "DocumentMoniker": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "BethanyWebsite.Web\\Components\\Pages\\Home.razor",
+              "ToolTip": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "BethanyWebsite.Web\\Components\\Pages\\Home.razor",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-11T23:22:11.474Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Giving.razor",
+              "DocumentMoniker": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Pages\\Giving.razor",
+              "RelativeDocumentMoniker": "BethanyWebsite.Web\\Components\\Pages\\Giving.razor",
+              "ToolTip": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Pages\\Giving.razor",
+              "RelativeToolTip": "BethanyWebsite.Web\\Components\\Pages\\Giving.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-12T03:58:51.816Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "BethanyWebsite.Web\\Components\\Layout\\NavMenu.razor",
+              "ToolTip": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "BethanyWebsite.Web\\Components\\Layout\\NavMenu.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-12T03:58:00.32Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Giving.razor.css",
+              "DocumentMoniker": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Pages\\Giving.razor.css",
+              "RelativeDocumentMoniker": "BethanyWebsite.Web\\Components\\Pages\\Giving.razor.css",
+              "ToolTip": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Pages\\Giving.razor.css",
+              "RelativeToolTip": "BethanyWebsite.Web\\Components\\Pages\\Giving.razor.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-08-12T04:08:03.87Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "NavMenu.razor.css",
+              "DocumentMoniker": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Layout\\NavMenu.razor.css",
+              "RelativeDocumentMoniker": "BethanyWebsite.Web\\Components\\Layout\\NavMenu.razor.css",
+              "ToolTip": "E:\\VSProj\\BethanySDAWebsite\\BethanyWebsite.Web\\Components\\Layout\\NavMenu.razor.css",
+              "RelativeToolTip": "BethanyWebsite.Web\\Components\\Layout\\NavMenu.razor.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-08-12T04:09:01.121Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

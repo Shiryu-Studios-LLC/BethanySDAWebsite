@@ -1,0 +1,44 @@
+ /* Make the slide fill the viewport */
+  #carouselExampleCaptions[b-z7d7docipj],
+  #carouselExampleCaptions .carousel-inner[b-z7d7docipj],
+  #carouselExampleCaptions .carousel-item[b-z7d7docipj] {
+    height: 100vh;
+  }
+
+  /* Video layer */
+  .bg-video[b-z7d7docipj] {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .bg-video video[b-z7d7docipj] {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* fill without stretching */
+    pointer-events: none;/* clicks pass through */
+  }
+
+  /* Darken for legibility (optional) */
+  .bg-overlay[b-z7d7docipj] {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 1;
+  }
+
+  /* Caption above everything and centered */
+  .carousel-caption[b-z7d7docipj] {
+    position: absolute;  /* override Bootstrap's bottom caption */
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 2;
+    padding: 1rem;
+  }
+
+nav[b-z7d7docipj] {
+    background-color: #00000080;
+}

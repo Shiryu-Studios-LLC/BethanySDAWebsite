@@ -1,0 +1,13 @@
+E:\VSProj\BethanySDAWebsite\HHBAspire\HHBAspire.ServiceDefaults\bin\Debug\net9.0\HHBAspire.ServiceDefaults.deps.json
+E:\VSProj\BethanySDAWebsite\HHBAspire\HHBAspire.ServiceDefaults\bin\Debug\net9.0\HHBAspire.ServiceDefaults.dll
+E:\VSProj\BethanySDAWebsite\HHBAspire\HHBAspire.ServiceDefaults\bin\Debug\net9.0\HHBAspire.ServiceDefaults.pdb
+E:\VSProj\BethanySDAWebsite\HHBAspire\HHBAspire.ServiceDefaults\obj\Debug\net9.0\HHBAspire.ServiceDefaults.csproj.AssemblyReference.cache
+E:\VSProj\BethanySDAWebsite\HHBAspire\HHBAspire.ServiceDefaults\obj\Debug\net9.0\HHBAspire.ServiceDefaults.GeneratedMSBuildEditorConfig.editorconfig
+E:\VSProj\BethanySDAWebsite\HHBAspire\HHBAspire.ServiceDefaults\obj\Debug\net9.0\HHBAspire.ServiceDefaults.AssemblyInfoInputs.cache
+E:\VSProj\BethanySDAWebsite\HHBAspire\HHBAspire.ServiceDefaults\obj\Debug\net9.0\HHBAspire.ServiceDefaults.AssemblyInfo.cs
+E:\VSProj\BethanySDAWebsite\HHBAspire\HHBAspire.ServiceDefaults\obj\Debug\net9.0\HHBAspire.ServiceDefaults.csproj.CoreCompileInputs.cache
+E:\VSProj\BethanySDAWebsite\HHBAspire\HHBAspire.ServiceDefaults\obj\Debug\net9.0\HHBAspire.ServiceDefaults.sourcelink.json
+E:\VSProj\BethanySDAWebsite\HHBAspire\HHBAspire.ServiceDefaults\obj\Debug\net9.0\HHBAspire.ServiceDefaults.dll
+E:\VSProj\BethanySDAWebsite\HHBAspire\HHBAspire.ServiceDefaults\obj\Debug\net9.0\refint\HHBAspire.ServiceDefaults.dll
+E:\VSProj\BethanySDAWebsite\HHBAspire\HHBAspire.ServiceDefaults\obj\Debug\net9.0\HHBAspire.ServiceDefaults.pdb
+E:\VSProj\BethanySDAWebsite\HHBAspire\HHBAspire.ServiceDefaults\obj\Debug\net9.0\ref\HHBAspire.ServiceDefaults.dll

@@ -1,0 +1,10 @@
+E:\VSProj\BethanySDAWebsite\HHBW\obj\Debug\net9.0\HHBW (Depracated).csproj.AssemblyReference.cache
+E:\VSProj\BethanySDAWebsite\HHBW\obj\Debug\net9.0\rpswa.dswa.cache.json
+E:\VSProj\BethanySDAWebsite\HHBW\obj\Debug\net9.0\HHBW (Depracated).GeneratedMSBuildEditorConfig.editorconfig
+E:\VSProj\BethanySDAWebsite\HHBW\obj\Debug\net9.0\HHBW (Depracated).AssemblyInfoInputs.cache
+E:\VSProj\BethanySDAWebsite\HHBW\obj\Debug\net9.0\HHBW (Depracated).AssemblyInfo.cs
+E:\VSProj\BethanySDAWebsite\HHBW\obj\Debug\net9.0\HHBW (Depracated).csproj.CoreCompileInputs.cache
+E:\VSProj\BethanySDAWebsite\HHBW\obj\Debug\net9.0\HHBW (Depracated).MvcApplicationPartsAssemblyInfo.cache
+E:\VSProj\BethanySDAWebsite\HHBW\obj\Debug\net9.0\HHBW (Depracated).RazorAssemblyInfo.cache
+E:\VSProj\BethanySDAWebsite\HHBW\obj\Debug\net9.0\HHBW (Depracated).RazorAssemblyInfo.cs
+E:\VSProj\BethanySDAWebsite\HHBW\obj\Debug\net9.0\HHBW (Depracated).sourcelink.json

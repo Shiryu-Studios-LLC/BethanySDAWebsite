@@ -1,18 +1,8 @@
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { useEffect } from 'react'
 
 export default function ProtectedRoute({ children }) {
   const { isAuthenticated, isLoading } = useAuth()
-
-  useEffect(() => {
-    // Check if we're being redirected back after logout
-    if (sessionStorage.getItem('logging_out') === 'true') {
-      sessionStorage.removeItem('logging_out')
-      // Force redirect to home page
-      window.location.href = '/'
-    }
-  }, [])
 
   // Show loading state while checking authentication
   if (isLoading) {

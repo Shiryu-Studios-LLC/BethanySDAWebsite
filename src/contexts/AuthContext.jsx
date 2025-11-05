@@ -63,15 +63,10 @@ export function AuthProvider({ children }) {
 
     // Check if we're on Cloudflare (production) or local development
     if (window.location.hostname.includes('pages.dev') || window.location.hostname.includes('cloudflare')) {
-      // In production, we need to revoke the Cloudflare Access session
-      // The logout endpoint will redirect back to wherever we came from
-      // To avoid going back to /admin, we first navigate to home, then call logout
-
-      // Store a flag that we're logging out
-      sessionStorage.setItem('logging_out', 'true')
-
-      // Navigate away from /admin first, then trigger logout
-      window.location.href = '/cdn-cgi/access/logout'
+      // In production, navigate to /logout page first
+      // Then that page will call the Cloudflare logout endpoint
+      // This ensures we don't get redirected back to /admin
+      window.location.href = '/logout'
     } else {
       // Local development - just redirect to home
       window.location.href = '/'
