@@ -1,7 +1,0 @@
-<Solution>
-  <Project Path="BethanyWebsite.ApiService/BethanyWebsite.ApiService.csproj" />
-  <Project Path="BethanyWebsite.AppHost/BethanyWebsite.AppHost.csproj" />
-  <Project Path="BethanyWebsite.Client/BethanyWebsite.Client.csproj" />
-  <Project Path="BethanyWebsite.ServiceDefaults/BethanyWebsite.ServiceDefaults.csproj" />
-  <Project Path="BethanyWebsite.Web/BethanyWebsite.Web.csproj" />
-</Solution>
