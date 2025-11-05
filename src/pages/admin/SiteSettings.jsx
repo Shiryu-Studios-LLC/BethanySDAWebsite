@@ -29,16 +29,7 @@ export default function SiteSettings() {
     facebook: '',
     youtube: '',
     instagram: '',
-    twitter: '',
-
-    // Visit Page Settings
-    visitPageTitle: '',
-    visitPageDescription: '',
-
-    // About Page Settings
-    missionStatement: '',
-    ourHistory: '',
-    ourBeliefs: ''
+    twitter: ''
   })
 
   useEffect(() => {
@@ -395,84 +386,41 @@ export default function SiteSettings() {
 
             {/* Visit Page Settings */}
             <div className="card mt-3">
-              <div className="card-header">
-                <h3 className="card-title">
-                  <IconMapPin className="me-2" size={20} />
-                  Visit Page Settings
-                </h3>
+              <div className="card-header bg-light">
+                <div className="d-flex justify-content-between align-items-center">
+                  <h3 className="card-title mb-0">
+                    <IconMapPin className="me-2" size={20} />
+                    Visit Page Settings
+                  </h3>
+                  <Link to="/admin/visit-page" className="btn btn-sm btn-primary">
+                    Configure Visit Page
+                  </Link>
+                </div>
               </div>
               <div className="card-body">
-                <div className="row">
-                  <div className="col-12 mb-3">
-                    <label className="form-label">Page Title</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="visitPageTitle"
-                      value={settings.visitPageTitle}
-                      onChange={handleInputChange}
-                      placeholder="e.g., Plan Your Visit"
-                    />
-                  </div>
-                  <div className="col-12 mb-3">
-                    <label className="form-label">Page Description</label>
-                    <textarea
-                      className="form-control"
-                      name="visitPageDescription"
-                      rows="3"
-                      value={settings.visitPageDescription}
-                      onChange={handleInputChange}
-                      placeholder="Description for the visit page..."
-                    />
-                  </div>
-                </div>
+                <p className="text-muted mb-0">
+                  Manage visit page content, service times, and visitor information.
+                </p>
               </div>
             </div>
 
             {/* About Page Settings */}
             <div className="card mt-3">
-              <div className="card-header">
-                <h3 className="card-title">
-                  <IconInfoCircle className="me-2" size={20} />
-                  About Page Settings
-                </h3>
+              <div className="card-header bg-light">
+                <div className="d-flex justify-content-between align-items-center">
+                  <h3 className="card-title mb-0">
+                    <IconInfoCircle className="me-2" size={20} />
+                    About Page Settings
+                  </h3>
+                  <Link to="/admin/about-page" className="btn btn-sm btn-primary">
+                    Configure About Page
+                  </Link>
+                </div>
               </div>
               <div className="card-body">
-                <div className="row">
-                  <div className="col-12 mb-3">
-                    <label className="form-label">Mission Statement</label>
-                    <textarea
-                      className="form-control"
-                      name="missionStatement"
-                      rows="3"
-                      value={settings.missionStatement}
-                      onChange={handleInputChange}
-                      placeholder="Your church's mission statement..."
-                    />
-                  </div>
-                  <div className="col-12 mb-3">
-                    <label className="form-label">Our History</label>
-                    <textarea
-                      className="form-control"
-                      name="ourHistory"
-                      rows="4"
-                      value={settings.ourHistory}
-                      onChange={handleInputChange}
-                      placeholder="History of your church..."
-                    />
-                  </div>
-                  <div className="col-12 mb-3">
-                    <label className="form-label">Our Beliefs</label>
-                    <textarea
-                      className="form-control"
-                      name="ourBeliefs"
-                      rows="4"
-                      value={settings.ourBeliefs}
-                      onChange={handleInputChange}
-                      placeholder="Core beliefs and values..."
-                    />
-                  </div>
-                </div>
+                <p className="text-muted mb-0">
+                  Manage mission statement, church history, and beliefs.
+                </p>
               </div>
             </div>
           </div>
