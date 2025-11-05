@@ -15,16 +15,17 @@ export function AuthProvider({ children }) {
 
   const checkAuthStatus = async () => {
     try {
-      // When Cloudflare Access is configured, it will protect the /admin routes
-      // and inject CF-Access-Authenticated-User-Email header
-      // For now, we'll check if we can access a protected endpoint
-      const response = await fetch('/admin/check-auth', {
-        credentials: 'include'
-      })
+      // Check for Cloudflare Access authentication
+      // When Cloudflare Access is enabled, it will inject the CF-Access-Authenticated-User-Email header
+      // and set cookies that we can verify
 
-      if (response.ok) {
-        const data = await response.json()
-        setUser(data.user)
+      // For now, before Cloudflare Access is configured, check localStorage
+      // This is a temporary solution - once Cloudflare Access is set up, it will handle everything
+      const authToken = localStorage.getItem('cf_auth_token')
+      const userEmail = localStorage.getItem('cf_user_email')
+
+      if (authToken && userEmail) {
+        setUser({ email: userEmail })
         setIsAuthenticated(true)
       } else {
         setIsAuthenticated(false)
@@ -45,10 +46,18 @@ export function AuthProvider({ children }) {
   }
 
   const logout = () => {
-    // Clear authentication and redirect to Cloudflare Access logout
+    // Clear authentication
     setIsAuthenticated(false)
     setUser(null)
-    window.location.href = '/cdn-cgi/access/logout'
+
+    // Clear localStorage (temporary until Cloudflare Access is configured)
+    localStorage.removeItem('cf_auth_token')
+    localStorage.removeItem('cf_user_email')
+    localStorage.removeItem('cf_auth_provider')
+
+    // Redirect to home page
+    // Once Cloudflare Access is configured, this will redirect to /cdn-cgi/access/logout
+    window.location.href = '/'
   }
 
   const value = {

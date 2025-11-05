@@ -8,14 +8,42 @@ export default function Login() {
 
   const handleGoogleLogin = () => {
     setIsLoading(true)
-    // Will be handled by Cloudflare Access
-    window.location.href = '/admin'
+
+    // TEMPORARY: This simulates authentication until Cloudflare Access is configured
+    // Once Cloudflare Access is set up, it will handle the entire OAuth flow automatically
+    // and this code will no longer be needed - Cloudflare Access will redirect users here after auth
+
+    // For demo purposes, simulate successful authentication
+    const demoEmail = prompt('Enter your email to simulate Google login (temporary - will be replaced by Cloudflare Access):')
+
+    if (demoEmail) {
+      localStorage.setItem('cf_auth_token', 'demo_token_' + Date.now())
+      localStorage.setItem('cf_user_email', demoEmail)
+      localStorage.setItem('cf_auth_provider', 'google')
+      navigate('/admin')
+    } else {
+      setIsLoading(false)
+    }
   }
 
   const handleMicrosoftLogin = () => {
     setIsLoading(true)
-    // Will be handled by Cloudflare Access
-    window.location.href = '/admin'
+
+    // TEMPORARY: This simulates authentication until Cloudflare Access is configured
+    // Once Cloudflare Access is set up, it will handle the entire OAuth flow automatically
+    // and this code will no longer be needed - Cloudflare Access will redirect users here after auth
+
+    // For demo purposes, simulate successful authentication
+    const demoEmail = prompt('Enter your email to simulate Microsoft login (temporary - will be replaced by Cloudflare Access):')
+
+    if (demoEmail) {
+      localStorage.setItem('cf_auth_token', 'demo_token_' + Date.now())
+      localStorage.setItem('cf_user_email', demoEmail)
+      localStorage.setItem('cf_auth_provider', 'microsoft')
+      navigate('/admin')
+    } else {
+      setIsLoading(false)
+    }
   }
 
   return (
