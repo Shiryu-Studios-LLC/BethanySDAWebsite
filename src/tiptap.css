@@ -1,0 +1,78 @@
+/* TipTap Editor Styles */
+.tiptap-editor {
+  background: white;
+}
+
+.tiptap-editor .ProseMirror {
+  outline: none;
+  min-height: 300px;
+}
+
+.tiptap-editor .ProseMirror > * + * {
+  margin-top: 0.75em;
+}
+
+.tiptap-editor ul,
+.tiptap-editor ol {
+  padding: 0 1rem;
+}
+
+.tiptap-editor h1,
+.tiptap-editor h2,
+.tiptap-editor h3,
+.tiptap-editor h4,
+.tiptap-editor h5,
+.tiptap-editor h6 {
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.tiptap-editor h2 {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tiptap-editor h3 {
+  font-size: 1.25rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.tiptap-editor code {
+  background-color: rgba(97, 97, 97, 0.1);
+  color: #616161;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+.tiptap-editor pre {
+  background: #0d0d0d;
+  color: #fff;
+  font-family: 'JetBrainsMono', monospace;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.tiptap-editor pre code {
+  color: inherit;
+  padding: 0;
+  background: none;
+  font-size: 0.8rem;
+}
+
+.tiptap-editor blockquote {
+  padding-left: 1rem;
+  border-left: 3px solid rgba(13, 13, 13, 0.1);
+}
+
+.tiptap-editor hr {
+  border: none;
+  border-top: 2px solid rgba(13, 13, 13, 0.1);
+  margin: 2rem 0;
+}
+
+.tiptap-editor-toolbar {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 8px;
+}

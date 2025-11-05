@@ -7,6 +7,7 @@ import Events from './pages/Events'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
+import DynamicPage from './pages/DynamicPage'
 import AdminPortal from './pages/admin/AdminPortal'
 import MediaLibrary from './pages/admin/MediaLibrary'
 import Sermons from './pages/admin/Sermons'
@@ -14,6 +15,7 @@ import Bulletins from './pages/admin/Bulletins'
 import AdminEvents from './pages/admin/AdminEvents'
 import SiteSettings from './pages/admin/SiteSettings'
 import Pages from './pages/admin/Pages'
+import PageEditor from './pages/admin/PageEditor'
 import Homepage from './pages/admin/Homepage'
 import VisitPageSettings from './pages/admin/VisitPageSettings'
 import AboutPageSettings from './pages/admin/AboutPageSettings'
@@ -108,6 +110,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="admin/page-editor/:slug"
+          element={
+            <ProtectedRoute>
+              <PageEditor />
+            </ProtectedRoute>
+          }
+        />
+        {/* Dynamic pages - catch-all route (must be last) */}
+        <Route path=":slug" element={<DynamicPage />} />
       </Route>
     </Routes>
   )

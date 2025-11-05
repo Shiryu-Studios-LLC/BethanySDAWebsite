@@ -1,0 +1,99 @@
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import DOMPurify from 'dompurify'
+
+export default function DynamicPage() {
+  const { slug } = useParams()
+  const [page, setPage] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [notFound, setNotFound] = useState(false)
+
+  useEffect(() => {
+    loadPage()
+  }, [slug])
+
+  const loadPage = async () => {
+    try {
+      setLoading(true)
+      setNotFound(false)
+      const response = await fetch(`/api/pages/${slug}`)
+
+      if (response.ok) {
+        const data = await response.json()
+
+        // Only show published pages to public
+        if (data.is_published) {
+          setPage(data)
+        } else {
+          setNotFound(true)
+        }
+      } else if (response.status === 404) {
+        setNotFound(true)
+      }
+    } catch (error) {
+      console.error('Error loading page:', error)
+      setNotFound(true)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="page-body">
+        <div className="container-xl d-flex align-items-center justify-content-center" style={{ minHeight: '400px' }}>
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (notFound) {
+    return (
+      <div className="page-body">
+        <div className="container-xl text-center py-5">
+          <h1 className="display-1 text-muted">404</h1>
+          <h2>Page Not Found</h2>
+          <p className="text-muted">The page you're looking for doesn't exist or has been removed.</p>
+          <a href="/" className="btn btn-primary mt-3">Go Home</a>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="page-body">
+      {/* Hero Section */}
+      <section className="py-5 bg-dark text-white">
+        <div className="container py-5">
+          <div className="row justify-content-center text-center">
+            <div className="col-lg-8">
+              <h1 className="display-4 fw-bold mb-4">{page.title}</h1>
+              {page.meta_description && (
+                <p className="lead mb-0">{page.meta_description}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Page Content */}
+      <section className="py-5">
+        <div className="container py-4">
+          <div className="row justify-content-center">
+            <div className="col-lg-10">
+              <div
+                className="dynamic-page-content"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(page.content)
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}

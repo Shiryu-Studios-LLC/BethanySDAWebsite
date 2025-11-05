@@ -36,6 +36,20 @@ CREATE TABLE IF NOT EXISTS about_page_settings (
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Dynamic pages (user-created pages)
+CREATE TABLE IF NOT EXISTS pages (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  slug TEXT UNIQUE NOT NULL,
+  title TEXT NOT NULL,
+  content TEXT,
+  meta_description TEXT,
+  is_published INTEGER DEFAULT 1,
+  show_in_nav INTEGER DEFAULT 0,
+  nav_order INTEGER DEFAULT 999,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Insert default site settings
 INSERT OR IGNORE INTO site_settings (key, value) VALUES
   ('churchName', 'Bethany SDA Church'),
