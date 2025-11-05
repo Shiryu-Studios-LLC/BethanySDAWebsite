@@ -24,16 +24,30 @@ export default function Home() {
   const [showLiveModal, setShowLiveModal] = useState(false)
 
   useEffect(() => {
-    const stored = localStorage.getItem('siteSettings')
-    if (stored) {
-      const parsedSettings = JSON.parse(stored)
-      setSettings(prev => ({ ...prev, ...parsedSettings }))
+    // Load settings initially
+    const loadAllSettings = () => {
+      const stored = localStorage.getItem('siteSettings')
+      if (stored) {
+        const parsedSettings = JSON.parse(stored)
+        setSettings(prev => ({ ...prev, ...parsedSettings }))
+      }
+
+      const homepageStored = localStorage.getItem('homepageSettings')
+      if (homepageStored) {
+        setHomepageSettings(JSON.parse(homepageStored))
+      }
     }
 
-    const homepageStored = localStorage.getItem('homepageSettings')
-    if (homepageStored) {
-      setHomepageSettings(JSON.parse(homepageStored))
-    }
+    // Load settings on mount
+    loadAllSettings()
+
+    // Poll for settings updates every 30 seconds
+    const pollInterval = setInterval(() => {
+      loadAllSettings()
+    }, 30000) // 30 seconds
+
+    // Cleanup interval on unmount
+    return () => clearInterval(pollInterval)
   }, [])
 
   const fullAddress = settings.address && settings.city && settings.state
