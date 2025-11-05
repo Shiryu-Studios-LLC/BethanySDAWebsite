@@ -6,7 +6,8 @@
       "Bash(git push:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\nFix logout functionality and add local development support\n\n- Add environment detection (production vs local)\n- Use Cloudflare Access logout only in production\n- Bypass Cloudflare Access checks in local development\n- Allow logout to work properly in both environments\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git commit:*)",
-      "Bash(wrangler --version:*)"
+      "Bash(wrangler --version:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []
