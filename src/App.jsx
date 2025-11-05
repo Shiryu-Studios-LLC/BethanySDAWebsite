@@ -11,6 +11,7 @@ import AdminPortal from './pages/admin/AdminPortal'
 import MediaLibrary from './pages/admin/MediaLibrary'
 import Sermons from './pages/admin/Sermons'
 import Bulletins from './pages/admin/Bulletins'
+import AdminEvents from './pages/admin/AdminEvents'
 
 function App() {
   return (
@@ -51,6 +52,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Bulletins />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/events"
+          element={
+            <ProtectedRoute>
+              <AdminEvents />
             </ProtectedRoute>
           }
         />
