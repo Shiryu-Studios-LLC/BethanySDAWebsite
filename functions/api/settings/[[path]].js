@@ -1,16 +1,48 @@
 // Cloudflare Pages Functions API for Settings
 // This handles all settings CRUD operations
 
+// Helper function to check if running in local development
+function isLocalDevelopment(request) {
+  const url = new URL(request.url)
+  return url.hostname === 'localhost' || url.hostname === '127.0.0.1'
+}
+
+// Helper function to verify Cloudflare Access authentication
+function verifyAuthentication(request) {
+  // Skip authentication in local development
+  if (isLocalDevelopment(request)) {
+    return true
+  }
+
+  // Check for Cloudflare Access JWT in cookies
+  const cookies = request.headers.get('Cookie') || ''
+  const cfAccessToken = cookies.split(';').find(c => c.trim().startsWith('CF_Authorization='))
+
+  if (!cfAccessToken) {
+    return false
+  }
+
+  // In production, Cloudflare Access handles JWT verification automatically
+  // If the request reaches this function, it means the user is authenticated
+  return true
+}
+
 export async function onRequest(context) {
   const { request, env, params } = context
   const url = new URL(request.url)
   const path = params.path ? params.path.join('/') : ''
 
-  // CORS headers
+  // Determine CORS origin based on environment
+  const allowedOrigin = isLocalDevelopment(request)
+    ? 'http://localhost:5173'
+    : url.origin
+
+  // CORS headers with restricted origin
   const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Credentials': 'true',
   }
 
   // Handle CORS preflight
@@ -49,7 +81,17 @@ async function handleSiteSettings(request, env, corsHeaders) {
   }
 
   if (request.method === 'PUT') {
+    // Verify authentication for write operations
+    if (!verifyAuthentication(request)) {
+      return jsonResponse({ error: 'Unauthorized' }, 401, corsHeaders)
+    }
+
     const settings = await request.json()
+
+    // Input validation
+    if (!settings || typeof settings !== 'object') {
+      return jsonResponse({ error: 'Invalid input: settings must be an object' }, 400, corsHeaders)
+    }
 
     // Update each setting
     const stmt = env.DB.prepare('INSERT OR REPLACE INTO site_settings (key, value, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP)')
@@ -92,7 +134,17 @@ async function handleHomepageSettings(request, env, corsHeaders) {
   }
 
   if (request.method === 'PUT') {
+    // Verify authentication for write operations
+    if (!verifyAuthentication(request)) {
+      return jsonResponse({ error: 'Unauthorized' }, 401, corsHeaders)
+    }
+
     const settings = await request.json()
+
+    // Input validation
+    if (!settings || typeof settings !== 'object') {
+      return jsonResponse({ error: 'Invalid input: settings must be an object' }, 400, corsHeaders)
+    }
 
     await env.DB.prepare(`
       UPDATE homepage_settings
@@ -135,7 +187,17 @@ async function handleVisitPageSettings(request, env, corsHeaders) {
   }
 
   if (request.method === 'PUT') {
+    // Verify authentication for write operations
+    if (!verifyAuthentication(request)) {
+      return jsonResponse({ error: 'Unauthorized' }, 401, corsHeaders)
+    }
+
     const settings = await request.json()
+
+    // Input validation
+    if (!settings || typeof settings !== 'object') {
+      return jsonResponse({ error: 'Invalid input: settings must be an object' }, 400, corsHeaders)
+    }
 
     await env.DB.prepare(`
       UPDATE visit_page_settings
@@ -174,7 +236,17 @@ async function handleAboutPageSettings(request, env, corsHeaders) {
   }
 
   if (request.method === 'PUT') {
+    // Verify authentication for write operations
+    if (!verifyAuthentication(request)) {
+      return jsonResponse({ error: 'Unauthorized' }, 401, corsHeaders)
+    }
+
     const settings = await request.json()
+
+    // Input validation
+    if (!settings || typeof settings !== 'object') {
+      return jsonResponse({ error: 'Invalid input: settings must be an object' }, 400, corsHeaders)
+    }
 
     await env.DB.prepare(`
       UPDATE about_page_settings

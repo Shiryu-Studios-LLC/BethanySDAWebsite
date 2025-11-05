@@ -13,6 +13,7 @@ import Sermons from './pages/admin/Sermons'
 import Bulletins from './pages/admin/Bulletins'
 import AdminEvents from './pages/admin/AdminEvents'
 import SiteSettings from './pages/admin/SiteSettings'
+import Pages from './pages/admin/Pages'
 import Homepage from './pages/admin/Homepage'
 import VisitPageSettings from './pages/admin/VisitPageSettings'
 import AboutPageSettings from './pages/admin/AboutPageSettings'
@@ -72,6 +73,14 @@ function App() {
           element={
             <ProtectedRoute>
               <SiteSettings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/pages"
+          element={
+            <ProtectedRoute>
+              <Pages />
             </ProtectedRoute>
           }
         />

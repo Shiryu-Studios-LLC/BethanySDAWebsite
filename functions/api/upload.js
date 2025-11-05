@@ -1,6 +1,39 @@
 // Cloudflare Pages Function for uploading files to R2
+
+// Helper function to check if running in local development
+function isLocalDevelopment(request) {
+  const url = new URL(request.url)
+  return url.hostname === 'localhost' || url.hostname === '127.0.0.1'
+}
+
+// Helper function to verify Cloudflare Access authentication
+function verifyAuthentication(request) {
+  // Skip authentication in local development
+  if (isLocalDevelopment(request)) {
+    return true
+  }
+
+  // Check for Cloudflare Access JWT in cookies
+  const cookies = request.headers.get('Cookie') || ''
+  const cfAccessToken = cookies.split(';').find(c => c.trim().startsWith('CF_Authorization='))
+
+  if (!cfAccessToken) {
+    return false
+  }
+
+  return true
+}
+
 export async function onRequestPost({ request, env }) {
   try {
+    // Verify authentication - only authenticated admins can upload
+    if (!verifyAuthentication(request)) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' }
+      })
+    }
+
     // Check if R2 bucket is configured
     if (!env.MEDIA_BUCKET) {
       return new Response(JSON.stringify({ error: 'R2 bucket not configured' }), {
@@ -16,6 +49,29 @@ export async function onRequestPost({ request, env }) {
 
     if (!file) {
       return new Response(JSON.stringify({ error: 'No file provided' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      })
+    }
+
+    // Validate file size (max 50MB)
+    const maxSize = 50 * 1024 * 1024
+    if (file.size > maxSize) {
+      return new Response(JSON.stringify({ error: 'File too large. Maximum size is 50MB' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      })
+    }
+
+    // Validate file type (only allow common web media types)
+    const allowedTypes = [
+      'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp',
+      'video/mp4', 'video/webm',
+      'application/pdf',
+      'audio/mpeg', 'audio/wav'
+    ]
+    if (!allowedTypes.includes(file.type)) {
+      return new Response(JSON.stringify({ error: 'File type not allowed' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       })

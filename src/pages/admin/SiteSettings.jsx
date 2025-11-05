@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { IconArrowLeft, IconSettings, IconBuildingChurch, IconMail, IconPhone, IconMapPin, IconBrandFacebook, IconBrandYoutube, IconBrandInstagram, IconBrandTwitter, IconClock, IconCheck, IconFileText, IconHome, IconInfoCircle } from '@tabler/icons-react'
+import { IconArrowLeft, IconSettings, IconBuildingChurch, IconMail, IconPhone, IconMapPin, IconBrandFacebook, IconBrandYoutube, IconBrandInstagram, IconBrandTwitter, IconClock, IconCheck } from '@tabler/icons-react'
 import AlertModal from '../../components/AlertModal'
 
 export default function SiteSettings() {

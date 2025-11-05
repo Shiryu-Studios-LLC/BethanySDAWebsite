@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { IconPhoto, IconPage, IconCalendar, IconMicrophone, IconFileText, IconSettings, IconLogout, IconVideo } from '@tabler/icons-react'
+import { IconPhoto, IconFiles, IconCalendar, IconMicrophone, IconFileText, IconSettings, IconLogout, IconVideo } from '@tabler/icons-react'
 import { useAuth } from '../../contexts/AuthContext'
 
 export default function AdminPortal() {
@@ -64,7 +64,7 @@ export default function AdminPortal() {
     {
       title: 'Pages',
       description: 'Edit Page content, for all site pages.',
-      icon: IconPage,
+      icon: IconFiles,
       link: '/admin/pages',
       color: 'success'
     },

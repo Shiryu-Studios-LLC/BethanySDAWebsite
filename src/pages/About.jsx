@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { IconHeart, IconBible, IconUsers, IconWorld } from '@tabler/icons-react'
+import DOMPurify from 'dompurify'
 
 export default function About() {
   const [settings, setSettings] = useState({
@@ -72,7 +73,7 @@ export default function About() {
             <div className="col-lg-6 mb-4 mb-lg-0">
               <h2 className="mb-4">Our Story</h2>
               {settings.ourHistory ? (
-                <div dangerouslySetInnerHTML={{ __html: settings.ourHistory.replace(/\n/g, '<br />') }} />
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(settings.ourHistory.replace(/\n/g, '<br />')) }} />
               ) : (
                 <>
                   <p className="lead mb-4">

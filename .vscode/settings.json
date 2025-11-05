@@ -1,3 +1,10 @@
 {
-    "dotnet.defaultSolution": "BethanySDAWebsite.sln"
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    "editor.formatOnSave": true
 }
