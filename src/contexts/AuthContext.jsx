@@ -65,9 +65,10 @@ export function AuthProvider({ children }) {
     // In production, use Cloudflare Access logout endpoint
     // In local development, just redirect to home
     if (window.location.hostname.includes('pages.dev') || window.location.hostname.includes('cloudflare')) {
-      // Redirect to Cloudflare Access logout endpoint
-      // This will clear the Cloudflare Access session and redirect to home
-      window.location.href = '/cdn-cgi/access/logout'
+      // Redirect to Cloudflare Access logout endpoint with redirect parameter
+      // This will clear the Cloudflare Access session and redirect to home page
+      const homeUrl = window.location.origin + '/'
+      window.location.href = `/cdn-cgi/access/logout?redirect_url=${encodeURIComponent(homeUrl)}`
     } else {
       // Local development - just redirect to home
       window.location.href = '/'
