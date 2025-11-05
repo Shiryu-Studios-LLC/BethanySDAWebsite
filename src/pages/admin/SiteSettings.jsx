@@ -354,76 +354,7 @@ export default function SiteSettings() {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Page-Specific Settings Section */}
-          <div className="mt-5 pt-4 border-top">
-            <h3 className="mb-3">
-              <IconFileText className="me-2" size={24} />
-              Pages
-            </h3>
-            <p className="text-muted mb-4">Configure content and settings for individual pages</p>
-
-            {/* Home Page Settings */}
-            <div className="card mt-3">
-              <div className="card-header bg-light">
-                <div className="d-flex justify-content-between align-items-center">
-                  <h3 className="card-title mb-0">
-                    <IconHome className="me-2" size={20} />
-                    Home Page Settings
-                  </h3>
-                  <Link to="/admin/homepage" className="btn btn-sm btn-primary">
-                    Configure Homepage
-                  </Link>
-                </div>
-              </div>
-              <div className="card-body">
-                <p className="text-muted mb-0">
-                  Manage homepage hero section, live stream settings, and featured content.
-                </p>
-              </div>
-            </div>
-
-            {/* Visit Page Settings */}
-            <div className="card mt-3">
-              <div className="card-header bg-light">
-                <div className="d-flex justify-content-between align-items-center">
-                  <h3 className="card-title mb-0">
-                    <IconMapPin className="me-2" size={20} />
-                    Visit Page Settings
-                  </h3>
-                  <Link to="/admin/visit-page" className="btn btn-sm btn-primary">
-                    Configure Visit Page
-                  </Link>
-                </div>
-              </div>
-              <div className="card-body">
-                <p className="text-muted mb-0">
-                  Manage visit page content, service times, and visitor information.
-                </p>
-              </div>
-            </div>
-
-            {/* About Page Settings */}
-            <div className="card mt-3">
-              <div className="card-header bg-light">
-                <div className="d-flex justify-content-between align-items-center">
-                  <h3 className="card-title mb-0">
-                    <IconInfoCircle className="me-2" size={20} />
-                    About Page Settings
-                  </h3>
-                  <Link to="/admin/about-page" className="btn btn-sm btn-primary">
-                    Configure About Page
-                  </Link>
-                </div>
-              </div>
-              <div className="card-body">
-                <p className="text-muted mb-0">
-                  Manage mission statement, church history, and beliefs.
-                </p>
-              </div>
-            </div>
-          </div>
+          </div>         
 
           {/* Save Button */}
           <div className="card mt-4">

@@ -12,7 +12,8 @@
       "Bash(code .)",
       "Bash(where:*)",
       "Bash(powershell:*)",
-      "Bash(\"H:\\Programs\\MicrosoftVisualStudio\\Code\\bin\\code\" .)"
+      "Bash(\"H:\\Programs\\MicrosoftVisualStudio\\Code\\bin\\code\" .)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []
