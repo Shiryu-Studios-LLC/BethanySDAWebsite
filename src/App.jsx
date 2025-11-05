@@ -7,7 +7,6 @@ import Events from './pages/Events'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
-import Logout from './pages/Logout'
 import AdminPortal from './pages/admin/AdminPortal'
 import MediaLibrary from './pages/admin/MediaLibrary'
 
@@ -21,7 +20,6 @@ function App() {
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="login" element={<Login />} />
-        <Route path="logout" element={<Logout />} />
         <Route
           path="admin"
           element={
