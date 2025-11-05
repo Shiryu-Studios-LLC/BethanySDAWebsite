@@ -1,8 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
-import { IconArrowLeft, IconCheck, IconTrash } from '@tabler/icons-react'
+import { IconArrowLeft, IconCheck, IconTrash, IconLink, IconPhoto, IconVideo } from '@tabler/icons-react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import TiptapLink from '@tiptap/extension-link'
+import TiptapImage from '@tiptap/extension-image'
+import TextAlign from '@tiptap/extension-text-align'
+import Underline from '@tiptap/extension-underline'
+import { TextStyle } from '@tiptap/extension-text-style'
+import { Color } from '@tiptap/extension-color'
+import Youtube from '@tiptap/extension-youtube'
 import AlertModal from '../../components/AlertModal'
 import ConfirmModal from '../../components/ConfirmModal'
 import '../../tiptap.css'
@@ -27,12 +34,63 @@ export default function PageEditor() {
   })
 
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      Underline,
+      TextStyle,
+      Color,
+      TiptapLink.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: 'text-primary',
+        },
+      }),
+      TiptapImage.configure({
+        HTMLAttributes: {
+          class: 'img-fluid rounded',
+        },
+      }),
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
+      Youtube.configure({
+        width: 640,
+        height: 360,
+      }),
+    ],
     content: pageData.content,
     onUpdate: ({ editor }) => {
       setPageData(prev => ({ ...prev, content: editor.getHTML() }))
     },
   })
+
+  // Helper functions for editor actions
+  const setLink = useCallback(() => {
+    const previousUrl = editor.getAttributes('link').href
+    const url = window.prompt('Enter URL:', previousUrl)
+
+    if (url === null) return
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink().run()
+      return
+    }
+
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+  }, [editor])
+
+  const addImage = useCallback(() => {
+    const url = window.prompt('Enter image URL:')
+    if (url) {
+      editor.chain().focus().setImage({ src: url }).run()
+    }
+  }, [editor])
+
+  const addYouTubeVideo = useCallback(() => {
+    const url = window.prompt('Enter YouTube URL:')
+    if (url) {
+      editor.chain().focus().setYoutubeVideo({ src: url }).run()
+    }
+  }, [editor])
 
   useEffect(() => {
     if (!isNewPage) {
@@ -225,50 +283,215 @@ export default function PageEditor() {
               <h3 className="card-title">Page Content</h3>
             </div>
             <div className="card-body">
-              <div className="tiptap-editor-toolbar mb-2">
-                <div className="btn-group" role="group">
-                  <button
-                    type="button"
-                    onClick={() => editor?.chain().focus().toggleBold().run()}
-                    className={`btn btn-sm ${editor?.isActive('bold') ? 'btn-primary' : 'btn-outline-secondary'}`}
-                  >
-                    <strong>B</strong>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => editor?.chain().focus().toggleItalic().run()}
-                    className={`btn btn-sm ${editor?.isActive('italic') ? 'btn-primary' : 'btn-outline-secondary'}`}
-                  >
-                    <em>I</em>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}
-                    className={`btn btn-sm ${editor?.isActive('heading', { level: 2 }) ? 'btn-primary' : 'btn-outline-secondary'}`}
-                  >
-                    H2
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()}
-                    className={`btn btn-sm ${editor?.isActive('heading', { level: 3 }) ? 'btn-primary' : 'btn-outline-secondary'}`}
-                  >
-                    H3
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => editor?.chain().focus().toggleBulletList().run()}
-                    className={`btn btn-sm ${editor?.isActive('bulletList') ? 'btn-primary' : 'btn-outline-secondary'}`}
-                  >
-                    • List
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => editor?.chain().focus().toggleOrderedList().run()}
-                    className={`btn btn-sm ${editor?.isActive('orderedList') ? 'btn-primary' : 'btn-outline-secondary'}`}
-                  >
-                    1. List
-                  </button>
+              <div className="tiptap-editor-toolbar mb-3 p-2 bg-light rounded">
+                {/* Text Formatting */}
+                <div className="mb-2">
+                  <small className="text-muted d-block mb-1">Text Formatting</small>
+                  <div className="btn-group me-2" role="group">
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleBold().run()}
+                      className={`btn btn-sm ${editor?.isActive('bold') ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Bold"
+                    >
+                      <strong>B</strong>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleItalic().run()}
+                      className={`btn btn-sm ${editor?.isActive('italic') ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Italic"
+                    >
+                      <em>I</em>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleUnderline().run()}
+                      className={`btn btn-sm ${editor?.isActive('underline') ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Underline"
+                    >
+                      <u>U</u>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleStrike().run()}
+                      className={`btn btn-sm ${editor?.isActive('strike') ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Strikethrough"
+                    >
+                      <s>S</s>
+                    </button>
+                  </div>
+
+                  {/* Headings */}
+                  <div className="btn-group me-2" role="group">
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleHeading({ level: 1 }).run()}
+                      className={`btn btn-sm ${editor?.isActive('heading', { level: 1 }) ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Heading 1"
+                    >
+                      H1
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}
+                      className={`btn btn-sm ${editor?.isActive('heading', { level: 2 }) ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Heading 2"
+                    >
+                      H2
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()}
+                      className={`btn btn-sm ${editor?.isActive('heading', { level: 3 }) ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Heading 3"
+                    >
+                      H3
+                    </button>
+                  </div>
+
+                  {/* Text Color */}
+                  <div className="btn-group" role="group">
+                    <input
+                      type="color"
+                      className="form-control form-control-sm"
+                      style={{ width: '50px', height: '31px' }}
+                      onInput={event => editor?.chain().focus().setColor(event.target.value).run()}
+                      value={editor?.getAttributes('textStyle').color || '#000000'}
+                      title="Text Color"
+                    />
+                  </div>
+                </div>
+
+                {/* Alignment & Lists */}
+                <div className="mb-2">
+                  <small className="text-muted d-block mb-1">Alignment & Lists</small>
+                  <div className="btn-group me-2" role="group">
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().setTextAlign('left').run()}
+                      className={`btn btn-sm ${editor?.isActive({ textAlign: 'left' }) ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Align Left"
+                    >
+                      ⬅
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().setTextAlign('center').run()}
+                      className={`btn btn-sm ${editor?.isActive({ textAlign: 'center' }) ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Align Center"
+                    >
+                      ↔
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().setTextAlign('right').run()}
+                      className={`btn btn-sm ${editor?.isActive({ textAlign: 'right' }) ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Align Right"
+                    >
+                      ➡
+                    </button>
+                  </div>
+
+                  <div className="btn-group me-2" role="group">
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleBulletList().run()}
+                      className={`btn btn-sm ${editor?.isActive('bulletList') ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Bullet List"
+                    >
+                      • List
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleOrderedList().run()}
+                      className={`btn btn-sm ${editor?.isActive('orderedList') ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Numbered List"
+                    >
+                      1. List
+                    </button>
+                  </div>
+
+                  <div className="btn-group" role="group">
+                    <button
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleBlockquote().run()}
+                      className={`btn btn-sm ${editor?.isActive('blockquote') ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Quote"
+                    >
+                      " Quote
+                    </button>
+                  </div>
+                </div>
+
+                {/* Links & Media */}
+                <div>
+                  <small className="text-muted d-block mb-1">Links & Media</small>
+                  <div className="btn-group me-2" role="group">
+                    <button
+                      type="button"
+                      onClick={setLink}
+                      className={`btn btn-sm ${editor?.isActive('link') ? 'btn-primary' : 'btn-outline-secondary'}`}
+                      title="Add Link"
+                    >
+                      <IconLink size={16} className="me-1" />
+                      Link
+                    </button>
+                    {editor?.isActive('link') && (
+                      <button
+                        type="button"
+                        onClick={() => editor.chain().focus().unsetLink().run()}
+                        className="btn btn-sm btn-outline-danger"
+                        title="Remove Link"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="btn-group me-2" role="group">
+                    <button
+                      type="button"
+                      onClick={addImage}
+                      className="btn btn-sm btn-outline-secondary"
+                      title="Add Image"
+                    >
+                      <IconPhoto size={16} className="me-1" />
+                      Image
+                    </button>
+                  </div>
+
+                  <div className="btn-group me-2" role="group">
+                    <button
+                      type="button"
+                      onClick={addYouTubeVideo}
+                      className="btn btn-sm btn-outline-secondary"
+                      title="Embed YouTube Video"
+                    >
+                      <IconVideo size={16} className="me-1" />
+                      YouTube
+                    </button>
+                  </div>
+
+                  {/* Button Creator */}
+                  <div className="btn-group" role="group">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const text = window.prompt('Button text:', 'Click Here')
+                        const url = window.prompt('Button URL:', '/')
+                        if (text && url) {
+                          editor?.chain().focus().insertContent(
+                            `<p><a href="${url}" class="btn btn-primary">${text}</a></p>`
+                          ).run()
+                        }
+                      }}
+                      className="btn btn-sm btn-outline-secondary"
+                      title="Add Button"
+                    >
+                      🔘 Button
+                    </button>
+                  </div>
                 </div>
               </div>
               <div className="tiptap-editor border rounded p-3" style={{ minHeight: '300px' }}>
