@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { IconArrowLeft, IconUpload, IconTrash, IconLink } from '@tabler/icons-react'
+import { IconArrowLeft, IconUpload, IconTrash, IconLink, IconPhoto } from '@tabler/icons-react'
 
 export default function MediaLibrary() {
   const [selectedFiles, setSelectedFiles] = useState([])
