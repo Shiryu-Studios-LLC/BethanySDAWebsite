@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import BlockRenderer from '../BlockRenderer'
@@ -207,6 +208,7 @@ function renderBlockPreview(block, renderNestedBlocks) {
 }
 
 export default function ScenePanel({ blocks, onChange, selectedBlock, onSelectBlock, viewMode, pageTitle, pageSubtitle, showPageHeader }) {
+  const [showBlockLibrary, setShowBlockLibrary] = useState(false)
   const sensors = useSensors(useSensor(PointerSensor))
 
   const handleUpdateBlock = (updatedBlock) => {
@@ -329,6 +331,7 @@ export default function ScenePanel({ blocks, onChange, selectedBlock, onSelectBl
       ...template
     }
     onChange([...blocks, newBlock])
+    setShowBlockLibrary(false)
   }
 
   const deleteBlock = (blockId) => {
@@ -425,12 +428,11 @@ export default function ScenePanel({ blocks, onChange, selectedBlock, onSelectBl
         <span>Scene</span>
 
         {/* Add Block Button */}
-        <div className="dropdown">
+        <div style={{ position: 'relative' }}>
           <button
             className="btn btn-sm"
             type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
+            onClick={() => setShowBlockLibrary(!showBlockLibrary)}
             style={{
               backgroundColor: '#5a5a5a',
               border: '1px solid #2b2b2b',
@@ -443,11 +445,40 @@ export default function ScenePanel({ blocks, onChange, selectedBlock, onSelectBl
             <IconPlus size={14} className="me-1" />
             Add Block
           </button>
-          <div className="dropdown-menu dropdown-menu-end" style={{ maxHeight: '400px', overflowY: 'auto', width: '280px' }}>
-            <div className="p-2">
-              <BlockLibrary onAddBlock={addBlock} compact={true} />
-            </div>
-          </div>
+          {showBlockLibrary && (
+            <>
+              <div
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 999
+                }}
+                onClick={() => setShowBlockLibrary(false)}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0,
+                  marginTop: '4px',
+                  maxHeight: '400px',
+                  overflowY: 'auto',
+                  width: '280px',
+                  backgroundColor: '#fff',
+                  borderRadius: '4px',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                  zIndex: 1000
+                }}
+              >
+                <div className="p-2">
+                  <BlockLibrary onAddBlock={addBlock} compact={true} />
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
