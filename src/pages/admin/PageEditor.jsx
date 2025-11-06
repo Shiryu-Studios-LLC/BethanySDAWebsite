@@ -9,6 +9,7 @@ export default function PageEditor() {
   const { slug } = useParams()
   const navigate = useNavigate()
   const isNewPage = slug === 'new'
+  const isCorePages = ['home', 'visit', 'about'].includes(slug)
 
   const [saving, setSaving] = useState(false)
   const [loading, setLoading] = useState(!isNewPage)
@@ -166,7 +167,7 @@ export default function PageEditor() {
               </div>
               <h2 className="page-title">{isNewPage ? 'Create New Page' : 'Edit Page'}</h2>
             </div>
-            {!isNewPage && (
+            {!isNewPage && !isCorePages && (
               <div className="col-auto">
                 <button
                   onClick={() => setConfirmDelete(true)}
@@ -324,8 +325,8 @@ export default function PageEditor() {
         onClose={() => setAlert({ message: '', type: '' })}
       />
 
-      {/* Confirm Delete Modal - Only for existing pages */}
-      {!isNewPage && (
+      {/* Confirm Delete Modal - Only for custom pages (not core pages) */}
+      {!isNewPage && !isCorePages && (
         <ConfirmModal
           isOpen={confirmDelete}
           title="Delete Page"
