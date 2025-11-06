@@ -206,12 +206,24 @@ export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate, is
       case 'button':
         return (
           <div className="p-4 text-center">
-            <a
-              href={block.content.url || '#'}
-              className={`btn btn-${block.content.style || 'primary'} btn-${block.content.size || 'md'}`}
-            >
-              {block.content.text || 'Button Text'}
-            </a>
+            {onUpdateBlock ? (
+              <div style={{ display: 'inline-block' }}>
+                <InlineEditableText
+                  value={block.content.text || ''}
+                  onChange={(newText) => onUpdateBlock({ ...block, content: { ...block.content, text: newText } })}
+                  tag="span"
+                  className={`btn btn-${block.content.style || 'primary'} btn-${block.content.size || 'md'}`}
+                  placeholder="Button Text"
+                />
+              </div>
+            ) : (
+              <a
+                href={block.content.url || '#'}
+                className={`btn btn-${block.content.style || 'primary'} btn-${block.content.size || 'md'}`}
+              >
+                {block.content.text || 'Button Text'}
+              </a>
+            )}
           </div>
         )
 
@@ -271,15 +283,55 @@ export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate, is
           <div className="p-4">
             <div className="card">
               <div className="card-body text-center">
-                {block.content.icon && (
-                  <div className="mb-3" style={{ fontSize: '3rem' }}>{block.content.icon}</div>
-                )}
-                <h3 className="card-title">{block.content.title || 'Card Title'}</h3>
-                <p className="text-muted">{block.content.description || 'Card description'}</p>
-                {block.content.linkText && (
-                  <a href={block.content.linkUrl || '#'} className="btn btn-primary">
-                    {block.content.linkText}
-                  </a>
+                {onUpdateBlock ? (
+                  <>
+                    {block.content.icon && (
+                      <InlineEditableText
+                        value={block.content.icon || ''}
+                        onChange={(newIcon) => onUpdateBlock({ ...block, content: { ...block.content, icon: newIcon } })}
+                        tag="div"
+                        className="mb-3"
+                        style={{ fontSize: '3rem' }}
+                        placeholder="📦"
+                      />
+                    )}
+                    <InlineEditableText
+                      value={block.content.title || ''}
+                      onChange={(newTitle) => onUpdateBlock({ ...block, content: { ...block.content, title: newTitle } })}
+                      tag="h3"
+                      className="card-title"
+                      placeholder="Card Title"
+                    />
+                    <InlineEditableText
+                      value={block.content.description || ''}
+                      onChange={(newDesc) => onUpdateBlock({ ...block, content: { ...block.content, description: newDesc } })}
+                      tag="p"
+                      className="text-muted"
+                      placeholder="Card description"
+                    />
+                    {block.content.linkText && (
+                      <InlineEditableText
+                        value={block.content.linkText || ''}
+                        onChange={(newLinkText) => onUpdateBlock({ ...block, content: { ...block.content, linkText: newLinkText } })}
+                        tag="span"
+                        className="btn btn-primary"
+                        placeholder="Link Text"
+                      />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {block.content.icon && (
+                      <div className="mb-3" style={{ fontSize: '3rem' }}>{block.content.icon}</div>
+                    )}
+                    <h3 className="card-title">{block.content.title || 'Card Title'}</h3>
+                    <p className="text-muted">{block.content.description || 'Card description'}</p>
+                    {block.content.linkText && (
+                      <a href={block.content.linkUrl || '#'} className="btn btn-primary">
+                        {block.content.linkText}
+                      </a>
+                    )}
+                  </>
                 )}
               </div>
             </div>
@@ -290,11 +342,46 @@ export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate, is
         return (
           <div className="p-4">
             <blockquote className="blockquote text-center">
-              <p className="mb-3 fs-4">"{block.content.quote || 'Quote text'}"</p>
-              <footer className="blockquote-footer">
-                {block.content.author || 'Author Name'}
-                {block.content.role && <cite className="ms-2">- {block.content.role}</cite>}
-              </footer>
+              {onUpdateBlock ? (
+                <>
+                  <p className="mb-3 fs-4">
+                    "
+                    <InlineEditableText
+                      value={block.content.quote || ''}
+                      onChange={(newQuote) => onUpdateBlock({ ...block, content: { ...block.content, quote: newQuote } })}
+                      tag="span"
+                      placeholder="Quote text"
+                    />
+                    "
+                  </p>
+                  <footer className="blockquote-footer">
+                    <InlineEditableText
+                      value={block.content.author || ''}
+                      onChange={(newAuthor) => onUpdateBlock({ ...block, content: { ...block.content, author: newAuthor } })}
+                      tag="span"
+                      placeholder="Author Name"
+                    />
+                    {block.content.role && (
+                      <cite className="ms-2">
+                        {' '}- <InlineEditableText
+                          value={block.content.role || ''}
+                          onChange={(newRole) => onUpdateBlock({ ...block, content: { ...block.content, role: newRole } })}
+                          tag="span"
+                          placeholder="Role"
+                        />
+                      </cite>
+                    )}
+                  </footer>
+                </>
+              ) : (
+                <>
+                  <p className="mb-3 fs-4">"{block.content.quote || 'Quote text'}"</p>
+                  <footer className="blockquote-footer">
+                    {block.content.author || 'Author Name'}
+                    {block.content.role && <cite className="ms-2">- {block.content.role}</cite>}
+                  </footer>
+                </>
+              )}
             </blockquote>
           </div>
         )
@@ -320,8 +407,29 @@ export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate, is
         return (
           <div className="p-4">
             <div className={`alert alert-${calloutStyle}`} role="alert">
-              <h4 className="alert-title">{block.content.title || 'Notice'}</h4>
-              <div className="text-muted">{block.content.message || 'Message'}</div>
+              {onUpdateBlock ? (
+                <>
+                  <InlineEditableText
+                    value={block.content.title || ''}
+                    onChange={(newTitle) => onUpdateBlock({ ...block, content: { ...block.content, title: newTitle } })}
+                    tag="h4"
+                    className="alert-title"
+                    placeholder="Notice"
+                  />
+                  <InlineEditableText
+                    value={block.content.message || ''}
+                    onChange={(newMessage) => onUpdateBlock({ ...block, content: { ...block.content, message: newMessage } })}
+                    tag="div"
+                    className="text-muted"
+                    placeholder="Message"
+                  />
+                </>
+              ) : (
+                <>
+                  <h4 className="alert-title">{block.content.title || 'Notice'}</h4>
+                  <div className="text-muted">{block.content.message || 'Message'}</div>
+                </>
+              )}
             </div>
           </div>
         )
