@@ -3,6 +3,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { IconGripVertical, IconEdit, IconTrash, IconCopy } from '@tabler/icons-react'
 import ColumnBlock from './ColumnBlock'
 import InlineEditableText from './InlineEditableText'
+import InlineRichTextEditor from './InlineRichTextEditor'
 
 export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate, isNested = false, onNestedBlocksChange, onUpdateBlock }) {
   const {
@@ -129,7 +130,15 @@ export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate, is
       case 'text':
         return (
           <div className="p-4">
-            <div dangerouslySetInnerHTML={{ __html: block.content.html || '<p>Text content goes here...</p>' }} />
+            {onUpdateBlock ? (
+              <InlineRichTextEditor
+                value={block.content.html || ''}
+                onChange={(newHtml) => onUpdateBlock({ ...block, content: { ...block.content, html: newHtml } })}
+                placeholder="Click to add text content..."
+              />
+            ) : (
+              <div dangerouslySetInnerHTML={{ __html: block.content.html || '<p>Text content goes here...</p>' }} />
+            )}
           </div>
         )
 
