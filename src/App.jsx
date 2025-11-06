@@ -18,6 +18,81 @@ import Documentation from './pages/admin/Documentation'
 function App() {
   return (
     <Routes>
+      {/* Admin routes - without Layout wrapper */}
+      <Route
+        path="admin"
+        element={
+          <ProtectedRoute>
+            <AdminPortal />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="admin/media"
+        element={
+          <ProtectedRoute>
+            <MediaLibrary />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="admin/sermons"
+        element={
+          <ProtectedRoute>
+            <Sermons />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="admin/bulletins"
+        element={
+          <ProtectedRoute>
+            <Bulletins />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="admin/events"
+        element={
+          <ProtectedRoute>
+            <AdminEvents />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="admin/settings"
+        element={
+          <ProtectedRoute>
+            <SiteSettings />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="admin/pages"
+        element={
+          <ProtectedRoute>
+            <Pages />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="admin/page-editor/:slug"
+        element={
+          <ProtectedRoute>
+            <PageEditor />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="admin/documentation"
+        element={
+          <ProtectedRoute>
+            <Documentation />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Public routes - with Layout wrapper */}
       <Route path="/" element={<Layout />}>
         {/* Core pages using visual builder */}
         <Route index element={<DynamicPage fixedSlug="home" />} />
@@ -28,78 +103,7 @@ function App() {
         <Route path="events" element={<Events />} />
         <Route path="contact" element={<Contact />} />
         <Route path="login" element={<Login />} />
-        <Route
-          path="admin"
-          element={
-            <ProtectedRoute>
-              <AdminPortal />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/media"
-          element={
-            <ProtectedRoute>
-              <MediaLibrary />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/sermons"
-          element={
-            <ProtectedRoute>
-              <Sermons />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/bulletins"
-          element={
-            <ProtectedRoute>
-              <Bulletins />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/events"
-          element={
-            <ProtectedRoute>
-              <AdminEvents />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/settings"
-          element={
-            <ProtectedRoute>
-              <SiteSettings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/pages"
-          element={
-            <ProtectedRoute>
-              <Pages />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/page-editor/:slug"
-          element={
-            <ProtectedRoute>
-              <PageEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/documentation"
-          element={
-            <ProtectedRoute>
-              <Documentation />
-            </ProtectedRoute>
-          }
-        />
+
         {/* Dynamic pages - catch-all route (must be last) */}
         <Route path=":slug" element={<DynamicPage />} />
       </Route>
