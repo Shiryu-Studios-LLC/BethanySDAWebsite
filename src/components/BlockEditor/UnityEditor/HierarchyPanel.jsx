@@ -7,7 +7,7 @@ import {
   IconPhoto,
   IconQuote,
   IconVideo,
-  IconCursor,
+  IconPointer,
   IconLayoutGrid,
   IconSeparator,
   IconSpace,
@@ -17,19 +17,19 @@ import {
   IconPhotoPlus,
   IconLayoutNavbar,
   IconStar,
-  IconChevronDownLeft,
+  IconChevronDown as IconChevronDownAlt,
   IconForms,
   IconMapPin,
   IconClock
 } from '@tabler/icons-react'
 
 const BLOCK_ICONS = {
-  hero: IconCursor,
+  hero: IconLayoutNavbar,
   heading: IconH1,
   text: IconFileText,
   image: IconPhoto,
   video: IconVideo,
-  button: IconCursor,
+  button: IconPointer,
   columns: IconLayoutGrid,
   rows: IconLayoutGrid,
   card: IconBoxMultiple,
@@ -41,7 +41,7 @@ const BLOCK_ICONS = {
   gallery: IconPhotoPlus,
   section: IconLayoutNavbar,
   'icon-list': IconStar,
-  accordion: IconChevronDownLeft,
+  accordion: IconChevronDownAlt,
   form: IconForms,
   map: IconMapPin,
   countdown: IconClock
