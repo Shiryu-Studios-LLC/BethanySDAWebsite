@@ -20,12 +20,23 @@ export default function VisualBuilder({ blocks, onChange, pageTitle = '', pageSu
   const handleDragEnd = (event) => {
     const { active, over } = event
 
+    if (!over) return
+
+    // Check if dropping into a column
+    if (over.id.toString().startsWith('column-')) {
+      // Dropping into a column - handle via ColumnBlock's onBlocksChange
+      return
+    }
+
+    // Handle reordering top-level blocks
     if (active.id !== over.id) {
       const oldIndex = blocks.findIndex(b => b.id === active.id)
       const newIndex = blocks.findIndex(b => b.id === over.id)
 
-      const newBlocks = arrayMove(blocks, oldIndex, newIndex)
-      onChange(newBlocks)
+      if (oldIndex !== -1 && newIndex !== -1) {
+        const newBlocks = arrayMove(blocks, oldIndex, newIndex)
+        onChange(newBlocks)
+      }
     }
   }
 

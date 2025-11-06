@@ -1,6 +1,8 @@
 import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import BlockRenderer from './BlockRenderer'
+import BlockLibrary from './BlockLibrary'
+import { IconPlus } from '@tabler/icons-react'
 
 export default function ColumnBlock({ columnIndex, blocks, onBlocksChange, onEdit, onDelete, onDuplicate }) {
   const { setNodeRef, isOver } = useDroppable({
@@ -8,15 +10,58 @@ export default function ColumnBlock({ columnIndex, blocks, onBlocksChange, onEdi
     data: { columnIndex }
   })
 
+  const addBlockToColumn = (template) => {
+    const newBlock = {
+      id: `block-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      ...template
+    }
+    onBlocksChange([...blocks, newBlock])
+  }
+
+  const deleteBlockFromColumn = (blockId) => {
+    onBlocksChange(blocks.filter(b => b.id !== blockId))
+  }
+
+  const duplicateBlockInColumn = (block) => {
+    const newBlock = {
+      ...block,
+      id: `block-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+    }
+    const index = blocks.findIndex(b => b.id === block.id)
+    const newBlocks = [...blocks]
+    newBlocks.splice(index + 1, 0, newBlock)
+    onBlocksChange(newBlocks)
+  }
+
   return (
     <div
       ref={setNodeRef}
-      className={`column-drop-zone border rounded p-3 ${isOver ? 'bg-primary-lt' : 'bg-light bg-opacity-50'}`}
+      className={`column-drop-zone border rounded p-3 position-relative ${isOver ? 'bg-primary-lt' : 'bg-light bg-opacity-50'}`}
       style={{ minHeight: '200px' }}
     >
+      {/* Mini Add Block Button */}
+      <div className="position-absolute top-0 end-0 m-2">
+        <div className="dropdown">
+          <button
+            className="btn btn-sm btn-outline-primary"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            title="Add block to this column"
+          >
+            <IconPlus size={16} />
+          </button>
+          <div className="dropdown-menu dropdown-menu-end" style={{ maxHeight: '400px', overflowY: 'auto', width: '280px' }}>
+            <div className="p-2">
+              <BlockLibrary onAddBlock={addBlockToColumn} compact={true} />
+            </div>
+          </div>
+        </div>
+      </div>
+
       {blocks.length === 0 ? (
         <div className="text-center text-muted py-5">
-          <small>Drop blocks here</small>
+          <small>Click + to add blocks</small>
         </div>
       ) : (
         <SortableContext items={blocks.map(b => b.id)} strategy={verticalListSortingStrategy}>
@@ -25,8 +70,8 @@ export default function ColumnBlock({ columnIndex, blocks, onBlocksChange, onEdi
               key={block.id}
               block={block}
               onEdit={onEdit}
-              onDelete={onDelete}
-              onDuplicate={onDuplicate}
+              onDelete={() => deleteBlockFromColumn(block.id)}
+              onDuplicate={() => duplicateBlockInColumn(block)}
               isNested={true}
             />
           ))}

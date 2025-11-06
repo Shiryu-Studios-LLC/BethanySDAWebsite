@@ -239,22 +239,29 @@ export const BLOCK_TEMPLATES = [
   }
 ]
 
-export default function BlockLibrary({ onAddBlock }) {
+export default function BlockLibrary({ onAddBlock, compact = false }) {
   const categories = ['Containers', 'Content', 'Media', 'Interactive', 'Decorative']
+
+  // In compact mode, exclude nested containers to prevent infinite nesting
+  const filteredCategories = compact
+    ? categories.filter(c => c !== 'Containers')
+    : categories
 
   return (
     <div className="block-library">
-      <div className="p-3 border-bottom bg-light">
-        <h5 className="mb-0">Add Blocks</h5>
-        <small className="text-muted">Click to add, drag to reorder</small>
-      </div>
+      {!compact && (
+        <div className="p-3 border-bottom bg-light">
+          <h5 className="mb-0">Add Blocks</h5>
+          <small className="text-muted">Click to add, drag to reorder</small>
+        </div>
+      )}
 
-      {categories.map(category => {
+      {filteredCategories.map(category => {
         const categoryBlocks = BLOCK_TEMPLATES.filter(b => b.category === category)
         if (categoryBlocks.length === 0) return null
 
         return (
-          <div key={category} className="p-3 border-bottom">
+          <div key={category} className={compact ? 'mb-3' : 'p-3 border-bottom'}>
             <h6 className="text-muted text-uppercase small mb-2">{category}</h6>
             <div className="d-flex flex-wrap gap-2">
               {categoryBlocks.map(block => {
@@ -262,12 +269,12 @@ export default function BlockLibrary({ onAddBlock }) {
                 return (
                   <button
                     key={block.id}
-                    className="btn btn-outline-secondary"
+                    className="btn btn-outline-secondary btn-sm"
                     onClick={() => onAddBlock(block.template)}
                     title={block.name}
-                    style={{ width: 'calc(50% - 4px)' }}
+                    style={{ width: compact ? '100%' : 'calc(50% - 4px)' }}
                   >
-                    <Icon size={18} className="me-1" />
+                    <Icon size={16} className="me-1" />
                     <span className="small">{block.name}</span>
                   </button>
                 )
