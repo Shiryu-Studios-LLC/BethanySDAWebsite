@@ -1,7 +1,7 @@
 import { IconAlertTriangle } from '@tabler/icons-react'
 
-export default function ConfirmModal({ title, message, onConfirm, onCancel }) {
-  if (!message) return null
+export default function ConfirmModal({ isOpen, title, message, confirmText = 'Confirm', confirmButtonClass = 'btn-danger', onConfirm, onCancel }) {
+  if (!isOpen) return null
 
   return (
     <>
@@ -49,10 +49,10 @@ export default function ConfirmModal({ title, message, onConfirm, onCancel }) {
               </button>
               <button
                 type="button"
-                className="btn btn-danger"
+                className={`btn ${confirmButtonClass}`}
                 onClick={onConfirm}
               >
-                Delete
+                {confirmText}
               </button>
             </div>
           </div>
