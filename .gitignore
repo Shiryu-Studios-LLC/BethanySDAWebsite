@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Wrangler
+.wrangler
+
 # Lock files
 package-lock.json
 yarn.lock
