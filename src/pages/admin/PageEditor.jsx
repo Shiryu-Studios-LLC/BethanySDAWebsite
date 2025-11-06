@@ -209,55 +209,6 @@ export default function PageEditor() {
         </div>
 
         <form onSubmit={handleSubmit}>
-          {/* Basic Info */}
-          <div className="card mt-4">
-            <div className="card-header">
-              <h3 className="card-title">Page Information</h3>
-            </div>
-            <div className="card-body">
-              <div className="row">
-                <div className="col-md-8 mb-3">
-                  <label className="form-label required">Page Title</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="title"
-                    value={pageData.title}
-                    onChange={handleInputChange}
-                    placeholder="e.g., Ministries, Youth Programs, Contact Us"
-                    required
-                  />
-                </div>
-                <div className="col-md-4 mb-3">
-                  <label className="form-label">URL Slug</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="slug"
-                    value={pageData.slug}
-                    onChange={handleInputChange}
-                    placeholder="auto-generated"
-                    disabled={!isNewPage}
-                  />
-                  <small className="form-hint">
-                    {isNewPage ? 'Leave empty to auto-generate from title' : 'Cannot be changed after creation'}
-                  </small>
-                </div>
-                <div className="col-12 mb-3">
-                  <label className="form-label">Meta Description (SEO)</label>
-                  <textarea
-                    className="form-control"
-                    name="meta_description"
-                    rows="2"
-                    value={pageData.meta_description}
-                    onChange={handleInputChange}
-                    placeholder="Brief description for search engines..."
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Unity-Style Page Builder */}
           <div className="card mt-4">
             <div className="card-header">
@@ -274,54 +225,37 @@ export default function PageEditor() {
             </div>
           </div>
 
-          {/* Settings */}
+          {/* Compact Page Info & Settings */}
           <div className="card mt-4">
-            <div className="card-header">
-              <h3 className="card-title">Page Settings</h3>
-            </div>
             <div className="card-body">
-              <div className="row">
-                <div className="col-md-3 mb-3">
-                  <label className="form-check form-switch">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="is_published"
-                      checked={pageData.is_published}
-                      onChange={handleInputChange}
-                    />
-                    <span className="form-check-label">Published</span>
-                  </label>
-                  <small className="form-hint">Page is visible to visitors</small>
+              <div className="row g-3">
+                {/* Page Info */}
+                <div className="col-md-6">
+                  <label className="form-label required">Page Title</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="title"
+                    value={pageData.title}
+                    onChange={handleInputChange}
+                    placeholder="e.g., Ministries, Youth Programs, Contact Us"
+                    required
+                  />
                 </div>
-                <div className="col-md-3 mb-3">
-                  <label className="form-check form-switch">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="show_in_nav"
-                      checked={pageData.show_in_nav}
-                      onChange={handleInputChange}
-                    />
-                    <span className="form-check-label">Show in Navigation</span>
-                  </label>
-                  <small className="form-hint">Add to main menu</small>
+                <div className="col-md-3">
+                  <label className="form-label">URL Slug</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="slug"
+                    value={pageData.slug}
+                    onChange={handleInputChange}
+                    placeholder="auto-generated"
+                    disabled={!isNewPage}
+                  />
                 </div>
-                <div className="col-md-3 mb-3">
-                  <label className="form-check form-switch">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="show_page_header"
-                      checked={pageData.show_page_header}
-                      onChange={handleInputChange}
-                    />
-                    <span className="form-check-label">Show Page Header</span>
-                  </label>
-                  <small className="form-hint">Display title at top of page</small>
-                </div>
-                <div className="col-md-3 mb-3">
-                  <label className="form-label">Navigation Order</label>
+                <div className="col-md-3">
+                  <label className="form-label">Nav Order</label>
                   <input
                     type="number"
                     className="form-control"
@@ -330,7 +264,53 @@ export default function PageEditor() {
                     onChange={handleInputChange}
                     min="0"
                   />
-                  <small className="form-hint">Lower numbers appear first</small>
+                </div>
+                <div className="col-md-12">
+                  <label className="form-label">Meta Description (SEO)</label>
+                  <textarea
+                    className="form-control"
+                    name="meta_description"
+                    rows="2"
+                    value={pageData.meta_description}
+                    onChange={handleInputChange}
+                    placeholder="Brief description for search engines..."
+                  />
+                </div>
+
+                {/* Settings - Inline */}
+                <div className="col-12">
+                  <div className="d-flex gap-4 flex-wrap">
+                    <label className="form-check form-switch mb-0">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        name="is_published"
+                        checked={pageData.is_published}
+                        onChange={handleInputChange}
+                      />
+                      <span className="form-check-label">Published</span>
+                    </label>
+                    <label className="form-check form-switch mb-0">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        name="show_in_nav"
+                        checked={pageData.show_in_nav}
+                        onChange={handleInputChange}
+                      />
+                      <span className="form-check-label">Show in Nav</span>
+                    </label>
+                    <label className="form-check form-switch mb-0">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        name="show_page_header"
+                        checked={pageData.show_page_header}
+                        onChange={handleInputChange}
+                      />
+                      <span className="form-check-label">Show Page Header</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
