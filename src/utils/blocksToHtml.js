@@ -98,13 +98,13 @@ function renderBlock(block) {
       `
 
     case 'columns':
-      const columnCount = block.content.columns?.length || 2
+      const columnCount = block.content.columnCount || block.content.columns?.length || 2
       const colWidth = 12 / columnCount
       return `
         <div class="row g-3 mb-4">
           ${(block.content.columns || []).map(col => `
             <div class="col-md-${colWidth}">
-              ${col.html || ''}
+              ${col.blocks && col.blocks.length > 0 ? blocksToHtml(col.blocks) : ''}
             </div>
           `).join('')}
         </div>
@@ -120,6 +120,49 @@ function renderBlock(block) {
       const color = block.content.color || '#dee2e6'
       return `
         <hr style="border-top: ${thickness}px solid ${escapeHtml(color)}" class="mb-4" />
+      `
+
+    case 'card':
+      return `
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            ${block.content.icon ? `<div class="mb-3" style="font-size: 3rem">${escapeHtml(block.content.icon)}</div>` : ''}
+            <h3 class="card-title">${escapeHtml(block.content.title || '')}</h3>
+            <p class="text-muted">${escapeHtml(block.content.description || '')}</p>
+            ${block.content.linkText ? `
+              <a href="${escapeHtml(block.content.linkUrl || '#')}" class="btn btn-primary">
+                ${escapeHtml(block.content.linkText)}
+              </a>
+            ` : ''}
+          </div>
+        </div>
+      `
+
+    case 'quote':
+      return `
+        <blockquote class="blockquote text-center mb-4">
+          <p class="mb-3 fs-4">"${escapeHtml(block.content.quote || '')}"</p>
+          <footer class="blockquote-footer">
+            ${escapeHtml(block.content.author || '')}
+            ${block.content.role ? `<cite class="ms-2">- ${escapeHtml(block.content.role)}</cite>` : ''}
+          </footer>
+        </blockquote>
+      `
+
+    case 'embed':
+      return `
+        <div class="mb-4" style="height: ${parseInt(block.content.height) || 400}px">
+          ${block.content.embedCode || ''}
+        </div>
+      `
+
+    case 'callout':
+      const calloutStyle = block.content.style || 'info'
+      return `
+        <div class="alert alert-${calloutStyle} mb-4" role="alert">
+          <h4 class="alert-title">${escapeHtml(block.content.title || '')}</h4>
+          <div class="text-muted">${escapeHtml(block.content.message || '')}</div>
+        </div>
       `
 
     default:

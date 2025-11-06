@@ -84,6 +84,14 @@ export default function VisualBuilder({ blocks, onChange }) {
     )
   }
 
+  const renderNestedBlocks = (blocks) => {
+    return blocks.map(block => (
+      <div key={block.id} className="mb-3">
+        {renderBlockPreview(block)}
+      </div>
+    ))
+  }
+
   const renderBlockPreview = (block) => {
     switch (block.type) {
       case 'hero':
@@ -209,11 +217,19 @@ export default function VisualBuilder({ blocks, onChange }) {
         )
 
       case 'columns':
+        const columnCount = block.content.columnCount || block.content.columns?.length || 2
+        const colWidth = 12 / columnCount
         return (
-          <div className="row g-3">
+          <div className="row g-3 mb-4">
             {block.content.columns.map((col, idx) => (
-              <div key={idx} className={`col-md-${12 / block.content.columns.length}`}>
-                <div dangerouslySetInnerHTML={{ __html: col.html }} />
+              <div key={idx} className={`col-md-${colWidth}`}>
+                <div className="border rounded p-3 bg-light">
+                  {col.blocks && col.blocks.length > 0 ? (
+                    renderNestedBlocks(col.blocks)
+                  ) : (
+                    <p className="text-muted text-center mb-0">Empty column</p>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -224,6 +240,56 @@ export default function VisualBuilder({ blocks, onChange }) {
 
       case 'divider':
         return <hr style={{ borderTop: `${block.content.thickness}px solid ${block.content.color}` }} />
+
+      case 'card':
+        return (
+          <div className="card mb-4">
+            <div className="card-body text-center">
+              {block.content.icon && (
+                <div className="mb-3" style={{ fontSize: '3rem' }}>{block.content.icon}</div>
+              )}
+              <h3 className="card-title">{block.content.title}</h3>
+              <p className="text-muted">{block.content.description}</p>
+              {block.content.linkText && (
+                <a href={block.content.linkUrl} className="btn btn-primary">
+                  {block.content.linkText}
+                </a>
+              )}
+            </div>
+          </div>
+        )
+
+      case 'quote':
+        return (
+          <blockquote className="blockquote text-center mb-4">
+            <p className="mb-3 fs-4">"{block.content.quote}"</p>
+            <footer className="blockquote-footer">
+              {block.content.author}
+              {block.content.role && <cite className="ms-2">- {block.content.role}</cite>}
+            </footer>
+          </blockquote>
+        )
+
+      case 'embed':
+        return (
+          <div className="mb-4" style={{ height: `${block.content.height}px` }}>
+            {block.content.embedCode ? (
+              <div dangerouslySetInnerHTML={{ __html: block.content.embedCode }} />
+            ) : (
+              <div className="bg-light rounded p-5 text-center">
+                <p className="text-muted">No embed code</p>
+              </div>
+            )}
+          </div>
+        )
+
+      case 'callout':
+        return (
+          <div className={`alert alert-${block.content.style || 'info'} mb-4`}>
+            <h4 className="alert-title">{block.content.title}</h4>
+            <div className="text-muted">{block.content.message}</div>
+          </div>
+        )
 
       default:
         return null
