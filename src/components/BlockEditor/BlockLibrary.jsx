@@ -1,4 +1,4 @@
-import { IconLayoutColumns, IconPhoto, IconVideo, IconSquare, IconTypography, IconSeparator, IconClick, IconLayoutNavbar, IconCards, IconQuote, IconFrame, IconInfoCircle } from '@tabler/icons-react'
+import { IconLayoutColumns, IconPhoto, IconVideo, IconSquare, IconTypography, IconSeparator, IconClick, IconLayoutNavbar, IconCards, IconQuote, IconFrame, IconInfoCircle, IconPhotoPlus, IconStar, IconChevronDown, IconForms, IconMapPin, IconClock } from '@tabler/icons-react'
 
 export const BLOCK_TEMPLATES = [
   {
@@ -209,6 +209,123 @@ export const BLOCK_TEMPLATES = [
           { blocks: [] },
           { blocks: [] }
         ]
+      }
+    }
+  },
+  {
+    id: 'gallery',
+    name: 'Image Gallery',
+    icon: IconPhotoPlus,
+    category: 'Media',
+    template: {
+      type: 'gallery',
+      content: {
+        images: [
+          { url: '', alt: '', caption: '' },
+          { url: '', alt: '', caption: '' },
+          { url: '', alt: '', caption: '' }
+        ],
+        columns: 3,
+        spacing: 8
+      }
+    }
+  },
+  {
+    id: 'section',
+    name: 'Section Container',
+    icon: IconLayoutNavbar,
+    category: 'Containers',
+    template: {
+      type: 'section',
+      content: {
+        blocks: [],
+        backgroundColor: '#ffffff',
+        backgroundImage: '',
+        paddingTop: 40,
+        paddingBottom: 40,
+        fullWidth: false
+      }
+    }
+  },
+  {
+    id: 'icon-list',
+    name: 'Icon List',
+    icon: IconStar,
+    category: 'Content',
+    template: {
+      type: 'icon-list',
+      content: {
+        items: [
+          { icon: '✓', title: 'Feature 1', description: 'Description here' },
+          { icon: '✓', title: 'Feature 2', description: 'Description here' },
+          { icon: '✓', title: 'Feature 3', description: 'Description here' }
+        ]
+      }
+    }
+  },
+  {
+    id: 'accordion',
+    name: 'Accordion/FAQ',
+    icon: IconChevronDown,
+    category: 'Interactive',
+    template: {
+      type: 'accordion',
+      content: {
+        items: [
+          { title: 'Question 1', content: 'Answer 1' },
+          { title: 'Question 2', content: 'Answer 2' },
+          { title: 'Question 3', content: 'Answer 3' }
+        ]
+      }
+    }
+  },
+  {
+    id: 'form',
+    name: 'Contact Form',
+    icon: IconForms,
+    category: 'Interactive',
+    template: {
+      type: 'form',
+      content: {
+        title: 'Get In Touch',
+        fields: [
+          { type: 'text', label: 'Name', required: true },
+          { type: 'email', label: 'Email', required: true },
+          { type: 'textarea', label: 'Message', required: true }
+        ],
+        submitText: 'Send Message',
+        submitUrl: '/api/contact'
+      }
+    }
+  },
+  {
+    id: 'map',
+    name: 'Map',
+    icon: IconMapPin,
+    category: 'Media',
+    template: {
+      type: 'map',
+      content: {
+        embedCode: '',
+        height: 400,
+        address: ''
+      }
+    }
+  },
+  {
+    id: 'countdown',
+    name: 'Countdown Timer',
+    icon: IconClock,
+    category: 'Interactive',
+    template: {
+      type: 'countdown',
+      content: {
+        title: 'Event Starts In',
+        targetDate: '',
+        showDays: true,
+        showHours: true,
+        showMinutes: true,
+        showSeconds: true
       }
     }
   },

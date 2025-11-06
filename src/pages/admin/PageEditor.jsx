@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { IconArrowLeft, IconCheck, IconTrash } from '@tabler/icons-react'
 import AlertModal from '../../components/AlertModal'
 import ConfirmModal from '../../components/ConfirmModal'
-import VisualBuilder from '../../components/BlockEditor/VisualBuilder'
+import UnityEditor from '../../components/BlockEditor/UnityEditor'
 
 export default function PageEditor() {
   const { slug } = useParams()
@@ -258,13 +258,13 @@ export default function PageEditor() {
             </div>
           </div>
 
-          {/* Visual Page Builder */}
+          {/* Unity-Style Page Builder */}
           <div className="card mt-4">
             <div className="card-header">
               <h3 className="card-title">Page Content</h3>
             </div>
             <div className="card-body p-0">
-              <VisualBuilder
+              <UnityEditor
                 blocks={pageData.content}
                 onChange={handleBlocksChange}
                 pageTitle={pageData.title}
