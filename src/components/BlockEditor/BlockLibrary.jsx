@@ -12,7 +12,11 @@ export const BLOCK_TEMPLATES = [
         title: 'Welcome to Our Church',
         subtitle: 'Join us for worship, fellowship, and community',
         buttonText: 'Learn More',
-        buttonUrl: '/about'
+        buttonUrl: '/about',
+        backgroundType: 'color', // 'color', 'image', or 'video'
+        backgroundColor: '#0054a6',
+        backgroundImage: '',
+        backgroundVideo: ''
       }
     }
   },

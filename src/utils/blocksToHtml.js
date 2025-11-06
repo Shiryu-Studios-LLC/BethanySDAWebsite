@@ -12,15 +12,33 @@ export function blocksToHtml(blocks) {
 function renderBlock(block) {
   switch (block.type) {
     case 'hero':
+      const bgType = block.content.backgroundType || 'color'
+      const bgColor = block.content.backgroundColor || '#0054a6'
+      const bgImage = block.content.backgroundImage || ''
+      const bgVideo = block.content.backgroundVideo || ''
+
       return `
-        <div class="bg-primary text-white p-5 text-center rounded mb-4">
-          <h1 class="display-4 mb-3">${escapeHtml(block.content.title || '')}</h1>
-          <p class="lead mb-4">${escapeHtml(block.content.subtitle || '')}</p>
-          ${block.content.buttonText ? `
-            <a href="${escapeHtml(block.content.buttonUrl || '#')}" class="btn btn-light btn-lg">
-              ${escapeHtml(block.content.buttonText)}
-            </a>
+        <div class="text-white p-5 text-center rounded mb-4 position-relative overflow-hidden" style="background-color: ${bgType === 'color' ? escapeHtml(bgColor) : '#000'}; min-height: 400px; display: flex; align-items: center; justify-content: center;">
+          ${bgType === 'video' && bgVideo ? `
+            <video autoplay muted loop playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
+              <source src="${escapeHtml(bgVideo)}" type="video/mp4">
+            </video>
           ` : ''}
+          ${bgType === 'image' && bgImage ? `
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url(${escapeHtml(bgImage)}); background-size: cover; background-position: center; z-index: 0;"></div>
+          ` : ''}
+          ${bgType === 'video' || bgType === 'image' ? `
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); z-index: 1;"></div>
+          ` : ''}
+          <div style="position: relative; z-index: 2;">
+            <h1 class="display-4 mb-3">${escapeHtml(block.content.title || '')}</h1>
+            <p class="lead mb-4">${escapeHtml(block.content.subtitle || '')}</p>
+            ${block.content.buttonText ? `
+              <a href="${escapeHtml(block.content.buttonUrl || '#')}" class="btn btn-light btn-lg">
+                ${escapeHtml(block.content.buttonText)}
+              </a>
+            ` : ''}
+          </div>
         </div>
       `
 

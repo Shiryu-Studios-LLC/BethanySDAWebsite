@@ -80,6 +80,61 @@ export default function BlockEditModal({ block, isOpen, onSave, onCancel }) {
                 placeholder="/page-url"
               />
             </div>
+
+            <hr className="my-4" />
+            <h6 className="mb-3">Background</h6>
+
+            <div className="mb-3">
+              <label className="form-label">Background Type</label>
+              <select
+                className="form-select"
+                value={editedBlock.content.backgroundType || 'color'}
+                onChange={(e) => updateContent('backgroundType', e.target.value)}
+              >
+                <option value="color">Solid Color</option>
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+              </select>
+            </div>
+
+            {editedBlock.content.backgroundType === 'color' && (
+              <div className="mb-3">
+                <label className="form-label">Background Color</label>
+                <input
+                  type="color"
+                  className="form-control form-control-color w-100"
+                  value={editedBlock.content.backgroundColor || '#0054a6'}
+                  onChange={(e) => updateContent('backgroundColor', e.target.value)}
+                />
+              </div>
+            )}
+
+            {editedBlock.content.backgroundType === 'image' && (
+              <div className="mb-3">
+                <label className="form-label">Background Image URL</label>
+                <input
+                  type="url"
+                  className="form-control"
+                  value={editedBlock.content.backgroundImage || ''}
+                  onChange={(e) => updateContent('backgroundImage', e.target.value)}
+                  placeholder="https://example.com/image.jpg"
+                />
+              </div>
+            )}
+
+            {editedBlock.content.backgroundType === 'video' && (
+              <div className="mb-3">
+                <label className="form-label">Background Video URL</label>
+                <input
+                  type="url"
+                  className="form-control"
+                  value={editedBlock.content.backgroundVideo || ''}
+                  onChange={(e) => updateContent('backgroundVideo', e.target.value)}
+                  placeholder="https://example.com/video.mp4"
+                />
+                <small className="form-hint">Supports .mp4, .webm video files</small>
+              </div>
+            )}
           </>
         )
 

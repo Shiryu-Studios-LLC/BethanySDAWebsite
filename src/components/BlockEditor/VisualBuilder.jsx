@@ -72,15 +72,85 @@ export default function VisualBuilder({ blocks, onChange }) {
   const renderBlockPreview = (block) => {
     switch (block.type) {
       case 'hero':
+        const bgType = block.content.backgroundType || 'color'
+        const bgColor = block.content.backgroundColor || '#0054a6'
+        const bgImage = block.content.backgroundImage || ''
+        const bgVideo = block.content.backgroundVideo || ''
+
         return (
-          <div className="bg-primary text-white p-5 text-center rounded">
-            <h1 className="display-4 mb-3">{block.content.title}</h1>
-            <p className="lead mb-4">{block.content.subtitle}</p>
-            {block.content.buttonText && (
-              <a href={block.content.buttonUrl} className="btn btn-light btn-lg">
-                {block.content.buttonText}
-              </a>
+          <div
+            className="text-white p-5 text-center rounded position-relative overflow-hidden"
+            style={{
+              backgroundColor: bgType === 'color' ? bgColor : '#000',
+              minHeight: '400px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            {/* Background Video */}
+            {bgType === 'video' && bgVideo && (
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  zIndex: 0
+                }}
+              >
+                <source src={bgVideo} type="video/mp4" />
+              </video>
             )}
+
+            {/* Background Image */}
+            {bgType === 'image' && bgImage && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: `url(${bgImage})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  zIndex: 0
+                }}
+              />
+            )}
+
+            {/* Dark overlay for better text readability */}
+            {(bgType === 'video' || bgType === 'image') && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                  zIndex: 1
+                }}
+              />
+            )}
+
+            {/* Content */}
+            <div style={{ position: 'relative', zIndex: 2 }}>
+              <h1 className="display-4 mb-3">{block.content.title}</h1>
+              <p className="lead mb-4">{block.content.subtitle}</p>
+              {block.content.buttonText && (
+                <a href={block.content.buttonUrl} className="btn btn-light btn-lg">
+                  {block.content.buttonText}
+                </a>
+              )}
+            </div>
           </div>
         )
 
