@@ -143,6 +143,24 @@ export default function UnrealToolbar({ stats, loadingStats }) {
         })}
       </div>
 
+      {/* Quick Stats */}
+      {stats && (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          paddingLeft: '12px',
+          paddingRight: '12px',
+          borderLeft: `1px solid ${unrealTheme.toolbarBorder}`,
+          borderRight: `1px solid ${unrealTheme.toolbarBorder}`
+        }}>
+          <StatBadge icon={IconPhoto} value={loadingStats ? '...' : stats.images} label="Images" color="#4a7ba7" />
+          <StatBadge icon={IconVideo} value={loadingStats ? '...' : stats.videos} label="Videos" color="#5a9b5a" />
+          <StatBadge icon={IconFileText} value={loadingStats ? '...' : stats.documents} label="Docs" color="#7b8ba7" />
+          <StatBadge icon={IconPhoto} value={loadingStats ? '...' : stats.totalFiles} label="Total" color="#9b7ba7" />
+        </div>
+      )}
+
       {/* Right Side - User Menu */}
       <div style={{
         display: 'flex',
