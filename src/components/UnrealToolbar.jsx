@@ -1,4 +1,3 @@
-import { Link, useLocation } from 'react-router-dom'
 import {
   IconHome,
   IconPhoto,
@@ -26,27 +25,19 @@ const unrealTheme = {
   accentHover: '#5a8bc7',
 }
 
-export default function UnrealToolbar({ stats, loadingStats }) {
+export default function UnrealToolbar({ stats, loadingStats, activeTab, setActiveTab }) {
   const { user, logout } = useAuth()
-  const location = useLocation()
 
   const menuItems = [
-    { icon: IconHome, label: 'Dashboard', path: '/admin' },
-    { icon: IconFiles, label: 'Pages', path: '/admin/pages' },
-    { icon: IconPhoto, label: 'Media', path: '/admin/media' },
-    { icon: IconCalendar, label: 'Events', path: '/admin/events' },
-    { icon: IconMicrophone, label: 'Sermons', path: '/admin/sermons' },
-    { icon: IconFileText, label: 'Bulletins', path: '/admin/bulletins' },
-    { icon: IconSettings, label: 'Settings', path: '/admin/settings' },
-    { icon: IconBook, label: 'Docs', path: '/admin/documentation' },
+    { icon: IconHome, label: 'Dashboard', id: 'dashboard' },
+    { icon: IconFiles, label: 'Pages', id: 'pages' },
+    { icon: IconPhoto, label: 'Media', id: 'media' },
+    { icon: IconCalendar, label: 'Events', id: 'events' },
+    { icon: IconMicrophone, label: 'Sermons', id: 'sermons' },
+    { icon: IconFileText, label: 'Bulletins', id: 'bulletins' },
+    { icon: IconSettings, label: 'Settings', id: 'settings' },
+    { icon: IconBook, label: 'Docs', id: 'documentation' },
   ]
-
-  const isActive = (path) => {
-    if (path === '/admin') {
-      return location.pathname === path
-    }
-    return location.pathname.startsWith(path)
-  }
 
   return (
     <div style={{
@@ -102,11 +93,11 @@ export default function UnrealToolbar({ stats, loadingStats }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: '2px', flex: 1 }}>
         {menuItems.map((item) => {
           const Icon = item.icon
-          const active = isActive(item.path)
+          const active = activeTab === item.id
           return (
-            <Link
-              key={item.path}
-              to={item.path}
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -116,7 +107,6 @@ export default function UnrealToolbar({ stats, loadingStats }) {
                 borderRadius: '3px',
                 color: active ? '#ffffff' : unrealTheme.textMuted,
                 backgroundColor: active ? unrealTheme.buttonActive : 'transparent',
-                textDecoration: 'none',
                 fontSize: '13px',
                 fontWeight: active ? '500' : '400',
                 transition: 'all 0.15s ease',
@@ -138,7 +128,7 @@ export default function UnrealToolbar({ stats, loadingStats }) {
             >
               <Icon size={16} />
               <span>{item.label}</span>
-            </Link>
+            </button>
           )
         })}
       </div>

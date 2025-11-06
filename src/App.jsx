@@ -5,15 +5,8 @@ import Events from './pages/Events'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
 import DynamicPage from './pages/DynamicPage'
-import AdminPortal from './pages/admin/AdminPortal'
-import MediaLibrary from './pages/admin/MediaLibrary'
-import Sermons from './pages/admin/Sermons'
-import Bulletins from './pages/admin/Bulletins'
-import AdminEvents from './pages/admin/AdminEvents'
-import SiteSettings from './pages/admin/SiteSettings'
-import Pages from './pages/admin/Pages'
+import UnifiedAdminPortal from './pages/admin/UnifiedAdminPortal'
 import PageEditor from './pages/admin/PageEditor'
-import Documentation from './pages/admin/Documentation'
 
 function App() {
   return (
@@ -34,55 +27,7 @@ function App() {
           path="admin"
           element={
             <ProtectedRoute>
-              <AdminPortal />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/media"
-          element={
-            <ProtectedRoute>
-              <MediaLibrary />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/sermons"
-          element={
-            <ProtectedRoute>
-              <Sermons />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/bulletins"
-          element={
-            <ProtectedRoute>
-              <Bulletins />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/events"
-          element={
-            <ProtectedRoute>
-              <AdminEvents />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/settings"
-          element={
-            <ProtectedRoute>
-              <SiteSettings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/pages"
-          element={
-            <ProtectedRoute>
-              <Pages />
+              <UnifiedAdminPortal />
             </ProtectedRoute>
           }
         />
@@ -91,14 +36,6 @@ function App() {
           element={
             <ProtectedRoute>
               <PageEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/documentation"
-          element={
-            <ProtectedRoute>
-              <Documentation />
             </ProtectedRoute>
           }
         />
