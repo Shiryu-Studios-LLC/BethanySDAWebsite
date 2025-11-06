@@ -359,10 +359,8 @@ export const BLOCK_TEMPLATES = [
 export default function BlockLibrary({ onAddBlock, compact = false }) {
   const categories = ['Containers', 'Content', 'Media', 'Interactive', 'Decorative']
 
-  // In compact mode, exclude nested containers to prevent infinite nesting
-  const filteredCategories = compact
-    ? categories.filter(c => c !== 'Containers')
-    : categories
+  // Show all categories in all modes
+  const filteredCategories = categories
 
   return (
     <div className="block-library">

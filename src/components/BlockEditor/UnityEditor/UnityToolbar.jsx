@@ -1,4 +1,4 @@
-import { IconEye, IconCode, IconPlayerPlay, IconLayout2 } from '@tabler/icons-react'
+import { IconEye, IconCode } from '@tabler/icons-react'
 
 export default function UnityToolbar({ viewMode, setViewMode, blockCount }) {
   return (
@@ -48,25 +48,6 @@ export default function UnityToolbar({ viewMode, setViewMode, blockCount }) {
           Preview
         </button>
       </div>
-
-      {/* Divider */}
-      <div style={{ width: '1px', height: '24px', backgroundColor: '#2b2b2b' }}></div>
-
-      {/* Layout Controls */}
-      <button
-        className="btn btn-sm"
-        style={{
-          backgroundColor: 'transparent',
-          border: '1px solid #2b2b2b',
-          color: '#cbcbcb',
-          padding: '4px 12px',
-          fontSize: '12px'
-        }}
-        title="Layout"
-      >
-        <IconLayout2 size={14} className="me-1" />
-        Layout
-      </button>
 
       {/* Spacer */}
       <div style={{ flex: 1 }}></div>
