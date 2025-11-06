@@ -136,8 +136,8 @@ async function createPage(request, env, corsHeaders) {
 
   // Insert new page
   const result = await env.DB.prepare(`
-    INSERT INTO pages (slug, title, content, meta_description, is_published, show_in_nav, nav_order)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO pages (slug, title, content, meta_description, is_published, show_in_nav, nav_order, show_page_header)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(
     slug,
     page.title,
@@ -145,7 +145,8 @@ async function createPage(request, env, corsHeaders) {
     page.meta_description || '',
     page.is_published !== undefined ? (page.is_published ? 1 : 0) : 1,
     page.show_in_nav ? 1 : 0,
-    page.nav_order || 999
+    page.nav_order || 999,
+    page.show_page_header !== undefined ? (page.show_page_header ? 1 : 0) : 1
   ).run()
 
   return jsonResponse({
@@ -197,6 +198,10 @@ async function updatePage(request, env, corsHeaders, id) {
   if (page.nav_order !== undefined) {
     updates.push('nav_order = ?')
     values.push(page.nav_order)
+  }
+  if (page.show_page_header !== undefined) {
+    updates.push('show_page_header = ?')
+    values.push(page.show_page_header ? 1 : 0)
   }
 
   updates.push('updated_at = CURRENT_TIMESTAMP')
