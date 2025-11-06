@@ -18,7 +18,7 @@ export default function LanguageSwitcher() {
       new window.google.translate.TranslateElement(
         {
           pageLanguage: 'en',
-          includedLanguages: 'en,ht,fr,es,pt', // English, Haitian Creole, French, Spanish, Portuguese
+          includedLanguages: 'ht,fr,es,pt', // Haitian Creole, French, Spanish, Portuguese (English is always included as default)
           layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
           autoDisplay: false
         },

@@ -13,6 +13,7 @@ import AdminEvents from './pages/admin/AdminEvents'
 import SiteSettings from './pages/admin/SiteSettings'
 import Pages from './pages/admin/Pages'
 import PageEditor from './pages/admin/PageEditor'
+import Documentation from './pages/admin/Documentation'
 
 function App() {
   return (
@@ -88,6 +89,14 @@ function App() {
           element={
             <ProtectedRoute>
               <PageEditor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/documentation"
+          element={
+            <ProtectedRoute>
+              <Documentation />
             </ProtectedRoute>
           }
         />

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { IconPhoto, IconFiles, IconCalendar, IconMicrophone, IconFileText, IconSettings, IconLogout, IconVideo } from '@tabler/icons-react'
+import { IconPhoto, IconFiles, IconCalendar, IconMicrophone, IconFileText, IconSettings, IconLogout, IconVideo, IconBook } from '@tabler/icons-react'
 import { useAuth } from '../../contexts/AuthContext'
 
 export default function AdminPortal() {
@@ -95,6 +95,13 @@ export default function AdminPortal() {
       icon: IconSettings,
       link: '/admin/settings',
       color: 'secondary'
+    },
+    {
+      title: 'Documentation',
+      description: 'Complete guide to managing your church website and using all features.',
+      icon: IconBook,
+      link: '/admin/documentation',
+      color: 'purple'
     }
   ]
 
