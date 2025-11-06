@@ -202,6 +202,66 @@ export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate }) 
           </div>
         )
 
+      case 'card':
+        return (
+          <div className="p-4">
+            <div className="card">
+              <div className="card-body text-center">
+                {block.content.icon && (
+                  <div className="mb-3" style={{ fontSize: '3rem' }}>{block.content.icon}</div>
+                )}
+                <h3 className="card-title">{block.content.title || 'Card Title'}</h3>
+                <p className="text-muted">{block.content.description || 'Card description'}</p>
+                {block.content.linkText && (
+                  <a href={block.content.linkUrl || '#'} className="btn btn-primary">
+                    {block.content.linkText}
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        )
+
+      case 'quote':
+        return (
+          <div className="p-4">
+            <blockquote className="blockquote text-center">
+              <p className="mb-3 fs-4">"{block.content.quote || 'Quote text'}"</p>
+              <footer className="blockquote-footer">
+                {block.content.author || 'Author Name'}
+                {block.content.role && <cite className="ms-2">- {block.content.role}</cite>}
+              </footer>
+            </blockquote>
+          </div>
+        )
+
+      case 'embed':
+        return (
+          <div className="p-4">
+            {block.content.embedCode ? (
+              <div
+                style={{ height: `${block.content.height || 400}px` }}
+                dangerouslySetInnerHTML={{ __html: block.content.embedCode }}
+              />
+            ) : (
+              <div className="bg-light rounded p-5 text-center">
+                <p className="text-muted">No embed code provided</p>
+              </div>
+            )}
+          </div>
+        )
+
+      case 'callout':
+        const calloutStyle = block.content.style || 'info'
+        return (
+          <div className="p-4">
+            <div className={`alert alert-${calloutStyle}`} role="alert">
+              <h4 className="alert-title">{block.content.title || 'Notice'}</h4>
+              <div className="text-muted">{block.content.message || 'Message'}</div>
+            </div>
+          </div>
+        )
+
       default:
         return (
           <div className="p-4 bg-light">

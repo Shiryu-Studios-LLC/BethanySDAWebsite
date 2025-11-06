@@ -1,4 +1,4 @@
-import { IconLayoutColumns, IconPhoto, IconVideo, IconSquare, IconTypography, IconSeparator, IconClick, IconLayoutNavbar } from '@tabler/icons-react'
+import { IconLayoutColumns, IconPhoto, IconVideo, IconSquare, IconTypography, IconSeparator, IconClick, IconLayoutNavbar, IconCards, IconQuote, IconFrame, IconInfoCircle } from '@tabler/icons-react'
 
 export const BLOCK_TEMPLATES = [
   {
@@ -88,17 +88,92 @@ export const BLOCK_TEMPLATES = [
     }
   },
   {
-    id: 'columns',
+    id: 'columns-2',
     name: '2 Columns',
     icon: IconLayoutColumns,
     category: 'Layout',
     template: {
       type: 'columns',
       content: {
+        columnCount: 2,
         columns: [
           { html: '<p>Column 1 content</p>' },
           { html: '<p>Column 2 content</p>' }
         ]
+      }
+    }
+  },
+  {
+    id: 'columns-3',
+    name: '3 Columns',
+    icon: IconLayoutColumns,
+    category: 'Layout',
+    template: {
+      type: 'columns',
+      content: {
+        columnCount: 3,
+        columns: [
+          { html: '<p>Column 1</p>' },
+          { html: '<p>Column 2</p>' },
+          { html: '<p>Column 3</p>' }
+        ]
+      }
+    }
+  },
+  {
+    id: 'card',
+    name: 'Feature Card',
+    icon: IconCards,
+    category: 'Elements',
+    template: {
+      type: 'card',
+      content: {
+        title: 'Feature Title',
+        description: 'Feature description goes here',
+        icon: '🌟',
+        linkText: 'Learn More',
+        linkUrl: '#'
+      }
+    }
+  },
+  {
+    id: 'quote',
+    name: 'Quote',
+    icon: IconQuote,
+    category: 'Elements',
+    template: {
+      type: 'quote',
+      content: {
+        quote: 'Enter your quote or testimonial here...',
+        author: 'Author Name',
+        role: 'Role or Title'
+      }
+    }
+  },
+  {
+    id: 'embed',
+    name: 'Embed/Iframe',
+    icon: IconFrame,
+    category: 'Media',
+    template: {
+      type: 'embed',
+      content: {
+        embedCode: '',
+        height: 400
+      }
+    }
+  },
+  {
+    id: 'callout',
+    name: 'Callout Box',
+    icon: IconInfoCircle,
+    category: 'Elements',
+    template: {
+      type: 'callout',
+      content: {
+        title: 'Important Notice',
+        message: 'Your callout message here',
+        style: 'info' // info, success, warning, danger
       }
     }
   },

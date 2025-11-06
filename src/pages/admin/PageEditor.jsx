@@ -15,10 +15,35 @@ export default function PageEditor() {
   const [loading, setLoading] = useState(!isNewPage)
   const [alert, setAlert] = useState({ message: '', type: '' })
   const [confirmDelete, setConfirmDelete] = useState(false)
+  // Default starter blocks for new pages
+  const defaultBlocks = [
+    {
+      id: `block-${Date.now()}-1`,
+      type: 'hero',
+      content: {
+        title: 'Page Title',
+        subtitle: 'Add your page description here',
+        buttonText: '',
+        buttonUrl: '',
+        backgroundType: 'color',
+        backgroundColor: '#0054a6',
+        backgroundImage: '',
+        backgroundVideo: ''
+      }
+    },
+    {
+      id: `block-${Date.now()}-2`,
+      type: 'text',
+      content: {
+        html: '<p>Start writing your content here...</p>'
+      }
+    }
+  ]
+
   const [pageData, setPageData] = useState({
     title: '',
     slug: '',
-    content: [],
+    content: isNewPage ? defaultBlocks : [],
     meta_description: '',
     is_published: true,
     show_in_nav: false,

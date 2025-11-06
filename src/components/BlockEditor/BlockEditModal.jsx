@@ -374,6 +374,159 @@ export default function BlockEditModal({ block, isOpen, onSave, onCancel }) {
           </>
         )
 
+      case 'card':
+        return (
+          <>
+            <div className="mb-3">
+              <label className="form-label">Icon/Emoji</label>
+              <input
+                type="text"
+                className="form-control"
+                value={editedBlock.content.icon || ''}
+                onChange={(e) => updateContent('icon', e.target.value)}
+                placeholder="🌟"
+              />
+              <small className="form-hint">Enter an emoji or leave empty</small>
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Title</label>
+              <input
+                type="text"
+                className="form-control"
+                value={editedBlock.content.title || ''}
+                onChange={(e) => updateContent('title', e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Description</label>
+              <textarea
+                className="form-control"
+                rows="3"
+                value={editedBlock.content.description || ''}
+                onChange={(e) => updateContent('description', e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Link Text (optional)</label>
+              <input
+                type="text"
+                className="form-control"
+                value={editedBlock.content.linkText || ''}
+                onChange={(e) => updateContent('linkText', e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Link URL</label>
+              <input
+                type="text"
+                className="form-control"
+                value={editedBlock.content.linkUrl || ''}
+                onChange={(e) => updateContent('linkUrl', e.target.value)}
+                placeholder="/page-url or https://..."
+              />
+            </div>
+          </>
+        )
+
+      case 'quote':
+        return (
+          <>
+            <div className="mb-3">
+              <label className="form-label">Quote Text</label>
+              <textarea
+                className="form-control"
+                rows="3"
+                value={editedBlock.content.quote || ''}
+                onChange={(e) => updateContent('quote', e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Author Name</label>
+              <input
+                type="text"
+                className="form-control"
+                value={editedBlock.content.author || ''}
+                onChange={(e) => updateContent('author', e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Author Role/Title (optional)</label>
+              <input
+                type="text"
+                className="form-control"
+                value={editedBlock.content.role || ''}
+                onChange={(e) => updateContent('role', e.target.value)}
+                placeholder="Member, Pastor, etc."
+              />
+            </div>
+          </>
+        )
+
+      case 'embed':
+        return (
+          <>
+            <div className="mb-3">
+              <label className="form-label">Embed Code or iframe URL</label>
+              <textarea
+                className="form-control"
+                rows="4"
+                value={editedBlock.content.embedCode || ''}
+                onChange={(e) => updateContent('embedCode', e.target.value)}
+                placeholder="Paste full iframe or embed code here"
+              />
+              <small className="form-hint">Paste iframe embed code from Google Maps, forms, etc.</small>
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Height (pixels)</label>
+              <input
+                type="number"
+                className="form-control"
+                value={editedBlock.content.height || 400}
+                onChange={(e) => updateContent('height', parseInt(e.target.value))}
+                min="100"
+                max="800"
+              />
+            </div>
+          </>
+        )
+
+      case 'callout':
+        return (
+          <>
+            <div className="mb-3">
+              <label className="form-label">Title</label>
+              <input
+                type="text"
+                className="form-control"
+                value={editedBlock.content.title || ''}
+                onChange={(e) => updateContent('title', e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Message</label>
+              <textarea
+                className="form-control"
+                rows="3"
+                value={editedBlock.content.message || ''}
+                onChange={(e) => updateContent('message', e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Style</label>
+              <select
+                className="form-select"
+                value={editedBlock.content.style || 'info'}
+                onChange={(e) => updateContent('style', e.target.value)}
+              >
+                <option value="info">Info (Blue)</option>
+                <option value="success">Success (Green)</option>
+                <option value="warning">Warning (Yellow)</option>
+                <option value="danger">Danger (Red)</option>
+              </select>
+            </div>
+          </>
+        )
+
       default:
         return <p className="text-muted">No editor available for this block type.</p>
     }
