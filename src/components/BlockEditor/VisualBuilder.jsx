@@ -22,10 +22,50 @@ export default function VisualBuilder({ blocks, onChange, pageTitle = '', pageSu
 
     if (!over) return
 
+    const overId = over.id.toString()
+
     // Check if dropping into a column
-    if (over.id.toString().startsWith('column-')) {
-      // Dropping into a column - handle via ColumnBlock's onBlocksChange
-      return
+    if (overId.startsWith('column-')) {
+      // Extract column information from the ID (format: "column-blockId-columnIndex")
+      const parts = overId.split('-')
+      if (parts.length >= 3) {
+        const columnBlockId = parts.slice(1, -1).join('-') // Handle block IDs with dashes
+        const columnIndex = parseInt(parts[parts.length - 1])
+
+        // Find the column block
+        const columnBlock = blocks.find(b => b.id === columnBlockId && b.type === 'columns')
+
+        if (columnBlock) {
+          // Remove block from its current location
+          const draggedBlock = findBlockById(active.id)
+          if (draggedBlock) {
+            // Remove from current location
+            const newBlocks = removeBlockById(blocks, active.id)
+
+            // Add to target column
+            const updatedBlocks = newBlocks.map(b => {
+              if (b.id === columnBlockId && b.type === 'columns') {
+                const newColumns = [...b.content.columns]
+                newColumns[columnIndex] = {
+                  ...newColumns[columnIndex],
+                  blocks: [...(newColumns[columnIndex].blocks || []), draggedBlock]
+                }
+                return {
+                  ...b,
+                  content: {
+                    ...b.content,
+                    columns: newColumns
+                  }
+                }
+              }
+              return b
+            })
+
+            onChange(updatedBlocks)
+            return
+          }
+        }
+      }
     }
 
     // Handle reordering top-level blocks
@@ -38,6 +78,40 @@ export default function VisualBuilder({ blocks, onChange, pageTitle = '', pageSu
         onChange(newBlocks)
       }
     }
+  }
+
+  // Helper function to find a block by ID (including nested blocks)
+  const findBlockById = (blockId) => {
+    for (const block of blocks) {
+      if (block.id === blockId) return block
+
+      if (block.type === 'columns' && block.content.columns) {
+        for (const column of block.content.columns) {
+          const found = column.blocks?.find(b => b.id === blockId)
+          if (found) return found
+        }
+      }
+    }
+    return null
+  }
+
+  // Helper function to remove a block by ID (including from nested blocks)
+  const removeBlockById = (blockList, blockId) => {
+    return blockList.filter(b => b.id !== blockId).map(block => {
+      if (block.type === 'columns' && block.content.columns) {
+        return {
+          ...block,
+          content: {
+            ...block.content,
+            columns: block.content.columns.map(col => ({
+              ...col,
+              blocks: (col.blocks || []).filter(b => b.id !== blockId)
+            }))
+          }
+        }
+      }
+      return block
+    })
   }
 
   const addBlock = (template) => {

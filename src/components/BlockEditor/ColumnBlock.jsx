@@ -1,5 +1,5 @@
-import { useDroppable } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { useDroppable, DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import BlockRenderer from './BlockRenderer'
 import BlockLibrary from './BlockLibrary'
 import { IconPlus } from '@tabler/icons-react'
@@ -9,6 +9,27 @@ export default function ColumnBlock({ columnIndex, blocks, onBlocksChange, onEdi
     id: `column-${columnIndex}`,
     data: { columnIndex }
   })
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // Allow 8px of movement before dragging starts
+      },
+    })
+  )
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+
+    const oldIndex = blocks.findIndex(b => b.id === active.id)
+    const newIndex = blocks.findIndex(b => b.id === over.id)
+
+    if (oldIndex !== -1 && newIndex !== -1) {
+      const reorderedBlocks = arrayMove(blocks, oldIndex, newIndex)
+      onBlocksChange(reorderedBlocks)
+    }
+  }
 
   const addBlockToColumn = (template) => {
     const newBlock = {
@@ -64,18 +85,20 @@ export default function ColumnBlock({ columnIndex, blocks, onBlocksChange, onEdi
           <small>Click + to add blocks</small>
         </div>
       ) : (
-        <SortableContext items={blocks.map(b => b.id)} strategy={verticalListSortingStrategy}>
-          {blocks.map(block => (
-            <BlockRenderer
-              key={block.id}
-              block={block}
-              onEdit={onEdit}
-              onDelete={() => deleteBlockFromColumn(block.id)}
-              onDuplicate={() => duplicateBlockInColumn(block)}
-              isNested={true}
-            />
-          ))}
-        </SortableContext>
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={blocks.map(b => b.id)} strategy={verticalListSortingStrategy}>
+            {blocks.map(block => (
+              <BlockRenderer
+                key={block.id}
+                block={block}
+                onEdit={onEdit}
+                onDelete={() => deleteBlockFromColumn(block.id)}
+                onDuplicate={() => duplicateBlockInColumn(block)}
+                isNested={true}
+              />
+            ))}
+          </SortableContext>
+        </DndContext>
       )}
     </div>
   )
