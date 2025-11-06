@@ -5,7 +5,7 @@ export const BLOCK_TEMPLATES = [
     id: 'hero',
     name: 'Hero Section',
     icon: IconLayoutNavbar,
-    category: 'Layout',
+    category: 'Containers',
     template: {
       type: 'hero',
       content: {
@@ -13,10 +13,12 @@ export const BLOCK_TEMPLATES = [
         subtitle: 'Join us for worship, fellowship, and community',
         buttonText: 'Learn More',
         buttonUrl: '/about',
-        backgroundType: 'color', // 'color', 'image', or 'video'
+        backgroundType: 'color', // 'color', 'image', 'video', or 'gradient'
         backgroundColor: '#0054a6',
+        backgroundGradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         backgroundImage: '',
-        backgroundVideo: ''
+        backgroundVideo: '',
+        spacing: { marginTop: 0, marginBottom: 16, paddingTop: 80, paddingBottom: 80 }
       }
     }
   },
@@ -24,7 +26,7 @@ export const BLOCK_TEMPLATES = [
     id: 'heading',
     name: 'Heading',
     icon: IconTypography,
-    category: 'Text',
+    category: 'Content',
     template: {
       type: 'heading',
       content: {
@@ -38,7 +40,7 @@ export const BLOCK_TEMPLATES = [
     id: 'text',
     name: 'Text Block',
     icon: IconTypography,
-    category: 'Text',
+    category: 'Content',
     template: {
       type: 'text',
       content: {
@@ -76,7 +78,7 @@ export const BLOCK_TEMPLATES = [
     id: 'button',
     name: 'Button',
     icon: IconClick,
-    category: 'Elements',
+    category: 'Interactive',
     template: {
       type: 'button',
       content: {
@@ -91,7 +93,7 @@ export const BLOCK_TEMPLATES = [
     id: 'columns-2',
     name: '2 Columns',
     icon: IconLayoutColumns,
-    category: 'Layout',
+    category: 'Containers',
     template: {
       type: 'columns',
       content: {
@@ -107,7 +109,7 @@ export const BLOCK_TEMPLATES = [
     id: 'columns-3',
     name: '3 Columns',
     icon: IconLayoutColumns,
-    category: 'Layout',
+    category: 'Containers',
     template: {
       type: 'columns',
       content: {
@@ -124,7 +126,7 @@ export const BLOCK_TEMPLATES = [
     id: 'card',
     name: 'Feature Card',
     icon: IconCards,
-    category: 'Elements',
+    category: 'Content',
     template: {
       type: 'card',
       content: {
@@ -140,7 +142,7 @@ export const BLOCK_TEMPLATES = [
     id: 'quote',
     name: 'Quote',
     icon: IconQuote,
-    category: 'Elements',
+    category: 'Content',
     template: {
       type: 'quote',
       content: {
@@ -167,7 +169,7 @@ export const BLOCK_TEMPLATES = [
     id: 'callout',
     name: 'Callout Box',
     icon: IconInfoCircle,
-    category: 'Elements',
+    category: 'Content',
     template: {
       type: 'callout',
       content: {
@@ -178,10 +180,43 @@ export const BLOCK_TEMPLATES = [
     }
   },
   {
+    id: 'rows-2',
+    name: '2 Rows',
+    icon: IconLayoutColumns,
+    category: 'Containers',
+    template: {
+      type: 'rows',
+      content: {
+        rowCount: 2,
+        rows: [
+          { blocks: [] },
+          { blocks: [] }
+        ]
+      }
+    }
+  },
+  {
+    id: 'rows-3',
+    name: '3 Rows',
+    icon: IconLayoutColumns,
+    category: 'Containers',
+    template: {
+      type: 'rows',
+      content: {
+        rowCount: 3,
+        rows: [
+          { blocks: [] },
+          { blocks: [] },
+          { blocks: [] }
+        ]
+      }
+    }
+  },
+  {
     id: 'spacer',
     name: 'Spacer',
     icon: IconSquare,
-    category: 'Layout',
+    category: 'Decorative',
     template: {
       type: 'spacer',
       content: {
@@ -193,7 +228,7 @@ export const BLOCK_TEMPLATES = [
     id: 'divider',
     name: 'Divider',
     icon: IconSeparator,
-    category: 'Elements',
+    category: 'Decorative',
     template: {
       type: 'divider',
       content: {
@@ -205,7 +240,7 @@ export const BLOCK_TEMPLATES = [
 ]
 
 export default function BlockLibrary({ onAddBlock }) {
-  const categories = ['Layout', 'Text', 'Media', 'Elements']
+  const categories = ['Containers', 'Content', 'Media', 'Interactive', 'Decorative']
 
   return (
     <div className="block-library">
