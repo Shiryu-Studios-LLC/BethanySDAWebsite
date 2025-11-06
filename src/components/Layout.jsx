@@ -1,5 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import Footer from './Footer'
+import LanguageSwitcher from './LanguageSwitcher'
 
 export default function Layout() {
   const location = useLocation()
@@ -7,6 +8,21 @@ export default function Layout() {
 
   return (
     <div className="page d-flex flex-column min-vh-100">
+      {/* Language Switcher for Homepage (fixed position) */}
+      {isHomePage && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            zIndex: 1000
+          }}
+        >
+          <LanguageSwitcher />
+        </div>
+      )}
+
+      {/* Regular Navigation for other pages */}
       {!isHomePage && (
         <header className="navbar navbar-expand-md navbar-dark bg-dark sticky-top d-print-none shadow">
           <div className="container-xl">
@@ -53,6 +69,9 @@ export default function Layout() {
                     <Link to="/contact" className="nav-link">
                       Contact
                     </Link>
+                  </li>
+                  <li className="nav-item d-flex align-items-center ms-md-2">
+                    <LanguageSwitcher />
                   </li>
                 </ul>
               </div>
