@@ -97,8 +97,8 @@ export const BLOCK_TEMPLATES = [
       content: {
         columnCount: 2,
         columns: [
-          { html: '<p>Column 1 content</p>' },
-          { html: '<p>Column 2 content</p>' }
+          { blocks: [] },
+          { blocks: [] }
         ]
       }
     }
@@ -113,9 +113,9 @@ export const BLOCK_TEMPLATES = [
       content: {
         columnCount: 3,
         columns: [
-          { html: '<p>Column 1</p>' },
-          { html: '<p>Column 2</p>' },
-          { html: '<p>Column 3</p>' }
+          { blocks: [] },
+          { blocks: [] },
+          { blocks: [] }
         ]
       }
     }

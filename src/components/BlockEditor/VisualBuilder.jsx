@@ -57,6 +57,21 @@ export default function VisualBuilder({ blocks, onChange }) {
     setEditingBlock(null)
   }
 
+  const handleNestedBlocksChange = (columnBlockId, newColumns) => {
+    onChange(blocks.map(b => {
+      if (b.id === columnBlockId && b.type === 'columns') {
+        return {
+          ...b,
+          content: {
+            ...b.content,
+            columns: newColumns
+          }
+        }
+      }
+      return b
+    }))
+  }
+
   const renderPreview = () => {
     return (
       <div className="preview-mode">
@@ -265,6 +280,7 @@ export default function VisualBuilder({ blocks, onChange }) {
                       onEdit={setEditingBlock}
                       onDelete={deleteBlock}
                       onDuplicate={duplicateBlock}
+                      onNestedBlocksChange={handleNestedBlocksChange}
                     />
                   ))}
                 </SortableContext>

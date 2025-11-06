@@ -1,8 +1,9 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { IconGripVertical, IconEdit, IconTrash, IconCopy } from '@tabler/icons-react'
+import ColumnBlock from './ColumnBlock'
 
-export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate }) {
+export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate, isNested = false, onNestedBlocksChange }) {
   const {
     attributes,
     listeners,
@@ -174,12 +175,34 @@ export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate }) 
         )
 
       case 'columns':
+        const columnCount = block.content.columnCount || block.content.columns?.length || 2
+        const colWidth = 12 / columnCount
+
         return (
           <div className="p-4">
             <div className="row g-3">
-              {(block.content.columns || [{ html: '' }, { html: '' }]).map((col, idx) => (
-                <div key={idx} className={`col-md-${12 / block.content.columns.length}`}>
-                  <div className="border rounded p-3" dangerouslySetInnerHTML={{ __html: col.html || `<p>Column ${idx + 1}</p>` }} />
+              {(block.content.columns || []).map((col, idx) => (
+                <div key={idx} className={`col-md-${colWidth}`}>
+                  {!isNested ? (
+                    <ColumnBlock
+                      columnIndex={`${block.id}-${idx}`}
+                      blocks={col.blocks || []}
+                      onBlocksChange={(newBlocks) => {
+                        if (onNestedBlocksChange) {
+                          const newColumns = [...block.content.columns]
+                          newColumns[idx] = { ...newColumns[idx], blocks: newBlocks }
+                          onNestedBlocksChange(block.id, newColumns)
+                        }
+                      }}
+                      onEdit={onEdit}
+                      onDelete={onDelete}
+                      onDuplicate={onDuplicate}
+                    />
+                  ) : (
+                    <div className="border rounded p-3 bg-light">
+                      <small className="text-muted">Nested columns not supported</small>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
