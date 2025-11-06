@@ -97,11 +97,13 @@ export default function BrowserFrame({ children }) {
 
       {/* Browser Content */}
       <div
+        className="page"
         style={{
-          backgroundColor: '#ffffff',
+          backgroundColor: '#1e2126',
           minHeight: '400px',
           maxHeight: '60vh',
-          overflowY: 'auto'
+          overflowY: 'auto',
+          color: '#f8f9fa'
         }}
       >
         {children}
