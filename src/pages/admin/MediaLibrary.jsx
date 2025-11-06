@@ -19,6 +19,7 @@ export default function MediaLibrary() {
     { value: 'images/hero', label: 'Hero Images' },
     { value: 'images/events', label: 'Events' },
     { value: 'images/gallery', label: 'Gallery' },
+    { value: 'images/logos', label: 'Logos' },
     { value: 'videos/hero', label: 'Hero Videos' },
     { value: 'videos/sermons', label: 'Sermons' },
     { value: 'documents/bulletins', label: 'Bulletins' }

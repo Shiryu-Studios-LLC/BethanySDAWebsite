@@ -3,24 +3,31 @@ import { IconLock } from '@tabler/icons-react'
 import LanguageSwitcher from './LanguageSwitcher'
 
 export default function Footer() {
-  const R2_PUBLIC_URL = import.meta.env.VITE_R2_PUBLIC_URL || 'https://pub-fc5bfa77df6042a081860f61dded7bb3.r2.dev'
-
   return (
     <footer className="footer bg-dark text-white mt-auto py-3">
       <div className="container-xl">
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
-          <div className="d-flex align-items-center gap-3">
+        <div className="d-flex flex-column align-items-center gap-3">
+          {/* Logo */}
+          <div className="d-flex justify-content-center">
             <img
-              src={`${R2_PUBLIC_URL}/sda-logo.svg`}
+              src="/sda-logo.svg"
               alt="Seventh-day Adventist Logo"
-              style={{ height: '40px', width: 'auto' }}
+              style={{ height: '50px', width: 'auto' }}
+              onError={(e) => {
+                console.error('Failed to load SDA logo')
+                e.target.style.display = 'none'
+              }}
             />
+          </div>
+
+          {/* Footer content */}
+          <div className="d-flex justify-content-center align-items-center flex-wrap gap-3 w-100">
             <p className="text-muted mb-0 small">
               © {new Date().getFullYear()} Bethany SDA Church. All rights reserved.
             </p>
-          </div>
-          <div className="d-flex align-items-center gap-3 flex-wrap">
+            <span className="text-muted">|</span>
             <LanguageSwitcher />
+            <span className="text-muted">|</span>
             <Link
               to="/login"
               className="text-muted text-decoration-none small"
