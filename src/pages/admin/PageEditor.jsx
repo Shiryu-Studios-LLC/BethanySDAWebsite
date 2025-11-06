@@ -264,7 +264,13 @@ export default function PageEditor() {
               <h3 className="card-title">Page Content</h3>
             </div>
             <div className="card-body p-0">
-              <VisualBuilder blocks={pageData.content} onChange={handleBlocksChange} />
+              <VisualBuilder
+                blocks={pageData.content}
+                onChange={handleBlocksChange}
+                pageTitle={pageData.title}
+                pageSubtitle={pageData.meta_description}
+                showPageHeader={pageData.show_page_header}
+              />
             </div>
           </div>
 

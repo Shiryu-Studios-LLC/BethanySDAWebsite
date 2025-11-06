@@ -256,17 +256,19 @@ export default function BlockLibrary({ onAddBlock }) {
         return (
           <div key={category} className="p-3 border-bottom">
             <h6 className="text-muted text-uppercase small mb-2">{category}</h6>
-            <div className="d-grid gap-2">
+            <div className="d-flex flex-wrap gap-2">
               {categoryBlocks.map(block => {
                 const Icon = block.icon
                 return (
                   <button
                     key={block.id}
-                    className="btn btn-outline-secondary text-start d-flex align-items-center gap-2"
+                    className="btn btn-outline-secondary"
                     onClick={() => onAddBlock(block.template)}
+                    title={block.name}
+                    style={{ width: 'calc(50% - 4px)' }}
                   >
-                    <Icon size={20} />
-                    {block.name}
+                    <Icon size={18} className="me-1" />
+                    <span className="small">{block.name}</span>
                   </button>
                 )
               })}

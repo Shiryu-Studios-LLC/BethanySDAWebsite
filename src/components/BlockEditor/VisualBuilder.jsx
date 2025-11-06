@@ -6,7 +6,7 @@ import BlockLibrary from './BlockLibrary'
 import BlockEditModal from './BlockEditModal'
 import { IconEye, IconCode } from '@tabler/icons-react'
 
-export default function VisualBuilder({ blocks, onChange }) {
+export default function VisualBuilder({ blocks, onChange, pageTitle = '', pageSubtitle = '', showPageHeader = true }) {
   const [editingBlock, setEditingBlock] = useState(null)
   const [viewMode, setViewMode] = useState('visual') // 'visual' or 'preview'
 
@@ -75,6 +75,23 @@ export default function VisualBuilder({ blocks, onChange }) {
   const renderPreview = () => {
     return (
       <div className="preview-mode">
+        {/* Page Header - matches DynamicPage.jsx */}
+        {showPageHeader && (
+          <section className="py-5 bg-dark text-white mb-4">
+            <div className="container py-5">
+              <div className="row justify-content-center text-center">
+                <div className="col-lg-8">
+                  <h1 className="display-4 fw-bold mb-4">{pageTitle || 'Page Title'}</h1>
+                  {pageSubtitle && (
+                    <p className="lead mb-0">{pageSubtitle}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Page Blocks */}
         {blocks.map(block => (
           <div key={block.id} className="mb-4">
             {renderBlockPreview(block)}
