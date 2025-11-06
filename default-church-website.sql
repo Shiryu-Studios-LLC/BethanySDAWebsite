@@ -1,38 +1,38 @@
 -- Professional Default Church Website Template
--- This creates a complete, professional church website with sample content
+-- Complete website inspired by Houston SDA with all modern components
+-- This creates a professional church website with rich content
 
 -- Clear existing pages (keep tables structure)
 DELETE FROM pages;
 
--- Homepage with professional hero and content
+-- Homepage with comprehensive content
 INSERT INTO pages (slug, title, content, meta_description, is_published, show_in_nav, nav_order, show_page_header) VALUES (
   'home',
   'Homepage',
   '[
     {
-      "id": "block-home-hero",
+      "id": "block-hero-1",
       "type": "hero",
       "content": {
-        "title": "Welcome to Bethany SDA Church",
+        "title": "Impact Houston For Christ",
         "subtitle": "Join us in worship, fellowship, and service as we grow together in faith",
         "buttonText": "Plan Your Visit",
         "buttonUrl": "/visit",
         "backgroundType": "color",
         "backgroundColor": "#0054a6",
-        "backgroundGradient": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
         "backgroundImage": "",
         "backgroundVideo": ""
       }
     },
     {
-      "id": "block-home-welcome",
+      "id": "block-text-welcome",
       "type": "text",
       "content": {
-        "html": "<h2>Welcome Home</h2><p>Whether you''re a long-time member or visiting for the first time, we''re glad you''re here. Bethany SDA Church is a vibrant community of believers celebrating our Haitian heritage while welcoming all who seek to worship God.</p>"
+        "html": "<h2 style=\"text-align: center; margin-bottom: 1rem;\">Welcome Home</h2><p style=\"text-align: center; font-size: 1.1rem; color: #666; max-width: 800px; margin: 0 auto;\">Whether you are a long-time member or visiting for the first time, we are glad you are here. At Bethany SDA Church, you will find a warm, welcoming community dedicated to growing in faith together.</p>"
       }
     },
     {
-      "id": "block-home-services",
+      "id": "block-services",
       "type": "columns",
       "content": {
         "columnCount": 3,
@@ -40,14 +40,14 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
           {
             "blocks": [
               {
-                "id": "card-sabbath",
+                "id": "card-sabbath-school",
                 "type": "card",
                 "content": {
                   "icon": "📖",
                   "title": "Sabbath School",
-                  "description": "Saturdays at 9:30 AM - Bible study and fellowship for all ages",
-                  "linkText": "",
-                  "linkUrl": ""
+                  "description": "Interactive Bible study and fellowship for all ages",
+                  "linkText": "Learn More",
+                  "linkUrl": "/about#sabbath-school"
                 }
               }
             ]
@@ -60,9 +60,9 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
                 "content": {
                   "icon": "🙏",
                   "title": "Worship Service",
-                  "description": "Saturdays at 11:00 AM - Join us for uplifting worship and inspiring messages",
-                  "linkText": "",
-                  "linkUrl": ""
+                  "description": "Uplifting praise and inspiring messages each Sabbath",
+                  "linkText": "Learn More",
+                  "linkUrl": "/about#worship"
                 }
               }
             ]
@@ -73,11 +73,11 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
                 "id": "card-prayer",
                 "type": "card",
                 "content": {
-                  "icon": "✨",
+                  "icon": "💭",
                   "title": "Prayer Meeting",
-                  "description": "Wednesdays at 7:00 PM - Come together in prayer and Bible study",
-                  "linkText": "",
-                  "linkUrl": ""
+                  "description": "Midweek prayer and Bible study on Wednesdays",
+                  "linkText": "Learn More",
+                  "linkUrl": "/about#prayer"
                 }
               }
             ]
@@ -86,58 +86,31 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
       }
     },
     {
-      "id": "block-home-cta",
+      "id": "block-service-times",
       "type": "callout",
       "content": {
-        "title": "New Here?",
-        "message": "We''d love to meet you! Learn more about what to expect when you visit.",
+        "title": "Service Times",
+        "message": "Sabbath School: Saturdays at 9:30 AM | Worship Service: Saturdays at 11:00 AM | Prayer Meeting: Wednesdays at 7:00 PM",
         "style": "info"
       }
     },
     {
-      "id": "block-home-cta-button",
-      "type": "button",
+      "id": "block-divider-1",
+      "type": "divider",
       "content": {
-        "text": "Plan Your Visit",
-        "url": "/visit",
-        "style": "primary",
-        "size": "lg"
-      }
-    }
-  ]',
-  'Welcome to Bethany SDA Church - Houston''s Haitian Seventh-day Adventist Community',
-  1,
-  0,
-  1,
-  1
-);
-
--- Visit Page
-INSERT INTO pages (slug, title, content, meta_description, is_published, show_in_nav, nav_order, show_page_header) VALUES (
-  'visit',
-  'Plan Your Visit',
-  '[
-    {
-      "id": "block-visit-hero",
-      "type": "hero",
-      "content": {
-        "title": "Plan Your Visit",
-        "subtitle": "We''d love to meet you! Here''s everything you need to know.",
-        "buttonText": "",
-        "buttonUrl": "",
-        "backgroundType": "color",
-        "backgroundColor": "#28a745"
+        "thickness": 1,
+        "color": "#dee2e6"
       }
     },
     {
-      "id": "block-visit-intro",
+      "id": "block-mission",
       "type": "text",
       "content": {
-        "html": "<h2>What to Expect</h2><p>Visiting a new church can be intimidating, but it doesn''t have to be! We want you to feel welcome and comfortable from the moment you arrive.</p>"
+        "html": "<h2 style=\"text-align: center; margin-bottom: 1.5rem;\">Our Mission</h2><p style=\"text-align: center; font-size: 1.2rem; font-style: italic; color: #0054a6; max-width: 800px; margin: 0 auto;\">To glorify God by making disciples of Jesus Christ, nurturing spiritual growth, and serving our community with love.</p>"
       }
     },
     {
-      "id": "block-visit-times",
+      "id": "block-ministries",
       "type": "columns",
       "content": {
         "columnCount": 2,
@@ -145,10 +118,10 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
           {
             "blocks": [
               {
-                "id": "times-schedule",
+                "id": "text-youth",
                 "type": "text",
                 "content": {
-                  "html": "<h3>Service Times</h3><ul><li><strong>Sabbath School:</strong> Saturdays 9:30 AM</li><li><strong>Worship Service:</strong> Saturdays 11:00 AM</li><li><strong>Prayer Meeting:</strong> Wednesdays 7:00 PM</li></ul>"
+                  "html": "<h3>Youth Ministry</h3><p>Engaging programs for young people to grow in faith, build friendships, and serve their community through Pathfinders, Adventurers, and youth activities.</p>"
                 }
               }
             ]
@@ -156,10 +129,10 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
           {
             "blocks": [
               {
-                "id": "times-dress",
+                "id": "text-community",
                 "type": "text",
                 "content": {
-                  "html": "<h3>What to Wear</h3><p>Come as you are! While some dress more formally, you''ll see everything from suits to casual wear. The most important thing is that you''re here.</p>"
+                  "html": "<h3>Community Outreach</h3><p>Serving Houston through food drives, health programs, and compassionate care for those in need.</p>"
                 }
               }
             ]
@@ -168,64 +141,55 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
       }
     },
     {
-      "id": "block-visit-quote",
-      "type": "quote",
+      "id": "block-spacer-1",
+      "type": "spacer",
       "content": {
-        "quote": "We felt so welcomed from day one. The church family made us feel right at home!",
-        "author": "New Member Testimonial",
-        "role": ""
+        "height": 40
+      }
+    },
+    {
+      "id": "block-cta",
+      "type": "text",
+      "content": {
+        "html": "<div style=\"background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 3rem 2rem; border-radius: 8px; text-align: center; color: white;\"><h2 style=\"color: white; margin-bottom: 1rem;\">Join Us This Sabbath</h2><p style=\"font-size: 1.1rem; margin-bottom: 1.5rem; color: white;\">Experience the warmth of our community and the power of worship</p><a href=\"/visit\" style=\"background: white; color: #667eea; padding: 12px 32px; border-radius: 4px; text-decoration: none; font-weight: bold; display: inline-block;\">Plan Your Visit</a></div>"
       }
     }
   ]',
-  'Plan your visit to Bethany SDA Church. Service times, what to expect, and more.',
+  'Welcome to Bethany SDA Church - Houston''s Haitian Seventh-day Adventist Community',
   1,
+  0,
   1,
-  2,
-  1
+  0
 );
 
--- About Page
+-- About Page with comprehensive church information
 INSERT INTO pages (slug, title, content, meta_description, is_published, show_in_nav, nav_order, show_page_header) VALUES (
   'about',
   'About Us',
   '[
     {
-      "id": "block-about-hero",
-      "type": "hero",
-      "content": {
-        "title": "About Us",
-        "subtitle": "Our mission, history, and beliefs",
-        "buttonText": "",
-        "buttonUrl": "",
-        "backgroundType": "color",
-        "backgroundColor": "#6c757d"
-      }
-    },
-    {
-      "id": "block-about-mission",
+      "id": "about-mission",
       "type": "text",
       "content": {
-        "html": "<h2>Our Mission</h2><p>To glorify God by making disciples of Jesus Christ, nurturing spiritual growth, and serving our community with love.</p>"
+        "html": "<h2>Our Mission & Vision</h2><p style=\"font-size: 1.1rem;\">To glorify God by making disciples of Jesus Christ, nurturing spiritual growth, and serving our community with love. We envision a vibrant, multicultural congregation that reflects the diversity of Houston while maintaining our Haitian heritage and Adventist values.</p>"
       }
     },
     {
-      "id": "block-about-history",
+      "id": "about-history",
       "type": "text",
       "content": {
-        "html": "<h2>Our History</h2><p>Bethany SDA Church is a vibrant community of believers in Houston, Texas, celebrating our Haitian heritage while welcoming all who seek to worship God. We are part of the worldwide Seventh-day Adventist Church, committed to sharing the gospel and serving our community.</p>"
+        "html": "<h2>Our History</h2><p>Bethany SDA Church is a vibrant community of believers in Houston, Texas, celebrating our Haitian heritage while welcoming all who seek to worship God. Our church has been a spiritual home for families in the Houston area, providing worship services in both English and Haitian Creole.</p><p>Founded on the principles of Seventh-day Adventist faith, we believe in the Bible as God''s inspired word and look forward to the soon return of Jesus Christ.</p>"
       }
     },
     {
-      "id": "block-about-beliefs",
-      "type": "callout",
+      "id": "about-beliefs",
+      "type": "text",
       "content": {
-        "title": "What We Believe",
-        "message": "We believe in the Bible as God''s Word, salvation through Jesus Christ, observing the seventh-day Sabbath, and the soon return of Jesus.",
-        "style": "success"
+        "html": "<h2>What We Believe</h2><p>As Seventh-day Adventists, we believe in:</p><ul style=\"font-size: 1.05rem; line-height: 1.8;\"><li><strong>The Bible</strong> as the inspired Word of God</li><li><strong>The Trinity</strong> - God the Father, Son, and Holy Spirit</li><li><strong>Salvation</strong> through faith in Jesus Christ alone</li><li><strong>The Sabbath</strong> - Honoring God on the seventh day (Saturday)</li><li><strong>Christ''s Return</strong> - The blessed hope of His soon coming</li><li><strong>Healthy Living</strong> - Caring for our bodies as temples of the Holy Spirit</li><li><strong>Community Service</strong> - Sharing God''s love through practical ministry</li></ul>"
       }
     },
     {
-      "id": "block-about-values",
+      "id": "about-programs",
       "type": "columns",
       "content": {
         "columnCount": 3,
@@ -233,12 +197,12 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
           {
             "blocks": [
               {
-                "id": "value-worship",
+                "id": "program-sabbath-school",
                 "type": "card",
                 "content": {
-                  "icon": "⛪",
-                  "title": "Worship",
-                  "description": "We gather to worship God through prayer, music, and the study of His Word",
+                  "icon": "📚",
+                  "title": "Sabbath School",
+                  "description": "Small group Bible study with classes for all ages. Interactive discussions help us grow in understanding God''s Word.",
                   "linkText": "",
                   "linkUrl": ""
                 }
@@ -248,12 +212,12 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
           {
             "blocks": [
               {
-                "id": "value-fellowship",
+                "id": "program-worship",
                 "type": "card",
                 "content": {
-                  "icon": "🤝",
-                  "title": "Fellowship",
-                  "description": "We build genuine relationships and support one another in our faith journey",
+                  "icon": "🎵",
+                  "title": "Worship Service",
+                  "description": "Uplifting music, prayer, and biblically-based sermons that inspire and challenge us to live for Christ.",
                   "linkText": "",
                   "linkUrl": ""
                 }
@@ -263,12 +227,12 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
           {
             "blocks": [
               {
-                "id": "value-service",
+                "id": "program-prayer",
                 "type": "card",
                 "content": {
-                  "icon": "❤️",
-                  "title": "Service",
-                  "description": "We serve our community and share God''s love through practical acts of kindness",
+                  "icon": "🙌",
+                  "title": "Prayer Meeting",
+                  "description": "Wednesday evening gathering for prayer, testimony, and Bible study in an intimate setting.",
                   "linkText": "",
                   "linkUrl": ""
                 }
@@ -277,11 +241,211 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
           }
         ]
       }
+    },
+    {
+      "id": "about-ministries",
+      "type": "text",
+      "content": {
+        "html": "<h2>Our Ministries</h2><p style=\"margin-bottom: 2rem;\">We offer various ministries to serve our congregation and community:</p>"
+      }
+    },
+    {
+      "id": "about-ministry-list",
+      "type": "icon-list",
+      "content": {
+        "items": [
+          {
+            "icon": "👨‍👩‍👧‍👦",
+            "title": "Family Ministries",
+            "description": "Programs to strengthen marriages and families through seminars, retreats, and support groups"
+          },
+          {
+            "icon": "👶",
+            "title": "Children''s Ministry",
+            "description": "Sabbath School and programs for kids from cradle roll through early teens"
+          },
+          {
+            "icon": "🎓",
+            "title": "Youth Ministry",
+            "description": "Pathfinders, Adventurers, and teen activities that build character and faith"
+          },
+          {
+            "icon": "🍲",
+            "title": "Community Services",
+            "description": "Food pantry, clothing distribution, and outreach programs for those in need"
+          },
+          {
+            "icon": "💪",
+            "title": "Health Ministry",
+            "description": "Cooking classes, health screenings, and wellness programs"
+          },
+          {
+            "icon": "🌍",
+            "title": "Mission & Evangelism",
+            "description": "Local and global mission opportunities to share the gospel"
+          }
+        ]
+      }
     }
   ]',
-  'Learn about Bethany SDA Church - our mission, history, and beliefs.',
+  'Learn about Bethany SDA Church - our mission, history, beliefs, and ministries serving Houston',
   1,
   1,
   3,
+  1
+);
+
+-- Visit Page with detailed information for first-time visitors
+INSERT INTO pages (slug, title, content, meta_description, is_published, show_in_nav, nav_order, show_page_header) VALUES (
+  'visit',
+  'Plan Your Visit',
+  '[
+    {
+      "id": "visit-welcome",
+      "type": "text",
+      "content": {
+        "html": "<h2 style=\"text-align: center;\">What To Expect</h2><p style=\"text-align: center; font-size: 1.1rem; max-width: 800px; margin: 0 auto 2rem;\">Visiting a new church can feel overwhelming, but we want you to feel right at home. Here''s what you can expect when you visit Bethany SDA Church.</p>"
+      }
+    },
+    {
+      "id": "visit-times",
+      "type": "columns",
+      "content": {
+        "columnCount": 2,
+        "columns": [
+          {
+            "blocks": [
+              {
+                "id": "times-card",
+                "type": "card",
+                "content": {
+                  "icon": "⏰",
+                  "title": "Service Times",
+                  "description": "Sabbath School: 9:30 AM | Worship Service: 11:00 AM | Prayer Meeting: Wednesday 7:00 PM",
+                  "linkText": "",
+                  "linkUrl": ""
+                }
+              }
+            ]
+          },
+          {
+            "blocks": [
+              {
+                "id": "dress-card",
+                "type": "card",
+                "content": {
+                  "icon": "👔",
+                  "title": "What To Wear",
+                  "description": "Come as you are! Most people wear business casual, but you''ll see everything from suits to jeans. Comfort is key.",
+                  "linkText": "",
+                  "linkUrl": ""
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "visit-location",
+      "type": "text",
+      "content": {
+        "html": "<h2>Location & Directions</h2><p style=\"font-size: 1.05rem;\"><strong>Bethany SDA Church</strong><br>Houston, Texas<br><em>(Address to be updated)</em></p><p>Free parking is available in our parking lot. Handicap accessible parking spots are located near the main entrance.</p>"
+      }
+    },
+    {
+      "id": "visit-first-time",
+      "type": "callout",
+      "content": {
+        "title": "First Time Visitors",
+        "message": "Look for our greeters at the entrance - they''ll help you find your way and answer any questions. We have a Welcome Center where you can get more information about our church and receive a visitor gift.",
+        "style": "success"
+      }
+    },
+    {
+      "id": "visit-families",
+      "type": "columns",
+      "content": {
+        "columnCount": 3,
+        "columns": [
+          {
+            "blocks": [
+              {
+                "id": "children-card",
+                "type": "card",
+                "content": {
+                  "icon": "👶",
+                  "title": "Children''s Programs",
+                  "description": "Age-appropriate Sabbath School classes from cradle roll through teens, plus children''s story time during worship",
+                  "linkText": "",
+                  "linkUrl": ""
+                }
+              }
+            ]
+          },
+          {
+            "blocks": [
+              {
+                "id": "parking-card",
+                "type": "card",
+                "content": {
+                  "icon": "🚗",
+                  "title": "Parking",
+                  "description": "Free parking with handicap accessible spots near the entrance. Additional overflow parking available.",
+                  "linkText": "",
+                  "linkUrl": ""
+                }
+              }
+            ]
+          },
+          {
+            "blocks": [
+              {
+                "id": "accessibility-card",
+                "type": "card",
+                "content": {
+                  "icon": "♿",
+                  "title": "Accessibility",
+                  "description": "Wheelchair accessible facilities throughout the building with elevators and accessible restrooms.",
+                  "linkText": "",
+                  "linkUrl": ""
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "visit-quote",
+      "type": "quote",
+      "content": {
+        "quote": "We felt so welcomed from day one. The church family made us feel right at home and we knew this was where God wanted us to be.",
+        "author": "First Time Visitor",
+        "role": "Now a member"
+      }
+    },
+    {
+      "id": "visit-contact",
+      "type": "text",
+      "content": {
+        "html": "<h2 style=\"text-align: center; margin-top: 2rem;\">Questions?</h2><p style=\"text-align: center;\">If you have any questions before your visit, please don''t hesitate to reach out. We''re here to help make your first visit comfortable and welcoming!</p>"
+      }
+    },
+    {
+      "id": "visit-cta-button",
+      "type": "button",
+      "content": {
+        "text": "Contact Us",
+        "url": "/contact",
+        "style": "primary",
+        "size": "lg"
+      }
+    }
+  ]',
+  'Plan your visit to Bethany SDA Church. Service times, directions, what to expect, and more.',
+  1,
+  1,
+  2,
   1
 );
