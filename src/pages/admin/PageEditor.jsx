@@ -47,7 +47,8 @@ export default function PageEditor() {
     meta_description: '',
     is_published: true,
     show_in_nav: false,
-    nav_order: 999
+    nav_order: 999,
+    show_page_header: true
   })
 
   const handleBlocksChange = (newBlocks) => {
@@ -87,7 +88,8 @@ export default function PageEditor() {
           ...data,
           content,
           is_published: Boolean(data.is_published),
-          show_in_nav: Boolean(data.show_in_nav)
+          show_in_nav: Boolean(data.show_in_nav),
+          show_page_header: data.show_page_header !== undefined ? Boolean(data.show_page_header) : true
         })
       } else {
         setAlert({ message: 'Failed to load page', type: 'error' })
@@ -273,7 +275,7 @@ export default function PageEditor() {
             </div>
             <div className="card-body">
               <div className="row">
-                <div className="col-md-4 mb-3">
+                <div className="col-md-3 mb-3">
                   <label className="form-check form-switch">
                     <input
                       type="checkbox"
@@ -286,7 +288,7 @@ export default function PageEditor() {
                   </label>
                   <small className="form-hint">Page is visible to visitors</small>
                 </div>
-                <div className="col-md-4 mb-3">
+                <div className="col-md-3 mb-3">
                   <label className="form-check form-switch">
                     <input
                       type="checkbox"
@@ -299,7 +301,20 @@ export default function PageEditor() {
                   </label>
                   <small className="form-hint">Add to main menu</small>
                 </div>
-                <div className="col-md-4 mb-3">
+                <div className="col-md-3 mb-3">
+                  <label className="form-check form-switch">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      name="show_page_header"
+                      checked={pageData.show_page_header}
+                      onChange={handleInputChange}
+                    />
+                    <span className="form-check-label">Show Page Header</span>
+                  </label>
+                  <small className="form-hint">Display title at top of page</small>
+                </div>
+                <div className="col-md-3 mb-3">
                   <label className="form-label">Navigation Order</label>
                   <input
                     type="number"

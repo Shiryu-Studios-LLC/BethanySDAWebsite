@@ -80,19 +80,21 @@ export default function DynamicPage({ fixedSlug }) {
 
   return (
     <div className="page-body">
-      {/* Hero Section */}
-      <section className="py-5 bg-dark text-white">
-        <div className="container py-5">
-          <div className="row justify-content-center text-center">
-            <div className="col-lg-8">
-              <h1 className="display-4 fw-bold mb-4">{page.title}</h1>
-              {page.meta_description && (
-                <p className="lead mb-0">{page.meta_description}</p>
-              )}
+      {/* Hero Section - Optional based on show_page_header setting */}
+      {page.show_page_header && (
+        <section className="py-5 bg-dark text-white">
+          <div className="container py-5">
+            <div className="row justify-content-center text-center">
+              <div className="col-lg-8">
+                <h1 className="display-4 fw-bold mb-4">{page.title}</h1>
+                {page.meta_description && (
+                  <p className="lead mb-0">{page.meta_description}</p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Page Content */}
       <section className="py-5">

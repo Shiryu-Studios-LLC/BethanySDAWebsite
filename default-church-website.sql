@@ -5,7 +5,7 @@
 DELETE FROM pages;
 
 -- Homepage with professional hero and content
-INSERT INTO pages (slug, title, content, meta_description, is_published, show_in_nav, nav_order) VALUES (
+INSERT INTO pages (slug, title, content, meta_description, is_published, show_in_nav, nav_order, show_page_header) VALUES (
   'home',
   'Homepage',
   '[
@@ -108,11 +108,12 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
   'Welcome to Bethany SDA Church - Houston''s Haitian Seventh-day Adventist Community',
   1,
   0,
+  1,
   1
 );
 
 -- Visit Page
-INSERT INTO pages (slug, title, content, meta_description, is_published, show_in_nav, nav_order) VALUES (
+INSERT INTO pages (slug, title, content, meta_description, is_published, show_in_nav, nav_order, show_page_header) VALUES (
   'visit',
   'Plan Your Visit',
   '[
@@ -179,11 +180,12 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
   'Plan your visit to Bethany SDA Church. Service times, what to expect, and more.',
   1,
   1,
-  2
+  2,
+  1
 );
 
 -- About Page
-INSERT INTO pages (slug, title, content, meta_description, is_published, show_in_nav, nav_order) VALUES (
+INSERT INTO pages (slug, title, content, meta_description, is_published, show_in_nav, nav_order, show_page_header) VALUES (
   'about',
   'About Us',
   '[
@@ -280,5 +282,6 @@ INSERT INTO pages (slug, title, content, meta_description, is_published, show_in
   'Learn about Bethany SDA Church - our mission, history, and beliefs.',
   1,
   1,
-  3
+  3,
+  1
 );
