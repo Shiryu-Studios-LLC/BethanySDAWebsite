@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { arrayMove, SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import {
   IconChevronDown,
   IconChevronRight,
@@ -20,7 +23,8 @@ import {
   IconChevronDown as IconChevronDownAlt,
   IconForms,
   IconMapPin,
-  IconClock
+  IconClock,
+  IconGripVertical
 } from '@tabler/icons-react'
 
 const BLOCK_ICONS = {
@@ -48,6 +52,21 @@ const BLOCK_ICONS = {
 }
 
 function HierarchyItem({ block, level = 0, isSelected, onSelect, expandedBlocks, toggleExpand }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: block.id })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  }
+
   const Icon = BLOCK_ICONS[block.type] || IconFileText
   const hasChildren = block.type === 'columns' && block.content.columns && block.content.columns.some(col => col.blocks && col.blocks.length > 0)
   const isExpanded = expandedBlocks.has(block.id)
@@ -89,42 +108,58 @@ function HierarchyItem({ block, level = 0, isSelected, onSelect, expandedBlocks,
   return (
     <>
       <div
+        ref={setNodeRef}
+        style={style}
         onClick={() => onSelect(block.id)}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '4px 8px',
-          paddingLeft: `${8 + level * 16}px`,
-          cursor: 'pointer',
-          backgroundColor: isSelected ? '#3a3a3a' : 'transparent',
-          color: isSelected ? '#fff' : '#cbcbcb',
-          fontSize: '12px',
-          borderBottom: '1px solid #2a2a2a',
-          userSelect: 'none'
-        }}
-        onMouseEnter={(e) => {
-          if (!isSelected) e.currentTarget.style.backgroundColor = '#333333'
-        }}
-        onMouseLeave={(e) => {
-          if (!isSelected) e.currentTarget.style.backgroundColor = 'transparent'
-        }}
       >
-        {hasChildren && (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '4px 8px',
+            paddingLeft: `${8 + level * 16}px`,
+            cursor: 'pointer',
+            backgroundColor: isSelected ? '#3a3a3a' : 'transparent',
+            color: isSelected ? '#fff' : '#cbcbcb',
+            fontSize: '12px',
+            borderBottom: '1px solid #2a2a2a',
+            userSelect: 'none'
+          }}
+          onMouseEnter={(e) => {
+            if (!isSelected) e.currentTarget.style.backgroundColor = '#333333'
+          }}
+          onMouseLeave={(e) => {
+            if (!isSelected) e.currentTarget.style.backgroundColor = 'transparent'
+          }}
+        >
+          {/* Drag Handle */}
           <span
-            onClick={(e) => {
-              e.stopPropagation()
-              toggleExpand(block.id)
-            }}
-            style={{ marginRight: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+            {...attributes}
+            {...listeners}
+            style={{ marginRight: '4px', cursor: 'grab', display: 'flex', alignItems: 'center', opacity: 0.4 }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = 0.8 }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = 0.4 }}
           >
-            {isExpanded ? <IconChevronDown size={12} /> : <IconChevronRight size={12} />}
+            <IconGripVertical size={12} />
           </span>
-        )}
-        {!hasChildren && <span style={{ width: '16px', display: 'inline-block' }}></span>}
-        <Icon size={14} style={{ marginRight: '6px', flexShrink: 0 }} />
-        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {getBlockLabel(block)}
-        </span>
+
+          {hasChildren && (
+            <span
+              onClick={(e) => {
+                e.stopPropagation()
+                toggleExpand(block.id)
+              }}
+              style={{ marginRight: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+            >
+              {isExpanded ? <IconChevronDown size={12} /> : <IconChevronRight size={12} />}
+            </span>
+          )}
+          {!hasChildren && <span style={{ width: '16px', display: 'inline-block' }}></span>}
+          <Icon size={14} style={{ marginRight: '6px', flexShrink: 0 }} />
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {getBlockLabel(block)}
+          </span>
+        </div>
       </div>
 
       {/* Render nested blocks in columns */}
@@ -162,8 +197,29 @@ function HierarchyItem({ block, level = 0, isSelected, onSelect, expandedBlocks,
   )
 }
 
-export default function HierarchyPanel({ blocks, selectedBlock, onSelectBlock, width }) {
+export default function HierarchyPanel({ blocks, selectedBlock, onSelectBlock, width, onReorderBlocks }) {
   const [expandedBlocks, setExpandedBlocks] = useState(new Set())
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  )
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+
+    const oldIndex = blocks.findIndex(b => b.id === active.id)
+    const newIndex = blocks.findIndex(b => b.id === over.id)
+
+    if (oldIndex !== -1 && newIndex !== -1) {
+      const reorderedBlocks = arrayMove(blocks, oldIndex, newIndex)
+      onReorderBlocks(reorderedBlocks)
+    }
+  }
 
   const toggleExpand = (blockId) => {
     setExpandedBlocks(prev => {
@@ -213,17 +269,21 @@ export default function HierarchyPanel({ blocks, selectedBlock, onSelectBlock, w
             No blocks yet
           </div>
         ) : (
-          blocks.map(block => (
-            <HierarchyItem
-              key={block.id}
-              block={block}
-              level={0}
-              isSelected={selectedBlock?.id === block.id}
-              onSelect={onSelectBlock}
-              expandedBlocks={expandedBlocks}
-              toggleExpand={toggleExpand}
-            />
-          ))
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext items={blocks.map(b => b.id)} strategy={verticalListSortingStrategy}>
+              {blocks.map(block => (
+                <HierarchyItem
+                  key={block.id}
+                  block={block}
+                  level={0}
+                  isSelected={selectedBlock?.id === block.id}
+                  onSelect={onSelectBlock}
+                  expandedBlocks={expandedBlocks}
+                  toggleExpand={toggleExpand}
+                />
+              ))}
+            </SortableContext>
+          </DndContext>
         )}
       </div>
     </div>

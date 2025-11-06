@@ -112,6 +112,7 @@ export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubt
           blocks={blocks}
           selectedBlock={selectedBlock}
           onSelectBlock={handleSelectBlock}
+          onReorderBlocks={onChange}
           width={hierarchyWidth}
         />
 
