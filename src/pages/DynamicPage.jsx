@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import DOMPurify from 'dompurify'
+import { blocksToHtml } from '../utils/blocksToHtml'
 
 export default function DynamicPage() {
   const { slug } = useParams()
@@ -23,7 +24,20 @@ export default function DynamicPage() {
 
         // Only show published pages to public
         if (data.is_published) {
-          setPage(data)
+          // Parse content from JSON string to blocks array
+          let content = data.content
+          if (typeof content === 'string') {
+            try {
+              const blocks = JSON.parse(content)
+              // Convert blocks to HTML
+              content = blocksToHtml(blocks)
+            } catch (e) {
+              // If parsing fails, use content as-is (backward compatibility with old HTML content)
+              console.warn('Failed to parse content as JSON, using as HTML')
+            }
+          }
+
+          setPage({ ...data, content })
         } else {
           setNotFound(true)
         }
