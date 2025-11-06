@@ -2,8 +2,9 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { IconGripVertical, IconEdit, IconTrash, IconCopy } from '@tabler/icons-react'
 import ColumnBlock from './ColumnBlock'
+import InlineEditableText from './InlineEditableText'
 
-export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate, isNested = false, onNestedBlocksChange }) {
+export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate, isNested = false, onNestedBlocksChange, onUpdateBlock }) {
   const {
     attributes,
     listeners,
@@ -93,8 +94,29 @@ export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate, is
 
             {/* Content */}
             <div style={{ position: 'relative', zIndex: 2 }}>
-              <h1 className="display-4 mb-3">{block.content.title || 'Hero Title'}</h1>
-              <p className="lead mb-4">{block.content.subtitle || 'Hero subtitle goes here'}</p>
+              {onUpdateBlock ? (
+                <>
+                  <InlineEditableText
+                    value={block.content.title || ''}
+                    onChange={(newTitle) => onUpdateBlock({ ...block, content: { ...block.content, title: newTitle } })}
+                    tag="h1"
+                    className="display-4 mb-3"
+                    placeholder="Hero Title"
+                  />
+                  <InlineEditableText
+                    value={block.content.subtitle || ''}
+                    onChange={(newSubtitle) => onUpdateBlock({ ...block, content: { ...block.content, subtitle: newSubtitle } })}
+                    tag="p"
+                    className="lead mb-4"
+                    placeholder="Hero subtitle goes here"
+                  />
+                </>
+              ) : (
+                <>
+                  <h1 className="display-4 mb-3">{block.content.title || 'Hero Title'}</h1>
+                  <p className="lead mb-4">{block.content.subtitle || 'Hero subtitle goes here'}</p>
+                </>
+              )}
               {block.content.buttonText && (
                 <a href={block.content.buttonUrl || '#'} className="btn btn-light btn-lg">
                   {block.content.buttonText}
@@ -115,9 +137,19 @@ export default function BlockRenderer({ block, onEdit, onDelete, onDuplicate, is
         const HeadingTag = `h${block.content.level || 2}`
         return (
           <div className="p-4">
-            <HeadingTag style={{ textAlign: block.content.align || 'left' }}>
-              {block.content.text || 'Heading Text'}
-            </HeadingTag>
+            {onUpdateBlock ? (
+              <InlineEditableText
+                value={block.content.text || ''}
+                onChange={(newText) => onUpdateBlock({ ...block, content: { ...block.content, text: newText } })}
+                tag={HeadingTag}
+                style={{ textAlign: block.content.align || 'left' }}
+                placeholder="Heading Text"
+              />
+            ) : (
+              <HeadingTag style={{ textAlign: block.content.align || 'left' }}>
+                {block.content.text || 'Heading Text'}
+              </HeadingTag>
+            )}
           </div>
         )
 

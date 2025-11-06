@@ -2,6 +2,7 @@ import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from 
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import BlockRenderer from '../BlockRenderer'
 import BlockLibrary from '../BlockLibrary'
+import BrowserFrame from './BrowserFrame'
 import { IconPlus } from '@tabler/icons-react'
 
 // Preview rendering (same as VisualBuilder)
@@ -207,6 +208,30 @@ function renderBlockPreview(block, renderNestedBlocks) {
 
 export default function ScenePanel({ blocks, onChange, selectedBlock, onSelectBlock, viewMode, pageTitle, pageSubtitle, showPageHeader }) {
   const sensors = useSensors(useSensor(PointerSensor))
+
+  const handleUpdateBlock = (updatedBlock) => {
+    onChange(blocks.map(b => {
+      if (b.id === updatedBlock.id) return updatedBlock
+
+      // Handle nested blocks in columns
+      if (b.type === 'columns' && b.content.columns) {
+        return {
+          ...b,
+          content: {
+            ...b.content,
+            columns: b.content.columns.map(col => ({
+              ...col,
+              blocks: (col.blocks || []).map(nestedBlock =>
+                nestedBlock.id === updatedBlock.id ? updatedBlock : nestedBlock
+              )
+            }))
+          }
+        }
+      }
+
+      return b
+    }))
+  }
 
   const handleDragEnd = (event) => {
     const { active, over } = event
@@ -428,38 +453,43 @@ export default function ScenePanel({ blocks, onChange, selectedBlock, onSelectBl
 
       {/* Canvas Content */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '20px', backgroundColor: '#2b2b2b' }}>
-        <div
-          style={{
-            backgroundColor: '#ffffff',
-            minHeight: '100%',
-            padding: '20px',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
-          }}
-        >
-          {blocks.length === 0 ? (
-            <div className="text-center py-5">
-              <h4 className="text-muted">No blocks yet</h4>
-              <p className="text-muted">Click "Add Block" to start building your page</p>
-            </div>
-          ) : viewMode === 'visual' ? (
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-              <SortableContext items={blocks.map(b => b.id)} strategy={verticalListSortingStrategy}>
-                {blocks.map(block => (
-                  <BlockRenderer
-                    key={block.id}
-                    block={block}
-                    onEdit={onSelectBlock}
-                    onDelete={deleteBlock}
-                    onDuplicate={duplicateBlock}
-                    onNestedBlocksChange={handleNestedBlocksChange}
-                  />
-                ))}
-              </SortableContext>
-            </DndContext>
-          ) : (
-            renderPreview()
-          )}
-        </div>
+        {viewMode === 'visual' ? (
+          <div
+            style={{
+              backgroundColor: '#ffffff',
+              minHeight: '100%',
+              padding: '20px',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+            }}
+          >
+            {blocks.length === 0 ? (
+              <div className="text-center py-5">
+                <h4 className="text-muted">No blocks yet</h4>
+                <p className="text-muted">Click "Add Block" to start building your page</p>
+              </div>
+            ) : (
+              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <SortableContext items={blocks.map(b => b.id)} strategy={verticalListSortingStrategy}>
+                  {blocks.map(block => (
+                    <BlockRenderer
+                      key={block.id}
+                      block={block}
+                      onEdit={onSelectBlock}
+                      onDelete={deleteBlock}
+                      onDuplicate={duplicateBlock}
+                      onNestedBlocksChange={handleNestedBlocksChange}
+                      onUpdateBlock={handleUpdateBlock}
+                    />
+                  ))}
+                </SortableContext>
+              </DndContext>
+            )}
+          </div>
+        ) : (
+          <BrowserFrame>
+            {renderPreview()}
+          </BrowserFrame>
+        )}
       </div>
     </div>
   )
