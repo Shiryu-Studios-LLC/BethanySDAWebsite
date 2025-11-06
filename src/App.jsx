@@ -1,10 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
-import Home from './pages/Home'
-import Visit from './pages/Visit'
 import Events from './pages/Events'
-import About from './pages/About'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
 import DynamicPage from './pages/DynamicPage'
@@ -16,18 +13,18 @@ import AdminEvents from './pages/admin/AdminEvents'
 import SiteSettings from './pages/admin/SiteSettings'
 import Pages from './pages/admin/Pages'
 import PageEditor from './pages/admin/PageEditor'
-import Homepage from './pages/admin/Homepage'
-import VisitPageSettings from './pages/admin/VisitPageSettings'
-import AboutPageSettings from './pages/admin/AboutPageSettings'
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="visit" element={<Visit />} />
+        {/* Core pages using visual builder */}
+        <Route index element={<DynamicPage fixedSlug="home" />} />
+        <Route path="visit" element={<DynamicPage fixedSlug="visit" />} />
+        <Route path="about" element={<DynamicPage fixedSlug="about" />} />
+
+        {/* Other static pages */}
         <Route path="events" element={<Events />} />
-        <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="login" element={<Login />} />
         <Route
@@ -83,30 +80,6 @@ function App() {
           element={
             <ProtectedRoute>
               <Pages />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/homepage"
-          element={
-            <ProtectedRoute>
-              <Homepage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/visit-page"
-          element={
-            <ProtectedRoute>
-              <VisitPageSettings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="admin/about-page"
-          element={
-            <ProtectedRoute>
-              <AboutPageSettings />
             </ProtectedRoute>
           }
         />

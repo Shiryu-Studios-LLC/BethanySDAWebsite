@@ -3,8 +3,9 @@ import { useParams } from 'react-router-dom'
 import DOMPurify from 'dompurify'
 import { blocksToHtml } from '../utils/blocksToHtml'
 
-export default function DynamicPage() {
-  const { slug } = useParams()
+export default function DynamicPage({ fixedSlug }) {
+  const { slug: paramSlug } = useParams()
+  const slug = fixedSlug || paramSlug
   const [page, setPage] = useState(null)
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)

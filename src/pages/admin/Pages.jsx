@@ -9,25 +9,25 @@ export default function Pages() {
   const staticPages = [
     {
       title: 'Homepage',
-      description: 'Edit homepage content, hero video, and featured announcements.',
+      description: 'Edit homepage content with the visual page builder.',
       icon: IconHome,
-      link: '/admin/homepage',
+      link: '/admin/page-editor/home',
       color: 'primary',
       isStatic: true
     },
     {
       title: 'Visit Page',
-      description: 'Manage visit page content, service times, and visitor information.',
+      description: 'Manage visit page content with the visual page builder.',
       icon: IconMapPin,
-      link: '/admin/visit-page',
+      link: '/admin/page-editor/visit',
       color: 'success',
       isStatic: true
     },
     {
       title: 'About Page',
-      description: 'Configure mission statement, church history, and beliefs.',
+      description: 'Configure about page content with the visual page builder.',
       icon: IconInfoCircle,
-      link: '/admin/about-page',
+      link: '/admin/page-editor/about',
       color: 'info',
       isStatic: true
     }
