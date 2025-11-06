@@ -9,7 +9,7 @@ import {
   IconSettings,
   IconLogout,
   IconBook,
-  IconChevronDown
+  IconVideo
 } from '@tabler/icons-react'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -26,7 +26,7 @@ const unrealTheme = {
   accentHover: '#5a8bc7',
 }
 
-export default function UnrealToolbar() {
+export default function UnrealToolbar({ stats, loadingStats }) {
   const { user, logout } = useAuth()
   const location = useLocation()
 
@@ -62,15 +62,19 @@ export default function UnrealToolbar() {
       top: 0,
       zIndex: 1000
     }}>
-      {/* Logo/Brand Area */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 12px',
-        height: '100%',
-        borderRight: `1px solid ${unrealTheme.toolbarBorder}`,
-        marginRight: '8px'
-      }}>
+      {/* Logo/Brand Area with Title */}
+      <div
+        title="Manage your church website content"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '0 12px',
+          height: '100%',
+          borderRight: `1px solid ${unrealTheme.toolbarBorder}`,
+          marginRight: '8px',
+          gap: '12px'
+        }}
+      >
         <span style={{
           fontSize: '14px',
           fontWeight: '600',
@@ -78,6 +82,19 @@ export default function UnrealToolbar() {
           letterSpacing: '-0.5px'
         }}>
           Bethany SDA
+        </span>
+        <div style={{
+          width: '1px',
+          height: '20px',
+          backgroundColor: unrealTheme.toolbarBorder
+        }} />
+        <span style={{
+          fontSize: '13px',
+          fontWeight: '500',
+          color: unrealTheme.textMuted,
+          letterSpacing: '-0.3px'
+        }}>
+          Admin Dashboard
         </span>
       </div>
 
@@ -126,13 +143,30 @@ export default function UnrealToolbar() {
         })}
       </div>
 
+      {/* Quick Stats */}
+      {stats && (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          paddingLeft: '12px',
+          paddingRight: '12px',
+          borderLeft: `1px solid ${unrealTheme.toolbarBorder}`,
+          borderRight: `1px solid ${unrealTheme.toolbarBorder}`
+        }}>
+          <StatBadge icon={IconPhoto} value={loadingStats ? '...' : stats.images} label="Images" color="#4a7ba7" />
+          <StatBadge icon={IconVideo} value={loadingStats ? '...' : stats.videos} label="Videos" color="#5a9b5a" />
+          <StatBadge icon={IconFileText} value={loadingStats ? '...' : stats.documents} label="Docs" color="#7b8ba7" />
+          <StatBadge icon={IconPhoto} value={loadingStats ? '...' : stats.totalFiles} label="Total" color="#9b7ba7" />
+        </div>
+      )}
+
       {/* Right Side - User Menu */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: '8px',
-        paddingLeft: '8px',
-        borderLeft: `1px solid ${unrealTheme.toolbarBorder}`
+        paddingLeft: '8px'
       }}>
         {user?.email && (
           <span style={{
@@ -172,6 +206,40 @@ export default function UnrealToolbar() {
           <span>Logout</span>
         </button>
       </div>
+    </div>
+  )
+}
+
+// Compact stat badge for toolbar
+function StatBadge({ icon: Icon, value, label, color }) {
+  return (
+    <div
+      title={`${value} ${label}`}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        padding: '4px 8px',
+        borderRadius: '3px',
+        backgroundColor: color + '22',
+        border: `1px solid ${color}44`,
+        cursor: 'default'
+      }}
+    >
+      <Icon size={14} style={{ color }} />
+      <span style={{
+        fontSize: '12px',
+        fontWeight: '600',
+        color: '#e0e0e0'
+      }}>
+        {value}
+      </span>
+      <span style={{
+        fontSize: '11px',
+        color: '#a0a0a0'
+      }}>
+        {label}
+      </span>
     </div>
   )
 }

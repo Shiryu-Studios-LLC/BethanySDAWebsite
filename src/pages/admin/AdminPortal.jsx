@@ -110,29 +110,10 @@ export default function AdminPortal() {
       backgroundColor: '#1a1a1a',
       color: '#e0e0e0'
     }}>
-      <UnrealToolbar />
+      <UnrealToolbar stats={stats} loadingStats={loadingStats} />
 
       <div style={{ padding: '24px' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          {/* Page Header */}
-          <div style={{ marginBottom: '32px' }}>
-            <h1 style={{
-              fontSize: '32px',
-              fontWeight: '600',
-              margin: '0 0 8px 0',
-              color: '#e0e0e0',
-              letterSpacing: '-0.5px'
-            }}>
-              Admin Dashboard
-            </h1>
-            <p style={{
-              fontSize: '14px',
-              color: '#a0a0a0',
-              margin: 0
-            }}>
-              Manage your church website content
-            </p>
-          </div>
 
           {/* Feature Cards Grid */}
           <div style={{
@@ -207,94 +188,7 @@ export default function AdminPortal() {
               )
             })}
           </div>
-
-          {/* Quick Stats */}
-          <div style={{ marginTop: '32px' }}>
-            <h2 style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              margin: '0 0 16px 0',
-              color: '#e0e0e0'
-            }}>
-              Quick Stats
-            </h2>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '16px'
-            }}>
-              <StatCard
-                icon={IconPhoto}
-                label="Images"
-                value={loadingStats ? '...' : stats.images}
-                color="#4a7ba7"
-              />
-              <StatCard
-                icon={IconVideo}
-                label="Videos"
-                value={loadingStats ? '...' : stats.videos}
-                color="#5a9b5a"
-              />
-              <StatCard
-                icon={IconFileText}
-                label="Documents"
-                value={loadingStats ? '...' : stats.documents}
-                color="#7b8ba7"
-              />
-              <StatCard
-                icon={IconPhoto}
-                label="Total Files"
-                value={loadingStats ? '...' : stats.totalFiles}
-                color="#9b7ba7"
-              />
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  )
-}
-
-// Stats Card Component - Unreal Style
-function StatCard({ icon: Icon, label, value, color = '#4a7ba7' }) {
-  return (
-    <div style={{
-      backgroundColor: '#252525',
-      border: '1px solid #3a3a3a',
-      borderRadius: '4px',
-      padding: '20px',
-      textAlign: 'center',
-      transition: 'all 0.15s ease'
-    }}>
-      <div style={{
-        width: '56px',
-        height: '56px',
-        borderRadius: '8px',
-        backgroundColor: color + '33',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: '0 auto 16px',
-        border: `2px solid ${color}44`
-      }}>
-        <Icon size={28} style={{ color }} />
-      </div>
-      <div style={{
-        fontSize: '32px',
-        fontWeight: '600',
-        color: '#e0e0e0',
-        marginBottom: '4px'
-      }}>
-        {value}
-      </div>
-      <div style={{
-        fontSize: '13px',
-        color: '#a0a0a0',
-        textTransform: 'uppercase',
-        letterSpacing: '0.5px',
-        fontWeight: '500'
-      }}>
-        {label}
       </div>
     </div>
   )
