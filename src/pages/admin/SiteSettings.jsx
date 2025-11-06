@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { IconArrowLeft, IconSettings, IconBuildingChurch, IconMail, IconPhone, IconMapPin, IconBrandFacebook, IconBrandYoutube, IconBrandInstagram, IconBrandTwitter, IconClock, IconCheck } from '@tabler/icons-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { IconArrowLeft, IconSettings, IconBuildingChurch, IconMail, IconPhone, IconMapPin, IconBrandFacebook, IconBrandYoutube, IconBrandInstagram, IconBrandTwitter, IconClock, IconCheck, IconAlertTriangle, IconTrash } from '@tabler/icons-react'
 import AlertModal from '../../components/AlertModal'
+import ConfirmModal from '../../components/ConfirmModal'
 
 export default function SiteSettings() {
+  const navigate = useNavigate()
   const [saving, setSaving] = useState(false)
+  const [resetting, setResetting] = useState(false)
+  const [showResetConfirm, setShowResetConfirm] = useState(false)
   const [alert, setAlert] = useState({ message: '', type: '' })
   const [settings, setSettings] = useState({
     // Church Information
@@ -72,6 +76,48 @@ export default function SiteSettings() {
       setAlert({ message: 'Error saving settings', type: 'error' })
     } finally {
       setSaving(false)
+    }
+  }
+
+  const handleResetWebsite = async () => {
+    setResetting(true)
+    setShowResetConfirm(false)
+
+    try {
+      const response = await fetch('/api/reset-website', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setAlert({
+          message: 'Website reset successfully! Redirecting to pages...',
+          type: 'success'
+        })
+
+        // Redirect to pages after 2 seconds
+        setTimeout(() => {
+          navigate('/admin/pages')
+        }, 2000)
+      } else {
+        setAlert({
+          message: data.error || 'Failed to reset website',
+          type: 'error'
+        })
+      }
+    } catch (error) {
+      console.error('Reset error:', error)
+      setAlert({
+        message: 'Network error while resetting website',
+        type: 'error'
+      })
+    } finally {
+      setResetting(false)
     }
   }
 
@@ -382,7 +428,68 @@ export default function SiteSettings() {
             </div>
           </div>
         </form>
+
+        {/* Danger Zone */}
+        <div className="card border-danger mt-5 mb-4">
+          <div className="card-header bg-danger-lt">
+            <h3 className="card-title text-danger">
+              <IconAlertTriangle className="me-2" size={20} />
+              Danger Zone
+            </h3>
+          </div>
+          <div className="card-body">
+            <div className="alert alert-warning mb-3">
+              <div className="d-flex">
+                <div>
+                  <IconAlertTriangle className="me-2" size={24} />
+                </div>
+                <div>
+                  <h4 className="alert-title">Reset Website to Default Template</h4>
+                  <div className="text-muted">
+                    This action will permanently delete all custom pages and content from your website.
+                    <ul className="mt-2 mb-0">
+                      <li>All pages will be replaced with the default church website template</li>
+                      <li>All custom content and edits will be lost</li>
+                      <li>Media files uploaded to the gallery will be preserved</li>
+                      <li>This action cannot be undone</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={() => setShowResetConfirm(true)}
+              disabled={resetting}
+            >
+              {resetting ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                  Resetting Website...
+                </>
+              ) : (
+                <>
+                  <IconTrash size={20} className="me-2" />
+                  Reset Website to Default
+                </>
+              )}
+            </button>
+          </div>
+        </div>
       </div>
+
+      {/* Reset Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showResetConfirm}
+        title="Reset Website to Default?"
+        message="Are you absolutely sure you want to reset your website to the default template? This will permanently delete all pages and content. Media files will be preserved. This action cannot be undone."
+        confirmText="Yes, Reset Website"
+        confirmButtonClass="btn-danger"
+        onConfirm={handleResetWebsite}
+        onCancel={() => setShowResetConfirm(false)}
+      />
 
       {/* Alert Modal */}
       <AlertModal
