@@ -879,7 +879,7 @@ function getDefaultBlockData(componentType) {
     // New components - same as ComponentToolbox
     case 'section':
       return {
-        backgroundColor: '#ffffff',
+        backgroundColor: '#1a1d2e',
         padding: 'medium',
         content: []
       }

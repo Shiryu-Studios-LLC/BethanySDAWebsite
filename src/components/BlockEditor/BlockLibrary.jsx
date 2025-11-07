@@ -239,7 +239,7 @@ export const BLOCK_TEMPLATES = [
       type: 'section',
       content: {
         blocks: [],
-        backgroundColor: '#ffffff',
+        backgroundColor: '#1a1d2e',
         backgroundImage: '',
         paddingTop: 40,
         paddingBottom: 40,
