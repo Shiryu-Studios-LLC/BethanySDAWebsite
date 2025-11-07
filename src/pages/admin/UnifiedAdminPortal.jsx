@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import UnrealToolbar from '../../components/UnrealToolbar'
 import AdminPortal from './AdminPortal'
-import Pages from './Pages'
+import PagesWithHierarchy from './PagesWithHierarchy'
 import MediaLibrary from './MediaLibrary'
 import AdminEvents from './AdminEvents'
 import Sermons from './Sermons'
@@ -66,7 +66,7 @@ export default function UnifiedAdminPortal() {
       case 'dashboard':
         return <AdminPortal />
       case 'pages':
-        return <Pages />
+        return <PagesWithHierarchy />
       case 'media':
         return <MediaLibrary />
       case 'events':
