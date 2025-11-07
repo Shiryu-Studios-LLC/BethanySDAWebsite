@@ -474,16 +474,54 @@ export default function PagesWithHierarchy() {
                   color={pageIcons[selectedPage.slug]?.color || '#6a6a6a'}
                   defaultExpanded={true}
                 >
-                  <PropertyField label="Title" value={selectedPage.title} />
-                  <PropertyField label="Slug" value={selectedPage.slug} />
-                  <PropertyField label="Status" value={selectedPage.is_published ? 'Published' : 'Draft'} />
-                  <PropertyField label="Show in Nav" value={selectedPage.show_in_nav ? 'Yes' : 'No'} />
-                  <PropertyField label="Show Header" value={selectedPage.show_page_header ? 'Yes' : 'No'} />
-                  <PropertyField label="Nav Order" value={selectedPage.nav_order} />
-                  <PropertyField label="Page ID" value={selectedPage.id} />
-                  {selectedPage.meta_description && (
-                    <PropertyField label="Description" value={selectedPage.meta_description} multiline />
-                  )}
+                  <PropertyField
+                    label="Title"
+                    value={selectedPage.title}
+                    editable
+                    onChange={(value) => setSelectedPage(prev => ({ ...prev, title: value }))}
+                  />
+                  <PropertyField
+                    label="Slug"
+                    value={selectedPage.slug}
+                    editable
+                    onChange={(value) => setSelectedPage(prev => ({ ...prev, slug: value }))}
+                  />
+                  <PropertyField
+                    label="Status"
+                    value={selectedPage.is_published}
+                    type="boolean"
+                    editable
+                    onChange={(value) => setSelectedPage(prev => ({ ...prev, is_published: value }))}
+                  />
+                  <PropertyField
+                    label="Show in Nav"
+                    value={selectedPage.show_in_nav}
+                    type="boolean"
+                    editable
+                    onChange={(value) => setSelectedPage(prev => ({ ...prev, show_in_nav: value }))}
+                  />
+                  <PropertyField
+                    label="Show Header"
+                    value={selectedPage.show_page_header}
+                    type="boolean"
+                    editable
+                    onChange={(value) => setSelectedPage(prev => ({ ...prev, show_page_header: value }))}
+                  />
+                  <PropertyField
+                    label="Nav Order"
+                    value={selectedPage.nav_order}
+                    type="number"
+                    editable
+                    onChange={(value) => setSelectedPage(prev => ({ ...prev, nav_order: parseInt(value) || 0 }))}
+                  />
+                  <PropertyField label="Page ID" value={selectedPage.id} readOnly />
+                  <PropertyField
+                    label="Description"
+                    value={selectedPage.meta_description || ''}
+                    multiline
+                    editable
+                    onChange={(value) => setSelectedPage(prev => ({ ...prev, meta_description: value }))}
+                  />
                 </InspectorComponent>
 
                 {/* Block Component - Only shown when a block is selected */}
@@ -583,7 +621,76 @@ function InspectorComponent({ title, icon: Icon, color, defaultExpanded = true, 
 }
 
 // Property Field Component
-function PropertyField({ label, value, multiline = false }) {
+function PropertyField({ label, value, multiline = false, editable = false, readOnly = false, type = 'text', onChange }) {
+  if (readOnly || !editable) {
+    // Read-only display
+    return (
+      <div style={{ marginBottom: '10px' }}>
+        <div style={{
+          fontSize: '10px',
+          color: '#8a8a8a',
+          marginBottom: '4px',
+          fontWeight: '500',
+          textTransform: 'uppercase',
+          letterSpacing: '0.3px'
+        }}>
+          {label}
+        </div>
+        <div style={{
+          fontSize: '11px',
+          color: '#d0d0d0',
+          backgroundColor: '#1e1e1e',
+          padding: '6px 8px',
+          borderRadius: '2px',
+          border: '1px solid #3a3a3a',
+          wordWrap: multiline ? 'break-word' : 'normal',
+          whiteSpace: multiline ? 'normal' : 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          lineHeight: '1.4'
+        }}>
+          {value || '-'}
+        </div>
+      </div>
+    )
+  }
+
+  // Editable field
+  if (type === 'boolean') {
+    return (
+      <div style={{ marginBottom: '10px' }}>
+        <label style={{
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'pointer',
+          gap: '8px'
+        }}>
+          <input
+            type="checkbox"
+            checked={value}
+            onChange={(e) => onChange?.(e.target.checked)}
+            style={{
+              width: '14px',
+              height: '14px',
+              cursor: 'pointer'
+            }}
+          />
+          <span style={{
+            fontSize: '10px',
+            color: '#8a8a8a',
+            fontWeight: '500',
+            textTransform: 'uppercase',
+            letterSpacing: '0.3px'
+          }}>
+            {label}
+          </span>
+        </label>
+      </div>
+    )
+  }
+
+  const InputComponent = multiline ? 'textarea' : 'input'
+
   return (
     <div style={{ marginBottom: '10px' }}>
       <div style={{
@@ -596,21 +703,26 @@ function PropertyField({ label, value, multiline = false }) {
       }}>
         {label}
       </div>
-      <div style={{
-        fontSize: '11px',
-        color: '#d0d0d0',
-        backgroundColor: '#1e1e1e',
-        padding: '6px 8px',
-        borderRadius: '2px',
-        border: '1px solid #3a3a3a',
-        wordWrap: multiline ? 'break-word' : 'normal',
-        whiteSpace: multiline ? 'normal' : 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        lineHeight: '1.4'
-      }}>
-        {value || '-'}
-      </div>
+      <InputComponent
+        type={type === 'number' ? 'number' : 'text'}
+        value={value}
+        onChange={(e) => onChange?.(e.target.value)}
+        style={{
+          width: '100%',
+          fontSize: '11px',
+          color: '#d0d0d0',
+          backgroundColor: '#1e1e1e',
+          padding: '6px 8px',
+          borderRadius: '2px',
+          border: '1px solid #3a3a3a',
+          fontFamily: 'inherit',
+          lineHeight: '1.4',
+          resize: multiline ? 'vertical' : 'none',
+          minHeight: multiline ? '60px' : 'auto'
+        }}
+        onFocus={(e) => e.target.style.borderColor = '#4a7ba7'}
+        onBlur={(e) => e.target.style.borderColor = '#3a3a3a'}
+      />
     </div>
   )
 }
