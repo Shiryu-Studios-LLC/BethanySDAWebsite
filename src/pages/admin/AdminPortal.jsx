@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { IconPhoto, IconFiles, IconCalendar, IconMicrophone, IconFileText, IconSettings, IconVideo, IconBook } from '@tabler/icons-react'
-import UnrealToolbar from '../../components/UnrealToolbar'
 
 export default function AdminPortal() {
   const [stats, setStats] = useState({
@@ -105,15 +104,8 @@ export default function AdminPortal() {
   ]
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: '#1a1a1a',
-      color: '#e0e0e0'
-    }}>
-      <UnrealToolbar stats={stats} loadingStats={loadingStats} />
-
-      <div style={{ padding: '24px' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+    <div style={{ padding: '24px' }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
 
           {/* Quick Stats */}
           <div style={{
@@ -146,7 +138,6 @@ export default function AdminPortal() {
               color="#9b7ba7"
             />
           </div>
-        </div>
       </div>
     </div>
   )
