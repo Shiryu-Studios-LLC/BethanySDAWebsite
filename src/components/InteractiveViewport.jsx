@@ -164,18 +164,7 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
             {block.type || 'Unknown Block'}
           </div>
 
-          {isEditMode ? (
-            <BlockPreview block={block} />
-          ) : (
-            <div style={{
-              backgroundColor: '#1a1a1a',
-              padding: '16px',
-              borderRadius: '3px',
-              border: '1px solid #3a3a3a'
-            }}>
-              <BlockRenderer block={block} />
-            </div>
-          )}
+          <BlockPreview block={block} isPreview={!isEditMode} />
         </div>
       </div>
     )
@@ -236,11 +225,50 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
 }
 
 // Block Preview Component - Renders a preview based on block type
-function BlockPreview({ block }) {
+function BlockPreview({ block, isPreview = false }) {
   const blockData = block.data || {}
 
   switch (block.type) {
     case 'hero':
+      if (isPreview) {
+        return (
+          <div style={{
+            backgroundColor: blockData.backgroundColor || '#0054a6',
+            backgroundImage: blockData.backgroundImage ? `url(${blockData.backgroundImage})` : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            color: 'white',
+            padding: '60px 20px',
+            textAlign: 'center',
+            borderRadius: '4px',
+            minHeight: '300px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            {blockData.title && (
+              <h1 style={{
+                fontSize: '36px',
+                fontWeight: '700',
+                marginBottom: '16px',
+                textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+              }}>
+                {blockData.title}
+              </h1>
+            )}
+            {blockData.subtitle && (
+              <p style={{
+                fontSize: '18px',
+                opacity: 0.9,
+                textShadow: '0 1px 2px rgba(0,0,0,0.3)'
+              }}>
+                {blockData.subtitle}
+              </p>
+            )}
+          </div>
+        )
+      }
       return (
         <div>
           {blockData.title && (
@@ -275,6 +303,20 @@ function BlockPreview({ block }) {
 
     case 'text':
     case 'html':
+      if (isPreview && blockData.content) {
+        return (
+          <div style={{
+            fontSize: '14px',
+            color: '#e0e0e0',
+            lineHeight: '1.6',
+            padding: '16px',
+            backgroundColor: '#1e1e1e',
+            borderRadius: '4px'
+          }}>
+            <div dangerouslySetInnerHTML={{ __html: blockData.content }} />
+          </div>
+        )
+      }
       return (
         <div style={{
           fontSize: '12px',
@@ -295,6 +337,32 @@ function BlockPreview({ block }) {
       )
 
     case 'image':
+      if (isPreview && blockData.src) {
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <img
+              src={blockData.src}
+              alt={blockData.alt || 'Image'}
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+                borderRadius: '4px',
+                border: '1px solid #3a3a3a'
+              }}
+            />
+            {blockData.alt && (
+              <div style={{
+                fontSize: '12px',
+                color: '#7a7a7a',
+                marginTop: '8px',
+                fontStyle: 'italic'
+              }}>
+                {blockData.alt}
+              </div>
+            )}
+          </div>
+        )
+      }
       return (
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           {blockData.src && (
