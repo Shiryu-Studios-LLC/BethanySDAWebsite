@@ -262,15 +262,7 @@ const styles = {
     justifyContent: 'center',
     overflow: 'auto',
     padding: '32px',
-    backgroundColor: '#1a1a1a',
-    backgroundImage: `
-      linear-gradient(45deg, #202020 25%, transparent 25%),
-      linear-gradient(-45deg, #202020 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, #202020 75%),
-      linear-gradient(-45deg, transparent 75%, #202020 75%)
-    `,
-    backgroundSize: '20px 20px',
-    backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
+    backgroundColor: '#1a1a1a'
   },
 
   viewport: {

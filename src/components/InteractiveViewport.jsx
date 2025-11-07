@@ -13,6 +13,7 @@ import FloatingTextToolbar from './FloatingTextToolbar'
 import SpacingControl from './SpacingControl'
 import ResizeHandles from './ResizeHandles'
 import BorderControlPanel from './BorderControlPanel'
+import BrowserFrame from './BrowserFrame'
 
 export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSelect, viewMode = 'edit' }) {
   const [hoveredBlockIndex, setHoveredBlockIndex] = useState(null)
@@ -441,7 +442,9 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
 
   return (
     <>
-      {viewportContent}
+      <BrowserFrame>
+        {viewportContent}
+      </BrowserFrame>
 
       {/* Floating Text Toolbar */}
       <FloatingTextToolbar
