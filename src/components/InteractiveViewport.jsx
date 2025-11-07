@@ -6,6 +6,7 @@ import {
   IconTrash,
   IconSettings
 } from '@tabler/icons-react'
+import BlockRenderer from './BlockEditor/BlockRenderer'
 
 export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSelect, viewMode = 'edit' }) {
   const [hoveredBlockIndex, setHoveredBlockIndex] = useState(null)
@@ -15,6 +16,25 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
 
   const handleBlockClick = (block, index) => {
     onBlockSelect?.(block)
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    const componentType = e.dataTransfer.getData('componentType')
+    if (componentType) {
+      // Create new block from toolbox
+      const newBlock = {
+        type: componentType,
+        data: getDefaultBlockData(componentType),
+        hidden: false
+      }
+      onBlocksChange?.([...blocks, newBlock])
+    }
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'copy'
   }
 
   const handleBlockDelete = (index) => {
@@ -45,10 +65,10 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
         onClick={() => isEditMode && handleBlockClick(block, index)}
         style={{
           position: 'relative',
-          marginBottom: '16px',
+          marginBottom: isEditMode ? '16px' : '0',
           border: isEditMode && isHovered ? '2px solid #4a7ba7' : '2px solid transparent',
-          borderRadius: '4px',
-          backgroundColor: isHidden ? '#2a2a2a' : '#252525',
+          borderRadius: isEditMode ? '4px' : '0',
+          backgroundColor: isEditMode ? (isHidden ? '#2a2a2a' : '#252525') : 'transparent',
           opacity: isHidden ? 0.5 : 1,
           cursor: isEditMode ? 'pointer' : 'default',
           transition: 'all 0.2s ease'
@@ -123,8 +143,8 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
 
         {/* Block Content Preview */}
         <div style={{
-          padding: isEditMode ? '16px 16px 16px 36px' : '16px',
-          minHeight: '60px'
+          padding: isEditMode ? '16px 16px 16px 36px' : '0',
+          minHeight: isEditMode ? '60px' : 'auto'
         }}>
           {isEditMode && (
             <div style={{
@@ -139,7 +159,11 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
             </div>
           )}
 
-          <BlockPreview block={block} />
+          {isEditMode ? (
+            <BlockPreview block={block} />
+          ) : (
+            <BlockRenderer block={block} />
+          )}
         </div>
       </div>
     )
@@ -147,28 +171,38 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
 
   if (!blocks || blocks.length === 0) {
     return (
-      <div style={{
-        padding: '60px 20px',
-        textAlign: 'center',
-        color: '#7a7a7a',
-        backgroundColor: '#1e1e1e',
-        borderRadius: '4px',
-        border: '2px dashed #3a3a3a'
-      }}>
+      <div
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        style={{
+          padding: '60px 20px',
+          textAlign: 'center',
+          color: '#7a7a7a',
+          backgroundColor: '#1e1e1e',
+          borderRadius: '4px',
+          border: '2px dashed #3a3a3a'
+        }}
+      >
         <IconSettings size={48} style={{ marginBottom: '16px', opacity: 0.3 }} />
         <p style={{ fontSize: '14px', marginBottom: '8px' }}>No blocks yet</p>
-        <p style={{ fontSize: '12px', opacity: 0.7 }}>Add blocks to start building this page</p>
+        <p style={{ fontSize: '12px', opacity: 0.7 }}>
+          {isEditMode ? 'Drag components from the toolbox or click to add' : 'No content to display'}
+        </p>
       </div>
     )
   }
 
   return (
-    <div style={{
-      backgroundColor: '#1e1e1e',
-      borderRadius: '4px',
-      padding: '24px',
-      minHeight: '400px'
-    }}>
+    <div
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      style={{
+        backgroundColor: isEditMode ? '#1e1e1e' : 'transparent',
+        borderRadius: '4px',
+        padding: isEditMode ? '24px' : '0',
+        minHeight: '400px'
+      }}
+    >
       {blocks.map((block, index) => renderBlock(block, index))}
     </div>
   )
@@ -341,5 +375,51 @@ function BlockPreview({ block }) {
           {JSON.stringify(blockData).length > 150 ? '...' : ''}
         </div>
       )
+  }
+}
+
+// Helper function to create default data for each block type
+function getDefaultBlockData(componentType) {
+  switch (componentType) {
+    case 'hero':
+      return {
+        title: 'New Hero Section',
+        subtitle: 'Add your subtitle here',
+        backgroundImage: ''
+      }
+    case 'text':
+      return {
+        content: 'Enter your text content here...'
+      }
+    case 'html':
+      return {
+        content: '<p>Enter HTML content here...</p>'
+      }
+    case 'image':
+      return {
+        src: '',
+        alt: 'Image description'
+      }
+    case 'card-grid':
+      return {
+        title: 'Card Grid',
+        columns: 3,
+        cards: []
+      }
+    case 'cta':
+      return {
+        heading: 'Call to Action',
+        buttonText: 'Learn More',
+        buttonLink: '#'
+      }
+    case 'language-switcher':
+      return {}
+    case 'events-list':
+      return {
+        limit: 5,
+        view: 'list'
+      }
+    default:
+      return {}
   }
 }
