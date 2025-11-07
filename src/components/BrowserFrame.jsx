@@ -73,7 +73,7 @@ export default function BrowserFrame({ children, url = 'bethany-sda-church.pages
 
       {/* Browser Content */}
       <div style={{
-        backgroundColor: '#ffffff',
+        backgroundColor: '#1a1a1a',
         minHeight: '400px',
         maxHeight: '70vh',
         overflowY: 'auto'
