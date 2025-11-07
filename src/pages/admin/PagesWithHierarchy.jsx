@@ -24,6 +24,7 @@ import GridGuides from '../../components/GridGuides'
 import ColorPicker from '../../components/ColorPicker'
 import ImageUploadManager from '../../components/ImageUploadManager'
 import CSSClassEditor from '../../components/CSSClassEditor'
+import PropertiesPanel from '../../components/PropertiesPanel'
 
 export default function PagesWithHierarchy() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -152,8 +153,20 @@ export default function PagesWithHierarchy() {
     setSelectedPage(prev => ({ ...prev, content: newBlocks }))
   }
 
-  const handleBlockSelect = (block) => {
-    setSelectedBlock(block)
+  const handleBlockSelect = (block, index) => {
+    setSelectedBlock({ ...block, index })
+  }
+
+  const handleBlockUpdate = (blockIndex, updatedData) => {
+    if (!selectedPage || blockIndex === undefined) return
+    const newBlocks = [...(selectedPage.content || [])]
+    newBlocks[blockIndex] = {
+      ...newBlocks[blockIndex],
+      data: updatedData
+    }
+    setSelectedPage(prev => ({ ...prev, content: newBlocks }))
+    // Update selectedBlock to reflect changes
+    setSelectedBlock({ ...newBlocks[blockIndex], index: blockIndex })
   }
 
   const handleAddComponent = (newBlock) => {
@@ -893,6 +906,18 @@ export default function PagesWithHierarchy() {
                     onChange={(value) => setSelectedPage(prev => ({ ...prev, meta_description: value }))}
                   />
                 </InspectorComponent>
+
+                {/* Selected Block Properties - Photoshop-style Panel */}
+                {selectedBlock && selectedBlock.index !== undefined && viewMode === 'edit' && (
+                  <div style={{ marginTop: '8px' }}>
+                    <PropertiesPanel
+                      block={selectedBlock}
+                      blockIndex={selectedBlock.index}
+                      onUpdate={handleBlockUpdate}
+                      isVisible={true}
+                    />
+                  </div>
+                )}
 
                 {/* All Blocks - Always shown */}
                 {selectedPage.content && selectedPage.content.length > 0 && selectedPage.content.map((block, index) => {

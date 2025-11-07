@@ -62,7 +62,7 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
 
   const handleBlockClick = (block, index) => {
     setSelectedBlockIndex(index)
-    onBlockSelect?.(block)
+    onBlockSelect?.(block, index)
   }
 
   const handleOpenBorderControl = (block, index) => {
