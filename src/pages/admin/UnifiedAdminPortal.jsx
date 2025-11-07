@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import UnrealToolbar from '../../components/UnrealToolbar'
 import AdminPortal from './AdminPortal'
 import PagesWithHierarchy from './PagesWithHierarchy'
@@ -10,7 +11,8 @@ import SiteSettings from './SiteSettings'
 import Documentation from './Documentation'
 
 export default function UnifiedAdminPortal() {
-  const [activeTab, setActiveTab] = useState('dashboard')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'dashboard')
   const [stats, setStats] = useState({
     images: 0,
     videos: 0,
@@ -19,10 +21,22 @@ export default function UnifiedAdminPortal() {
   })
   const [loadingStats, setLoadingStats] = useState(true)
 
+  // Update activeTab when URL changes
+  useEffect(() => {
+    const tab = searchParams.get('tab') || 'dashboard'
+    setActiveTab(tab)
+  }, [searchParams])
+
   // Load stats on component mount
   useEffect(() => {
     loadStats()
   }, [])
+
+  // Handle tab change with URL update
+  const handleTabChange = (newTab) => {
+    setActiveTab(newTab)
+    setSearchParams({ tab: newTab })
+  }
 
   const loadStats = async () => {
     try {
@@ -94,7 +108,7 @@ export default function UnifiedAdminPortal() {
         stats={stats}
         loadingStats={loadingStats}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleTabChange}
       />
 
       {/* Content Area */}
