@@ -7,10 +7,12 @@ import {
   IconSettings
 } from '@tabler/icons-react'
 import BlockRenderer from './BlockEditor/BlockRenderer'
+import UnrealAlertDialog from './UnrealAlertDialog'
 
 export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSelect, viewMode = 'edit' }) {
   const [hoveredBlockIndex, setHoveredBlockIndex] = useState(null)
   const [draggedBlockIndex, setDraggedBlockIndex] = useState(null)
+  const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, blockIndex: null })
 
   const isEditMode = viewMode === 'edit'
 
@@ -38,10 +40,15 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
   }
 
   const handleBlockDelete = (index) => {
-    if (confirm('Are you sure you want to delete this block?')) {
-      const newBlocks = blocks.filter((_, i) => i !== index)
+    setDeleteDialog({ isOpen: true, blockIndex: index })
+  }
+
+  const confirmDelete = () => {
+    if (deleteDialog.blockIndex !== null) {
+      const newBlocks = blocks.filter((_, i) => i !== deleteDialog.blockIndex)
       onBlocksChange?.(newBlocks)
     }
+    setDeleteDialog({ isOpen: false, blockIndex: null })
   }
 
   const handleBlockToggleVisibility = (index) => {
@@ -193,18 +200,33 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
   }
 
   return (
-    <div
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
-      style={{
-        backgroundColor: isEditMode ? '#1e1e1e' : 'transparent',
-        borderRadius: '4px',
-        padding: isEditMode ? '24px' : '0',
-        minHeight: '400px'
-      }}
-    >
-      {blocks.map((block, index) => renderBlock(block, index))}
-    </div>
+    <>
+      <div
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        style={{
+          backgroundColor: isEditMode ? '#1e1e1e' : 'transparent',
+          borderRadius: '4px',
+          padding: isEditMode ? '24px' : '0',
+          minHeight: '400px'
+        }}
+      >
+        {blocks.map((block, index) => renderBlock(block, index))}
+      </div>
+
+      {/* Delete Confirmation Dialog */}
+      <UnrealAlertDialog
+        isOpen={deleteDialog.isOpen}
+        onClose={() => setDeleteDialog({ isOpen: false, blockIndex: null })}
+        onConfirm={confirmDelete}
+        title="Delete Block"
+        message="Are you sure you want to delete this block? This action cannot be undone."
+        type="warning"
+        confirmText="Delete"
+        cancelText="Cancel"
+        showCancel={true}
+      />
+    </>
   )
 }
 

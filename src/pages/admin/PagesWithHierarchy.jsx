@@ -16,6 +16,7 @@ import {
 } from '@tabler/icons-react'
 import InteractiveViewport from '../../components/InteractiveViewport'
 import ComponentToolbox from '../../components/ComponentToolbox'
+import UnrealAlertDialog from '../../components/UnrealAlertDialog'
 
 export default function PagesWithHierarchy() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -28,6 +29,7 @@ export default function PagesWithHierarchy() {
   const [selectedBlock, setSelectedBlock] = useState(null)
   const [saving, setSaving] = useState(false)
   const [viewMode, setViewMode] = useState('edit') // 'edit' or 'preview'
+  const [alertDialog, setAlertDialog] = useState({ isOpen: false, title: '', message: '', type: 'info' })
 
   // Icon mapping for special pages
   const pageIcons = {
@@ -149,15 +151,30 @@ export default function PagesWithHierarchy() {
       })
 
       if (response.ok) {
-        alert('Page saved successfully!')
+        setAlertDialog({
+          isOpen: true,
+          title: 'Success',
+          message: 'Page saved successfully!',
+          type: 'success'
+        })
         loadPages() // Refresh the list
       } else {
         const error = await response.json()
-        alert(error.error || 'Failed to save page')
+        setAlertDialog({
+          isOpen: true,
+          title: 'Save Failed',
+          message: error.error || 'Failed to save page',
+          type: 'error'
+        })
       }
     } catch (error) {
       console.error('Error saving page:', error)
-      alert('Error saving page')
+      setAlertDialog({
+        isOpen: true,
+        title: 'Error',
+        message: 'An error occurred while saving the page',
+        type: 'error'
+      })
     } finally {
       setSaving(false)
     }
@@ -689,6 +706,16 @@ export default function PagesWithHierarchy() {
           </div>
         )}
       </div>
+
+      {/* Alert Dialog */}
+      <UnrealAlertDialog
+        isOpen={alertDialog.isOpen}
+        onClose={() => setAlertDialog({ ...alertDialog, isOpen: false })}
+        title={alertDialog.title}
+        message={alertDialog.message}
+        type={alertDialog.type}
+        confirmText="OK"
+      />
     </div>
   )
 }
