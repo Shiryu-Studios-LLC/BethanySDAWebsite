@@ -627,10 +627,11 @@ export default function PagesWithHierarchy() {
               alignItems: 'center',
               justifyContent: 'space-between',
               padding: '0 16px',
-              flexShrink: 0
+              flexShrink: 0,
+              gap: '16px'
             }}>
               {/* Left: Page Info */}
-              <div style={{ flex: 1 }}>
+              <div style={{ flex: '0 1 auto', minWidth: 0 }}>
                 <span style={{ fontSize: '14px', fontWeight: '600' }}>{selectedPage.title}</span>
                 <span style={{ fontSize: '12px', color: '#7a7a7a', marginLeft: '12px' }}>
                   /{selectedPage.slug}
@@ -638,7 +639,7 @@ export default function PagesWithHierarchy() {
               </div>
 
               {/* Center: Mode Switcher and Responsive Preview */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flex: '1 1 auto', justifyContent: 'center', minWidth: 0 }}>
                 <div style={{
                   display: 'flex',
                   backgroundColor: '#1e1e1e',
@@ -696,7 +697,7 @@ export default function PagesWithHierarchy() {
               </div>
 
               {/* Right: Save Button */}
-              <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+              <div style={{ flex: '0 0 auto' }}>
                 <button
                   onClick={handleSave}
                   disabled={saving}
@@ -713,7 +714,8 @@ export default function PagesWithHierarchy() {
                     fontWeight: '500',
                     cursor: saving ? 'not-allowed' : 'pointer',
                     opacity: saving ? 0.6 : 1,
-                    transition: 'background-color 0.2s'
+                    transition: 'background-color 0.2s',
+                    whiteSpace: 'nowrap'
                   }}
                   onMouseEnter={(e) => !saving && (e.target.style.backgroundColor = '#5a8bb7')}
                   onMouseLeave={(e) => !saving && (e.target.style.backgroundColor = '#4a7ba7')}
