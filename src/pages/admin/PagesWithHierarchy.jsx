@@ -12,7 +12,9 @@ import {
   IconDeviceFloppy,
   IconEdit,
   IconEye,
-  IconPlus
+  IconPlus,
+  IconTrash,
+  IconGripVertical
 } from '@tabler/icons-react'
 import InteractiveViewport from '../../components/InteractiveViewport'
 import ComponentToolbox from '../../components/ComponentToolbox'
@@ -30,6 +32,10 @@ export default function PagesWithHierarchy() {
   const [saving, setSaving] = useState(false)
   const [viewMode, setViewMode] = useState('edit') // 'edit' or 'preview'
   const [alertDialog, setAlertDialog] = useState({ isOpen: false, title: '', message: '', type: 'info' })
+  const [newPageDialog, setNewPageDialog] = useState({ isOpen: false })
+  const [deletePageDialog, setDeletePageDialog] = useState({ isOpen: false, page: null })
+  const [draggedPage, setDraggedPage] = useState(null)
+  const [hoveredPageId, setHoveredPageId] = useState(null)
 
   // Icon mapping for special pages
   const pageIcons = {
@@ -180,6 +186,139 @@ export default function PagesWithHierarchy() {
     }
   }
 
+  const handleCreatePage = async (newPageData) => {
+    try {
+      const response = await fetch('/api/pages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: newPageData.title,
+          slug: newPageData.slug,
+          content: JSON.stringify([]),
+          show_page_header: false
+        })
+      })
+
+      if (response.ok) {
+        setAlertDialog({
+          isOpen: true,
+          title: 'Success',
+          message: 'Page created successfully!',
+          type: 'success'
+        })
+        setNewPageDialog({ isOpen: false })
+        loadPages() // Refresh the list
+      } else {
+        const error = await response.json()
+        setAlertDialog({
+          isOpen: true,
+          title: 'Create Failed',
+          message: error.error || 'Failed to create page',
+          type: 'error'
+        })
+      }
+    } catch (error) {
+      console.error('Error creating page:', error)
+      setAlertDialog({
+        isOpen: true,
+        title: 'Error',
+        message: 'An error occurred while creating the page',
+        type: 'error'
+      })
+    }
+  }
+
+  const handleDeletePage = async (page) => {
+    // Prevent deletion of core pages
+    const corePages = ['home', 'visit', 'about', 'navbar', 'footer']
+    if (corePages.includes(page.slug)) {
+      setAlertDialog({
+        isOpen: true,
+        title: 'Cannot Delete',
+        message: 'Core pages cannot be deleted.',
+        type: 'warning'
+      })
+      return
+    }
+
+    try {
+      const response = await fetch(`/api/pages/${page.id}`, {
+        method: 'DELETE'
+      })
+
+      if (response.ok) {
+        setAlertDialog({
+          isOpen: true,
+          title: 'Success',
+          message: 'Page deleted successfully!',
+          type: 'success'
+        })
+        setDeletePageDialog({ isOpen: false, page: null })
+
+        // If deleted page was selected, clear selection
+        if (selectedPage?.id === page.id) {
+          setSelectedPage(null)
+          const currentParams = Object.fromEntries(searchParams.entries())
+          delete currentParams.page
+          setSearchParams(currentParams)
+        }
+
+        loadPages() // Refresh the list
+      } else {
+        const error = await response.json()
+        setAlertDialog({
+          isOpen: true,
+          title: 'Delete Failed',
+          message: error.error || 'Failed to delete page',
+          type: 'error'
+        })
+      }
+    } catch (error) {
+      console.error('Error deleting page:', error)
+      setAlertDialog({
+        isOpen: true,
+        title: 'Error',
+        message: 'An error occurred while deleting the page',
+        type: 'error'
+      })
+    }
+  }
+
+  const handlePageDragStart = (e, page) => {
+    setDraggedPage(page)
+    e.dataTransfer.effectAllowed = 'move'
+  }
+
+  const handlePageDragOver = (e, targetPage) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    setHoveredPageId(targetPage.id)
+  }
+
+  const handlePageDrop = async (e, targetPage) => {
+    e.preventDefault()
+    setHoveredPageId(null)
+
+    if (!draggedPage || draggedPage.id === targetPage.id) {
+      setDraggedPage(null)
+      return
+    }
+
+    // Reorder pages array
+    const newPages = [...pages]
+    const draggedIndex = newPages.findIndex(p => p.id === draggedPage.id)
+    const targetIndex = newPages.findIndex(p => p.id === targetPage.id)
+
+    newPages.splice(draggedIndex, 1)
+    newPages.splice(targetIndex, 0, draggedPage)
+
+    setPages(newPages)
+    setDraggedPage(null)
+
+    // TODO: Implement API endpoint to save page order
+    // For now, the order will reset on page reload
+  }
+
   const getBlockIcon = (blockType) => {
     // Map block types to icons - you can customize this
     return IconFile
@@ -210,10 +349,33 @@ export default function PagesWithHierarchy() {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0 12px',
-          flexShrink: 0
+          flexShrink: 0,
+          gap: '8px'
         }}>
           {!isPanelCollapsed && (
-            <span style={{ fontSize: '13px', fontWeight: '600' }}>Page Hierarchy</span>
+            <>
+              <span style={{ fontSize: '13px', fontWeight: '600', flex: 1 }}>Page Hierarchy</span>
+              <button
+                onClick={() => setNewPageDialog({ isOpen: true })}
+                title="Create New Page"
+                style={{
+                  background: '#4a7ba7',
+                  border: '1px solid #5a8bb7',
+                  borderRadius: '3px',
+                  color: '#ffffff',
+                  cursor: 'pointer',
+                  padding: '4px 8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: '11px',
+                  fontWeight: '500',
+                  gap: '4px'
+                }}
+              >
+                <IconPlus size={14} />
+                New
+              </button>
+            </>
           )}
           <button
             onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
@@ -257,7 +419,15 @@ export default function PagesWithHierarchy() {
                 const isCorePages = ['home', 'visit', 'about', 'navbar', 'footer'].includes(page.slug)
 
                 return (
-                  <div key={page.id} style={{ marginBottom: '4px' }}>
+                  <div
+                    key={page.id}
+                    style={{ marginBottom: '4px', position: 'relative' }}
+                    draggable
+                    onDragStart={(e) => handlePageDragStart(e, page)}
+                    onDragOver={(e) => handlePageDragOver(e, page)}
+                    onDrop={(e) => handlePageDrop(e, page)}
+                    onDragEnd={() => setHoveredPageId(null)}
+                  >
                     {/* Page Item */}
                     <div
                       onClick={() => handlePageSelect(page)}
@@ -268,11 +438,27 @@ export default function PagesWithHierarchy() {
                         borderRadius: '3px',
                         cursor: 'pointer',
                         backgroundColor: isSelected ? '#3a3a3a' : 'transparent',
+                        border: hoveredPageId === page.id ? '2px solid #4a7ba7' : '2px solid transparent',
                         transition: 'background-color 0.15s ease'
                       }}
                       onMouseOver={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#2d2d2d')}
                       onMouseOut={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'transparent')}
                     >
+                      {/* Drag Handle */}
+                      <div
+                        style={{
+                          cursor: 'grab',
+                          color: '#7a7a7a',
+                          marginRight: '4px',
+                          display: 'flex',
+                          alignItems: 'center'
+                        }}
+                        onMouseDown={(e) => e.currentTarget.style.cursor = 'grabbing'}
+                        onMouseUp={(e) => e.currentTarget.style.cursor = 'grab'}
+                      >
+                        <IconGripVertical size={14} />
+                      </div>
+
                       <button
                         onClick={(e) => {
                           e.stopPropagation()
@@ -315,6 +501,31 @@ export default function PagesWithHierarchy() {
                           </div>
                         )}
                       </div>
+
+                      {/* Delete Button - Only for non-core pages */}
+                      {!isCorePages && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setDeletePageDialog({ isOpen: true, page })
+                          }}
+                          title="Delete Page"
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            color: '#ff6b6b',
+                            cursor: 'pointer',
+                            padding: '4px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            opacity: 0.7
+                          }}
+                          onMouseOver={(e) => e.currentTarget.style.opacity = '1'}
+                          onMouseOut={(e) => e.currentTarget.style.opacity = '0.7'}
+                        >
+                          <IconTrash size={14} />
+                        </button>
+                      )}
                     </div>
 
                     {/* Page Components/Blocks (when expanded) */}
@@ -716,6 +927,26 @@ export default function PagesWithHierarchy() {
         type={alertDialog.type}
         confirmText="OK"
       />
+
+      {/* New Page Dialog */}
+      <NewPageDialog
+        isOpen={newPageDialog.isOpen}
+        onClose={() => setNewPageDialog({ isOpen: false })}
+        onConfirm={handleCreatePage}
+      />
+
+      {/* Delete Page Confirmation Dialog */}
+      <UnrealAlertDialog
+        isOpen={deletePageDialog.isOpen}
+        onClose={() => setDeletePageDialog({ isOpen: false, page: null })}
+        onConfirm={() => handleDeletePage(deletePageDialog.page)}
+        title="Delete Page"
+        message={`Are you sure you want to delete "${deletePageDialog.page?.title}"? This action cannot be undone.`}
+        type="warning"
+        confirmText="Delete"
+        cancelText="Cancel"
+        showCancel={true}
+      />
     </div>
   )
 }
@@ -881,5 +1112,207 @@ function PropertyField({ label, value, multiline = false, editable = false, read
         onBlur={(e) => e.target.style.borderColor = '#3a3a3a'}
       />
     </div>
+  )
+}
+
+// New Page Dialog Component
+function NewPageDialog({ isOpen, onClose, onConfirm }) {
+  const [formData, setFormData] = useState({ title: '', slug: '' })
+
+  if (!isOpen) return null
+
+  const handleConfirm = () => {
+    if (!formData.title || !formData.slug) {
+      alert('Please fill in all fields')
+      return
+    }
+    onConfirm(formData)
+    setFormData({ title: '', slug: '' })
+  }
+
+  const handleTitleChange = (title) => {
+    setFormData(prev => ({
+      ...prev,
+      title,
+      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    }))
+  }
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        onClick={onClose}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          animation: 'fadeIn 0.2s ease'
+        }}
+      >
+        {/* Dialog */}
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            backgroundColor: '#2d2d2d',
+            border: '1px solid #4a4a4a',
+            borderRadius: '4px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
+            width: '480px',
+            maxWidth: '90vw',
+            overflow: 'hidden',
+            animation: 'slideIn 0.2s ease'
+          }}
+        >
+          {/* Header */}
+          <div
+            style={{
+              padding: '20px 24px',
+              borderBottom: '1px solid #3a3a3a',
+              backgroundColor: '#252525'
+            }}
+          >
+            <h2 style={{
+              margin: 0,
+              fontSize: '18px',
+              fontWeight: '600',
+              color: '#e0e0e0'
+            }}>
+              Create New Page
+            </h2>
+          </div>
+
+          {/* Body */}
+          <div style={{
+            padding: '24px',
+            color: '#c0c0c0',
+            fontSize: '14px',
+            lineHeight: '1.6'
+          }}>
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '12px',
+                color: '#a0a0a0',
+                marginBottom: '8px',
+                fontWeight: '500'
+              }}>
+                Page Title
+              </label>
+              <input
+                type="text"
+                value={formData.title}
+                onChange={(e) => handleTitleChange(e.target.value)}
+                placeholder="Enter page title"
+                autoFocus
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  backgroundColor: '#1e1e1e',
+                  border: '1px solid #3a3a3a',
+                  borderRadius: '3px',
+                  color: '#e0e0e0',
+                  fontSize: '13px',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '12px',
+                color: '#a0a0a0',
+                marginBottom: '8px',
+                fontWeight: '500'
+              }}>
+                Page Slug (URL)
+              </label>
+              <input
+                type="text"
+                value={formData.slug}
+                onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value }))}
+                placeholder="page-slug"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  backgroundColor: '#1e1e1e',
+                  border: '1px solid #3a3a3a',
+                  borderRadius: '3px',
+                  color: '#e0e0e0',
+                  fontSize: '13px',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+              />
+              <div style={{
+                fontSize: '11px',
+                color: '#7a7a7a',
+                marginTop: '4px'
+              }}>
+                URL: /{formData.slug || 'page-slug'}
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div
+            style={{
+              padding: '16px 24px',
+              borderTop: '1px solid #3a3a3a',
+              backgroundColor: '#252525',
+              display: 'flex',
+              justifyContent: 'flex-end',
+              gap: '12px'
+            }}
+          >
+            <button
+              onClick={onClose}
+              style={{
+                padding: '8px 20px',
+                backgroundColor: '#3a3a3a',
+                border: '1px solid #4a4a4a',
+                borderRadius: '3px',
+                color: '#e0e0e0',
+                fontSize: '13px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#4a4a4a'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#3a3a3a'}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleConfirm}
+              style={{
+                padding: '8px 20px',
+                backgroundColor: '#4a7ba7',
+                border: '1px solid #5a8bb7',
+                borderRadius: '3px',
+                color: '#ffffff',
+                fontSize: '13px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#5a8bb7'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#4a7ba7'}
+            >
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
