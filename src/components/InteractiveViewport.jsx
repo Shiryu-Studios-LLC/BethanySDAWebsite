@@ -8,6 +8,7 @@ import {
 } from '@tabler/icons-react'
 import BlockRenderer from './BlockEditor/BlockRenderer'
 import UnrealAlertDialog from './UnrealAlertDialog'
+import BrowserFrame from './BrowserFrame'
 
 export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSelect, viewMode = 'edit' }) {
   const [hoveredBlockIndex, setHoveredBlockIndex] = useState(null)
@@ -193,20 +194,30 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
     )
   }
 
+  const viewportContent = (
+    <div
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      style={{
+        backgroundColor: isEditMode ? '#1e1e1e' : 'transparent',
+        borderRadius: isEditMode ? '4px' : '0',
+        padding: isEditMode ? '24px' : '0',
+        minHeight: '400px'
+      }}
+    >
+      {blocks.map((block, index) => renderBlock(block, index))}
+    </div>
+  )
+
   return (
     <>
-      <div
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        style={{
-          backgroundColor: '#1e1e1e',
-          borderRadius: '4px',
-          padding: '24px',
-          minHeight: '400px'
-        }}
-      >
-        {blocks.map((block, index) => renderBlock(block, index))}
-      </div>
+      {isEditMode ? (
+        viewportContent
+      ) : (
+        <BrowserFrame>
+          {viewportContent}
+        </BrowserFrame>
+      )}
 
       {/* Delete Confirmation Dialog */}
       <UnrealAlertDialog
@@ -480,6 +491,7 @@ function getDefaultBlockData(componentType) {
       return {
         title: 'New Hero Section',
         subtitle: 'Add your subtitle here',
+        backgroundColor: '#0054a6',
         backgroundImage: ''
       }
     case 'text':
@@ -495,17 +507,66 @@ function getDefaultBlockData(componentType) {
         src: '',
         alt: 'Image description'
       }
+    case 'video':
+      return {
+        src: '',
+        poster: '',
+        autoplay: false
+      }
     case 'card-grid':
       return {
         title: 'Card Grid',
         columns: 3,
         cards: []
       }
+    case 'two-column':
+      return {
+        leftContent: '<p>Left column content</p>',
+        rightContent: '<p>Right column content</p>'
+      }
     case 'cta':
       return {
         heading: 'Call to Action',
         buttonText: 'Learn More',
         buttonLink: '#'
+      }
+    case 'divider':
+      return {
+        style: 'solid',
+        color: '#cccccc'
+      }
+    case 'map':
+      return {
+        address: '123 Main St, City, State 12345',
+        zoom: 15
+      }
+    case 'contact-form':
+      return {
+        title: 'Contact Us',
+        fields: ['name', 'email', 'message']
+      }
+    case 'testimonial':
+      return {
+        quote: 'This is a testimonial quote',
+        author: 'John Doe',
+        role: 'Position'
+      }
+    case 'accordion':
+      return {
+        items: [
+          { title: 'Section 1', content: 'Content for section 1' },
+          { title: 'Section 2', content: 'Content for section 2' }
+        ]
+      }
+    case 'embed':
+      return {
+        embedCode: '',
+        aspectRatio: '16:9'
+      }
+    case 'bulletin':
+      return {
+        date: new Date().toISOString().split('T')[0],
+        fileUrl: ''
       }
     case 'language-switcher':
       return {}

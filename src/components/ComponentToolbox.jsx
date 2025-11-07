@@ -7,7 +7,16 @@ import {
   IconHeading,
   IconLanguage,
   IconCalendar,
-  IconChevronRight
+  IconChevronRight,
+  IconVideo,
+  IconColumns,
+  IconSeparator,
+  IconMap,
+  IconMail,
+  IconQuote,
+  IconListDetails,
+  IconFileDescription,
+  IconLayout2
 } from '@tabler/icons-react'
 
 // Available component types that can be dragged into the viewport
@@ -16,8 +25,17 @@ const componentLibrary = [
   { type: 'text', icon: IconTextSize, label: 'Text', color: '#5a9b5a' },
   { type: 'html', icon: IconTextSize, label: 'HTML', color: '#7b8ba7' },
   { type: 'image', icon: IconPhoto, label: 'Image', color: '#9b7ba7' },
+  { type: 'video', icon: IconVideo, label: 'Video', color: '#6a8ba7' },
   { type: 'card-grid', icon: IconLayoutGrid, label: 'Card Grid', color: '#7ba7a7' },
+  { type: 'two-column', icon: IconColumns, label: 'Two Column', color: '#8a9b7b' },
   { type: 'cta', icon: IconClick, label: 'CTA', color: '#a77b7b' },
+  { type: 'divider', icon: IconSeparator, label: 'Divider', color: '#7a7a7a' },
+  { type: 'map', icon: IconMap, label: 'Map', color: '#5a9b7b' },
+  { type: 'contact-form', icon: IconMail, label: 'Contact Form', color: '#9b7b7b' },
+  { type: 'testimonial', icon: IconQuote, label: 'Testimonial', color: '#7b8b9b' },
+  { type: 'accordion', icon: IconListDetails, label: 'Accordion', color: '#8b7b9b' },
+  { type: 'embed', icon: IconLayout2, label: 'Embed', color: '#9b8b7b' },
+  { type: 'bulletin', icon: IconFileDescription, label: 'Bulletin', color: '#7b9b8b' },
   { type: 'language-switcher', icon: IconLanguage, label: 'Language', color: '#8a7ba7' },
   { type: 'events-list', icon: IconCalendar, label: 'Events', color: '#7ba78a' },
 ]
@@ -176,6 +194,7 @@ function getDefaultBlockData(componentType) {
       return {
         title: 'New Hero Section',
         subtitle: 'Add your subtitle here',
+        backgroundColor: '#0054a6',
         backgroundImage: ''
       }
     case 'text':
@@ -191,17 +210,66 @@ function getDefaultBlockData(componentType) {
         src: '',
         alt: 'Image description'
       }
+    case 'video':
+      return {
+        src: '',
+        poster: '',
+        autoplay: false
+      }
     case 'card-grid':
       return {
         title: 'Card Grid',
         columns: 3,
         cards: []
       }
+    case 'two-column':
+      return {
+        leftContent: '<p>Left column content</p>',
+        rightContent: '<p>Right column content</p>'
+      }
     case 'cta':
       return {
         heading: 'Call to Action',
         buttonText: 'Learn More',
         buttonLink: '#'
+      }
+    case 'divider':
+      return {
+        style: 'solid',
+        color: '#cccccc'
+      }
+    case 'map':
+      return {
+        address: '123 Main St, City, State 12345',
+        zoom: 15
+      }
+    case 'contact-form':
+      return {
+        title: 'Contact Us',
+        fields: ['name', 'email', 'message']
+      }
+    case 'testimonial':
+      return {
+        quote: 'This is a testimonial quote',
+        author: 'John Doe',
+        role: 'Position'
+      }
+    case 'accordion':
+      return {
+        items: [
+          { title: 'Section 1', content: 'Content for section 1' },
+          { title: 'Section 2', content: 'Content for section 2' }
+        ]
+      }
+    case 'embed':
+      return {
+        embedCode: '',
+        aspectRatio: '16:9'
+      }
+    case 'bulletin':
+      return {
+        date: new Date().toISOString().split('T')[0],
+        fileUrl: ''
       }
     case 'language-switcher':
       return {}
