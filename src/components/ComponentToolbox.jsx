@@ -26,7 +26,7 @@ import {
   IconClock,
   IconCode,
   IconLayoutList,
-  IconCarousel,
+  IconPhotos,
   IconPhotoPlus,
   IconLayoutBottombar
 } from '@tabler/icons-react'
@@ -53,7 +53,7 @@ const componentLibrary = [
       { type: 'html', icon: IconCode, label: 'HTML', color: '#7b8ba7' },
       { type: 'image', icon: IconPhoto, label: 'Image', color: '#9b7ba7' },
       { type: 'image-text', icon: IconPhotoPlus, label: 'Image + Text', color: '#8b7ba7' },
-      { type: 'gallery', icon: IconCarousel, label: 'Gallery', color: '#7b9ba7' },
+      { type: 'gallery', icon: IconPhotos, label: 'Gallery', color: '#7b9ba7' },
       { type: 'video', icon: IconVideo, label: 'Video', color: '#6a8ba7' },
       { type: 'youtube', icon: IconBrandYoutube, label: 'YouTube', color: '#ff0000' },
       { type: 'bulletin', icon: IconFileDescription, label: 'Bulletin', color: '#7b9b8b' },
