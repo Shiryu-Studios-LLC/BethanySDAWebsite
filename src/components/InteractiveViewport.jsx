@@ -72,10 +72,10 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
         onClick={() => isEditMode && handleBlockClick(block, index)}
         style={{
           position: 'relative',
-          marginBottom: isEditMode ? '16px' : '0',
+          marginBottom: '16px',
           border: isEditMode && isHovered ? '2px solid #4a7ba7' : '2px solid transparent',
-          borderRadius: isEditMode ? '4px' : '0',
-          backgroundColor: isEditMode ? (isHidden ? '#2a2a2a' : '#252525') : 'transparent',
+          borderRadius: '4px',
+          backgroundColor: isHidden ? '#2a2a2a' : '#252525',
           opacity: isHidden ? 0.5 : 1,
           cursor: isEditMode ? 'pointer' : 'default',
           transition: 'all 0.2s ease'
@@ -150,26 +150,31 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
 
         {/* Block Content Preview */}
         <div style={{
-          padding: isEditMode ? '16px 16px 16px 36px' : '0',
-          minHeight: isEditMode ? '60px' : 'auto'
+          padding: '16px 16px 16px 36px',
+          minHeight: '60px'
         }}>
-          {isEditMode && (
-            <div style={{
-              fontSize: '11px',
-              color: '#7a7a7a',
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px',
-              marginBottom: '8px',
-              fontWeight: '600'
-            }}>
-              {block.type || 'Unknown Block'}
-            </div>
-          )}
+          <div style={{
+            fontSize: '11px',
+            color: '#7a7a7a',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            marginBottom: '8px',
+            fontWeight: '600'
+          }}>
+            {block.type || 'Unknown Block'}
+          </div>
 
           {isEditMode ? (
             <BlockPreview block={block} />
           ) : (
-            <BlockRenderer block={block} />
+            <div style={{
+              backgroundColor: '#1a1a1a',
+              padding: '16px',
+              borderRadius: '3px',
+              border: '1px solid #3a3a3a'
+            }}>
+              <BlockRenderer block={block} />
+            </div>
           )}
         </div>
       </div>
@@ -205,9 +210,9 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         style={{
-          backgroundColor: isEditMode ? '#1e1e1e' : 'transparent',
+          backgroundColor: '#1e1e1e',
           borderRadius: '4px',
-          padding: isEditMode ? '24px' : '0',
+          padding: '24px',
           minHeight: '400px'
         }}
       >
