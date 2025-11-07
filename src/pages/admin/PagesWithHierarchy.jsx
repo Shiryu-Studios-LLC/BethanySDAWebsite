@@ -907,18 +907,6 @@ export default function PagesWithHierarchy() {
                   />
                 </InspectorComponent>
 
-                {/* Selected Block Properties - Photoshop-style Panel */}
-                {selectedBlock && selectedBlock.index !== undefined && viewMode === 'edit' && (
-                  <div style={{ marginTop: '8px' }}>
-                    <PropertiesPanel
-                      block={selectedBlock}
-                      blockIndex={selectedBlock.index}
-                      onUpdate={handleBlockUpdate}
-                      isVisible={true}
-                    />
-                  </div>
-                )}
-
                 {/* All Blocks - Always shown */}
                 {selectedPage.content && selectedPage.content.length > 0 && selectedPage.content.map((block, index) => {
                   const isSelected = selectedBlock === block
@@ -1111,6 +1099,14 @@ export default function PagesWithHierarchy() {
           </div>
         </div>
       )}
+
+      {/* Floating Properties Panel - Draggable */}
+      <PropertiesPanel
+        block={selectedBlock}
+        blockIndex={selectedBlock?.index}
+        onUpdate={handleBlockUpdate}
+        isVisible={selectedBlock && selectedBlock.index !== undefined && viewMode === 'edit'}
+      />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import {
   IconChevronDown,
   IconChevronRight,
@@ -7,7 +7,8 @@ import {
   IconPalette,
   IconDimensions,
   IconTypography,
-  IconSettings
+  IconSettings,
+  IconGripVertical
 } from '@tabler/icons-react'
 import ColorPicker from './ColorPicker'
 
@@ -19,9 +20,50 @@ export default function PropertiesPanel({ block, blockIndex, onUpdate, isVisible
     dimensions: false,
     typography: false
   })
+  const [position, setPosition] = useState({ x: 100, y: 100 })
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
+  const panelRef = useRef(null)
+
+  // Handle dragging
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (isDragging) {
+        setPosition({
+          x: e.clientX - dragOffset.x,
+          y: e.clientY - dragOffset.y
+        })
+      }
+    }
+
+    const handleMouseUp = () => {
+      setIsDragging(false)
+    }
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [isDragging, dragOffset])
 
   if (!isVisible || !block) {
     return null
+  }
+
+  const handleMouseDown = (e) => {
+    if (panelRef.current) {
+      const rect = panelRef.current.getBoundingClientRect()
+      setDragOffset({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      })
+      setIsDragging(true)
+    }
   }
 
   const toggleSection = (section) => {
@@ -66,29 +108,47 @@ export default function PropertiesPanel({ block, blockIndex, onUpdate, isVisible
   }
 
   return (
-    <div style={{
-      backgroundColor: '#252525',
-      borderRadius: '4px',
-      overflow: 'hidden',
-      border: '1px solid #3a3a3a'
-    }}>
-      {/* Panel Header */}
-      <div style={{
-        padding: '12px',
-        borderBottom: '1px solid #3a3a3a',
-        backgroundColor: '#2d2d2d'
-      }}>
+    <div
+      ref={panelRef}
+      style={{
+        position: 'fixed',
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        width: '320px',
+        maxHeight: '80vh',
+        backgroundColor: '#252525',
+        borderRadius: '4px',
+        overflow: 'hidden',
+        border: '1px solid #3a3a3a',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
+        zIndex: 1000,
+        cursor: isDragging ? 'grabbing' : 'default'
+      }}
+    >
+      {/* Panel Header - Draggable */}
+      <div
+        onMouseDown={handleMouseDown}
+        style={{
+          padding: '12px',
+          borderBottom: '1px solid #3a3a3a',
+          backgroundColor: '#2d2d2d',
+          cursor: 'grab',
+          userSelect: 'none'
+        }}
+      >
         <div style={{
           display: 'flex',
           alignItems: 'center',
           gap: '8px'
         }}>
+          <IconGripVertical size={16} style={{ color: '#7a7a7a' }} />
           <IconSettings size={16} style={{ color: '#4a7ba7' }} />
           <h3 style={{
             margin: 0,
             fontSize: '13px',
             fontWeight: '600',
-            color: '#e0e0e0'
+            color: '#e0e0e0',
+            flex: 1
           }}>
             {block.type?.toUpperCase()} Properties
           </h3>
@@ -96,7 +156,10 @@ export default function PropertiesPanel({ block, blockIndex, onUpdate, isVisible
       </div>
 
       {/* Scrollable Content */}
-      <div>
+      <div style={{
+        maxHeight: 'calc(80vh - 50px)',
+        overflowY: 'auto'
+      }}>
         {/* Spacing Section */}
         <CollapsibleSection
           title="Spacing"
