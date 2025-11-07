@@ -274,7 +274,7 @@ const styles = {
   },
 
   viewport: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#1a1d2e',
     boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)',
     borderRadius: '8px',
     overflow: 'hidden',
