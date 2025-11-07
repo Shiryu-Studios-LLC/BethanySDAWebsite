@@ -62,8 +62,7 @@ export default function UnrealToolbar({ stats, loadingStats, activeTab, setActiv
           padding: '0 12px',
           height: '100%',
           borderRight: `1px solid ${unrealTheme.toolbarBorder}`,
-          marginRight: '8px',
-          gap: '12px'
+          marginRight: '8px'
         }}
       >
         <span style={{
@@ -71,19 +70,6 @@ export default function UnrealToolbar({ stats, loadingStats, activeTab, setActiv
           fontWeight: '600',
           color: unrealTheme.text,
           letterSpacing: '-0.5px'
-        }}>
-          Bethany SDA
-        </span>
-        <div style={{
-          width: '1px',
-          height: '20px',
-          backgroundColor: unrealTheme.toolbarBorder
-        }} />
-        <span style={{
-          fontSize: '13px',
-          fontWeight: '500',
-          color: unrealTheme.textMuted,
-          letterSpacing: '-0.3px'
         }}>
           Admin Dashboard
         </span>
