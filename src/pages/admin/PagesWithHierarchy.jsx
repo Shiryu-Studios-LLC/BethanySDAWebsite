@@ -94,7 +94,10 @@ export default function PagesWithHierarchy() {
           }
         }
 
-        setSelectedPage({ ...data, content })
+        // Set show_page_header to false by default if not set
+        const show_page_header = data.show_page_header ?? false
+
+        setSelectedPage({ ...data, content, show_page_header })
       }
     } catch (error) {
       console.error('Error loading page:', error)
@@ -565,7 +568,7 @@ export default function PagesWithHierarchy() {
                   title="Page"
                   icon={pageIcons[selectedPage.slug]?.icon || IconFile}
                   color={pageIcons[selectedPage.slug]?.color || '#6a6a6a'}
-                  defaultExpanded={true}
+                  defaultExpanded={false}
                 >
                   <PropertyField
                     label="Title"
@@ -623,9 +626,20 @@ export default function PagesWithHierarchy() {
                     title={selectedBlock.type || 'Block'}
                     icon={getBlockIcon(selectedBlock.type)}
                     color="#4a7ba7"
-                    defaultExpanded={true}
+                    defaultExpanded={false}
                   >
-                    <PropertyField label="Type" value={selectedBlock.type} />
+                    <PropertyField
+                      label="Type"
+                      value={selectedBlock.type}
+                      editable
+                      onChange={(value) => {
+                        const updatedBlocks = selectedPage.content.map(block =>
+                          block === selectedBlock ? { ...block, type: value } : block
+                        )
+                        handleBlocksChange(updatedBlocks)
+                        setSelectedBlock({ ...selectedBlock, type: value })
+                      }}
+                    />
                     {selectedBlock.data && Object.keys(selectedBlock.data).length > 0 && (
                       <>
                         {Object.entries(selectedBlock.data).map(([key, value]) => (
@@ -634,12 +648,35 @@ export default function PagesWithHierarchy() {
                             label={key.charAt(0).toUpperCase() + key.slice(1)}
                             value={typeof value === 'string' ? value : JSON.stringify(value)}
                             multiline={typeof value === 'string' && value.length > 50}
+                            editable
+                            onChange={(newValue) => {
+                              const updatedData = { ...selectedBlock.data, [key]: newValue }
+                              const updatedBlock = { ...selectedBlock, data: updatedData }
+                              const updatedBlocks = selectedPage.content.map(block =>
+                                block === selectedBlock ? updatedBlock : block
+                              )
+                              handleBlocksChange(updatedBlocks)
+                              setSelectedBlock(updatedBlock)
+                            }}
                           />
                         ))}
                       </>
                     )}
                     {selectedBlock.hidden !== undefined && (
-                      <PropertyField label="Hidden" value={selectedBlock.hidden ? 'Yes' : 'No'} />
+                      <PropertyField
+                        label="Hidden"
+                        value={selectedBlock.hidden}
+                        type="boolean"
+                        editable
+                        onChange={(value) => {
+                          const updatedBlock = { ...selectedBlock, hidden: value }
+                          const updatedBlocks = selectedPage.content.map(block =>
+                            block === selectedBlock ? updatedBlock : block
+                          )
+                          handleBlocksChange(updatedBlocks)
+                          setSelectedBlock(updatedBlock)
+                        }}
+                      />
                     )}
                   </InspectorComponent>
                 )}
