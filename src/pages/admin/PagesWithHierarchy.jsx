@@ -848,66 +848,62 @@ export default function PagesWithHierarchy() {
                   />
                 </InspectorComponent>
 
-                {/* Block Component - Only shown when a block is selected */}
-                {selectedBlock && (
-                  <InspectorComponent
-                    title={selectedBlock.type || 'Block'}
-                    icon={getBlockIcon(selectedBlock.type)}
-                    color="#4a7ba7"
-                    defaultExpanded={false}
-                  >
-                    <PropertyField
-                      label="Type"
-                      value={selectedBlock.type}
-                      editable
-                      onChange={(value) => {
-                        const updatedBlocks = selectedPage.content.map(block =>
-                          block === selectedBlock ? { ...block, type: value } : block
-                        )
-                        handleBlocksChange(updatedBlocks)
-                        setSelectedBlock({ ...selectedBlock, type: value })
-                      }}
-                    />
-                    {selectedBlock.data && Object.keys(selectedBlock.data).length > 0 && (
-                      <>
-                        {Object.entries(selectedBlock.data).map(([key, value]) => (
-                          <PropertyField
-                            key={key}
-                            label={key.charAt(0).toUpperCase() + key.slice(1)}
-                            value={typeof value === 'string' ? value : JSON.stringify(value)}
-                            multiline={typeof value === 'string' && value.length > 50}
-                            editable
-                            onChange={(newValue) => {
-                              const updatedData = { ...selectedBlock.data, [key]: newValue }
-                              const updatedBlock = { ...selectedBlock, data: updatedData }
-                              const updatedBlocks = selectedPage.content.map(block =>
-                                block === selectedBlock ? updatedBlock : block
-                              )
-                              handleBlocksChange(updatedBlocks)
+                {/* All Blocks - Always shown */}
+                {selectedPage.content && selectedPage.content.length > 0 && selectedPage.content.map((block, index) => {
+                  const isSelected = selectedBlock === block
+                  return (
+                    <InspectorComponent
+                      key={index}
+                      title={`${block.type || 'Block'} ${index + 1}`}
+                      icon={getBlockIcon(block.type)}
+                      color={isSelected ? '#4a7ba7' : '#6a6a6a'}
+                      defaultExpanded={false}
+                    >
+                      {block.data && Object.keys(block.data).filter(key => key !== 'spacing').length > 0 && (
+                        <>
+                          {Object.entries(block.data).filter(([key]) => key !== 'spacing').map(([key, value]) => (
+                            <PropertyField
+                              key={key}
+                              label={key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
+                              value={typeof value === 'string' ? value : JSON.stringify(value)}
+                              multiline={typeof value === 'string' && value.length > 50}
+                              editable
+                              onChange={(newValue) => {
+                                const updatedData = { ...block.data, [key]: newValue }
+                                const updatedBlock = { ...block, data: updatedData }
+                                const updatedBlocks = selectedPage.content.map((b, i) =>
+                                  i === index ? updatedBlock : b
+                                )
+                                handleBlocksChange(updatedBlocks)
+                                if (isSelected) {
+                                  setSelectedBlock(updatedBlock)
+                                }
+                              }}
+                            />
+                          ))}
+                        </>
+                      )}
+                      {block.hidden !== undefined && (
+                        <PropertyField
+                          label="Hidden"
+                          value={block.hidden}
+                          type="boolean"
+                          editable
+                          onChange={(value) => {
+                            const updatedBlock = { ...block, hidden: value }
+                            const updatedBlocks = selectedPage.content.map((b, i) =>
+                              i === index ? updatedBlock : b
+                            )
+                            handleBlocksChange(updatedBlocks)
+                            if (isSelected) {
                               setSelectedBlock(updatedBlock)
-                            }}
-                          />
-                        ))}
-                      </>
-                    )}
-                    {selectedBlock.hidden !== undefined && (
-                      <PropertyField
-                        label="Hidden"
-                        value={selectedBlock.hidden}
-                        type="boolean"
-                        editable
-                        onChange={(value) => {
-                          const updatedBlock = { ...selectedBlock, hidden: value }
-                          const updatedBlocks = selectedPage.content.map(block =>
-                            block === selectedBlock ? updatedBlock : block
-                          )
-                          handleBlocksChange(updatedBlocks)
-                          setSelectedBlock(updatedBlock)
-                        }}
-                      />
-                    )}
-                  </InspectorComponent>
-                )}
+                            }
+                          }}
+                        />
+                      )}
+                    </InspectorComponent>
+                  )
+                })}
               </div>
             ) : (
               <div style={{ color: '#a0a0a0', textAlign: 'center', padding: '40px 20px' }}>
