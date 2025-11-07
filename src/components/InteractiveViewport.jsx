@@ -553,6 +553,120 @@ function getDefaultBlockData(componentType) {
         limit: 5,
         view: 'list'
       }
+
+    // New components - same as ComponentToolbox
+    case 'section':
+      return {
+        backgroundColor: '#ffffff',
+        padding: 'medium',
+        content: []
+      }
+    case 'three-column':
+      return {
+        leftContent: '<p>Column 1</p>',
+        centerContent: '<p>Column 2</p>',
+        rightContent: '<p>Column 3</p>'
+      }
+    case 'spacer':
+      return {
+        height: '40px'
+      }
+    case 'heading':
+      return {
+        text: 'Heading Text',
+        level: 'h2',
+        alignment: 'left'
+      }
+    case 'image-text':
+      return {
+        imagePosition: 'left',
+        imageSrc: '',
+        imageAlt: 'Image description',
+        title: 'Title',
+        content: '<p>Content goes here...</p>',
+        buttonText: '',
+        buttonLink: ''
+      }
+    case 'gallery':
+      return {
+        images: [],
+        columns: 3,
+        lightbox: true
+      }
+    case 'youtube':
+      return {
+        videoId: '',
+        autoplay: false
+      }
+    case 'button':
+      return {
+        text: 'Click Me',
+        link: '#',
+        style: 'primary',
+        size: 'medium'
+      }
+    case 'tabs':
+      return {
+        tabs: [
+          { title: 'Tab 1', content: '<p>Tab 1 content</p>' },
+          { title: 'Tab 2', content: '<p>Tab 2 content</p>' }
+        ]
+      }
+    case 'event-calendar':
+      return {
+        view: 'month'
+      }
+    case 'news-list':
+      return {
+        limit: 5,
+        showExcerpt: true
+      }
+    case 'blog-posts':
+      return {
+        limit: 6,
+        columns: 2
+      }
+    case 'sermon-list':
+      return {
+        limit: 5,
+        showSpeaker: true,
+        showDate: true
+      }
+    case 'staff-grid':
+      return {
+        columns: 3,
+        showBio: true
+      }
+    case 'countdown':
+      return {
+        targetDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        title: 'Event Countdown',
+        showDays: true,
+        showHours: true,
+        showMinutes: true,
+        showSeconds: true
+      }
+    case 'social-feed':
+      return {
+        platform: 'instagram',
+        limit: 6
+      }
+    case 'breadcrumb':
+      return {
+        showHome: true,
+        separator: '/'
+      }
+    case 'menu':
+      return {
+        orientation: 'horizontal',
+        items: []
+      }
+    case 'link':
+      return {
+        text: 'Link Text',
+        url: '#',
+        openInNewTab: false
+      }
     default:
       return {}
   }
