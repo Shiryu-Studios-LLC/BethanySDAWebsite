@@ -8,9 +8,13 @@ import {
   IconChevronDown,
   IconLayoutNavbar,
   IconLayoutBottombar,
-  IconDeviceFloppy
+  IconDeviceFloppy,
+  IconEdit,
+  IconEye,
+  IconPlus
 } from '@tabler/icons-react'
 import InteractiveViewport from '../../components/InteractiveViewport'
+import ComponentToolbox from '../../components/ComponentToolbox'
 
 export default function PagesWithHierarchy() {
   const [pages, setPages] = useState([])
@@ -21,6 +25,7 @@ export default function PagesWithHierarchy() {
   const [isPropertiesPanelCollapsed, setIsPropertiesPanelCollapsed] = useState(false)
   const [selectedBlock, setSelectedBlock] = useState(null)
   const [saving, setSaving] = useState(false)
+  const [viewMode, setViewMode] = useState('edit') // 'edit' or 'preview'
 
   // Icon mapping for special pages
   const pageIcons = {
@@ -102,6 +107,12 @@ export default function PagesWithHierarchy() {
 
   const handleBlockSelect = (block) => {
     setSelectedBlock(block)
+  }
+
+  const handleAddComponent = (newBlock) => {
+    if (!selectedPage) return
+    const updatedBlocks = [...(selectedPage.content || []), newBlock]
+    setSelectedPage(prev => ({ ...prev, content: updatedBlocks }))
   }
 
   const handleSave = async () => {
@@ -338,62 +349,130 @@ export default function PagesWithHierarchy() {
               padding: '0 16px',
               flexShrink: 0
             }}>
-              <div>
+              {/* Left: Page Info */}
+              <div style={{ flex: 1 }}>
                 <span style={{ fontSize: '14px', fontWeight: '600' }}>{selectedPage.title}</span>
                 <span style={{ fontSize: '12px', color: '#7a7a7a', marginLeft: '12px' }}>
                   /{selectedPage.slug}
                 </span>
               </div>
-              <button
-                onClick={handleSave}
-                disabled={saving}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '6px 16px',
-                  backgroundColor: '#4a7ba7',
-                  border: '1px solid #5a8bb7',
-                  borderRadius: '3px',
-                  color: '#ffffff',
-                  fontSize: '13px',
-                  fontWeight: '500',
-                  cursor: saving ? 'not-allowed' : 'pointer',
-                  opacity: saving ? 0.6 : 1,
-                  transition: 'background-color 0.2s'
-                }}
-                onMouseEnter={(e) => !saving && (e.target.style.backgroundColor = '#5a8bb7')}
-                onMouseLeave={(e) => !saving && (e.target.style.backgroundColor = '#4a7ba7')}
-              >
-                {saving ? (
-                  <>
-                    <span>Saving...</span>
-                  </>
-                ) : (
-                  <>
-                    <IconDeviceFloppy size={16} />
-                    <span>Save</span>
-                  </>
-                )}
-              </button>
+
+              {/* Center: Mode Switcher */}
+              <div style={{
+                display: 'flex',
+                backgroundColor: '#1e1e1e',
+                borderRadius: '4px',
+                padding: '2px',
+                border: '1px solid #3a3a3a'
+              }}>
+                <button
+                  onClick={() => setViewMode('edit')}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '6px 16px',
+                    backgroundColor: viewMode === 'edit' ? '#4a7ba7' : 'transparent',
+                    border: 'none',
+                    borderRadius: '3px',
+                    color: viewMode === 'edit' ? '#ffffff' : '#a0a0a0',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  <IconEdit size={14} />
+                  <span>Edit</span>
+                </button>
+                <button
+                  onClick={() => setViewMode('preview')}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '6px 16px',
+                    backgroundColor: viewMode === 'preview' ? '#4a7ba7' : 'transparent',
+                    border: 'none',
+                    borderRadius: '3px',
+                    color: viewMode === 'preview' ? '#ffffff' : '#a0a0a0',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  <IconEye size={14} />
+                  <span>Preview</span>
+                </button>
+              </div>
+
+              {/* Right: Save Button */}
+              <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '6px 16px',
+                    backgroundColor: '#4a7ba7',
+                    border: '1px solid #5a8bb7',
+                    borderRadius: '3px',
+                    color: '#ffffff',
+                    fontSize: '13px',
+                    fontWeight: '500',
+                    cursor: saving ? 'not-allowed' : 'pointer',
+                    opacity: saving ? 0.6 : 1,
+                    transition: 'background-color 0.2s'
+                  }}
+                  onMouseEnter={(e) => !saving && (e.target.style.backgroundColor = '#5a8bb7')}
+                  onMouseLeave={(e) => !saving && (e.target.style.backgroundColor = '#4a7ba7')}
+                >
+                  {saving ? (
+                    <>
+                      <span>Saving...</span>
+                    </>
+                  ) : (
+                    <>
+                      <IconDeviceFloppy size={16} />
+                      <span>Save</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
 
-            {/* Interactive Viewport */}
+            {/* Viewport Area with Toolbox */}
             <div style={{
               flex: 1,
-              overflow: 'auto',
-              padding: '24px',
-              backgroundColor: '#1a1a1a'
+              display: 'flex',
+              overflow: 'hidden'
             }}>
+              {/* Component Toolbox - Only show in Edit mode */}
+              {viewMode === 'edit' && (
+                <ComponentToolbox onAddComponent={handleAddComponent} />
+              )}
+
+              {/* Interactive Viewport */}
               <div style={{
-                maxWidth: '1200px',
-                margin: '0 auto'
+                flex: 1,
+                overflow: 'auto',
+                padding: '24px',
+                backgroundColor: '#1a1a1a'
               }}>
-                <InteractiveViewport
-                  blocks={selectedPage.content || []}
-                  onBlocksChange={handleBlocksChange}
-                  onBlockSelect={handleBlockSelect}
-                />
+                <div style={{
+                  maxWidth: '1200px',
+                  margin: '0 auto'
+                }}>
+                  <InteractiveViewport
+                    blocks={selectedPage.content || []}
+                    onBlocksChange={handleBlocksChange}
+                    onBlockSelect={handleBlockSelect}
+                    viewMode={viewMode}
+                  />
+                </div>
               </div>
             </div>
           </>

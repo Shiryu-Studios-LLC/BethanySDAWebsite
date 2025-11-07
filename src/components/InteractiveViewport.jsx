@@ -7,9 +7,11 @@ import {
   IconSettings
 } from '@tabler/icons-react'
 
-export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSelect }) {
+export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSelect, viewMode = 'edit' }) {
   const [hoveredBlockIndex, setHoveredBlockIndex] = useState(null)
   const [draggedBlockIndex, setDraggedBlockIndex] = useState(null)
+
+  const isEditMode = viewMode === 'edit'
 
   const handleBlockClick = (block, index) => {
     onBlockSelect?.(block)
@@ -38,22 +40,22 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
     return (
       <div
         key={index}
-        onMouseEnter={() => setHoveredBlockIndex(index)}
-        onMouseLeave={() => setHoveredBlockIndex(null)}
-        onClick={() => handleBlockClick(block, index)}
+        onMouseEnter={() => isEditMode && setHoveredBlockIndex(index)}
+        onMouseLeave={() => isEditMode && setHoveredBlockIndex(null)}
+        onClick={() => isEditMode && handleBlockClick(block, index)}
         style={{
           position: 'relative',
           marginBottom: '16px',
-          border: isHovered ? '2px solid #4a7ba7' : '2px solid transparent',
+          border: isEditMode && isHovered ? '2px solid #4a7ba7' : '2px solid transparent',
           borderRadius: '4px',
           backgroundColor: isHidden ? '#2a2a2a' : '#252525',
           opacity: isHidden ? 0.5 : 1,
-          cursor: 'pointer',
+          cursor: isEditMode ? 'pointer' : 'default',
           transition: 'all 0.2s ease'
         }}
       >
-        {/* Block Controls - Show on Hover */}
-        {isHovered && (
+        {/* Block Controls - Show on Hover in Edit Mode */}
+        {isEditMode && isHovered && (
           <div style={{
             position: 'absolute',
             top: '-12px',
@@ -103,8 +105,8 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
           </div>
         )}
 
-        {/* Drag Handle */}
-        {isHovered && (
+        {/* Drag Handle - Only in Edit Mode */}
+        {isEditMode && isHovered && (
           <div
             style={{
               position: 'absolute',
@@ -121,19 +123,21 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
 
         {/* Block Content Preview */}
         <div style={{
-          padding: '16px 16px 16px 36px',
+          padding: isEditMode ? '16px 16px 16px 36px' : '16px',
           minHeight: '60px'
         }}>
-          <div style={{
-            fontSize: '11px',
-            color: '#7a7a7a',
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px',
-            marginBottom: '8px',
-            fontWeight: '600'
-          }}>
-            {block.type || 'Unknown Block'}
-          </div>
+          {isEditMode && (
+            <div style={{
+              fontSize: '11px',
+              color: '#7a7a7a',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+              marginBottom: '8px',
+              fontWeight: '600'
+            }}>
+              {block.type || 'Unknown Block'}
+            </div>
+          )}
 
           <BlockPreview block={block} />
         </div>
