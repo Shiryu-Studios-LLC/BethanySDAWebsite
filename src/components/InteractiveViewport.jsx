@@ -9,7 +9,6 @@ import {
 } from '@tabler/icons-react'
 import BlockRenderer from './BlockEditor/BlockRenderer'
 import UnrealAlertDialog from './UnrealAlertDialog'
-import BrowserFrame from './BrowserFrame'
 import FloatingTextToolbar from './FloatingTextToolbar'
 import SpacingControl from './SpacingControl'
 import ResizeHandles from './ResizeHandles'
@@ -442,9 +441,7 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
 
   return (
     <>
-      <BrowserFrame>
-        {viewportContent}
-      </BrowserFrame>
+      {viewportContent}
 
       {/* Floating Text Toolbar */}
       <FloatingTextToolbar
