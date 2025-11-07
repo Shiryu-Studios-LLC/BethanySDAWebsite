@@ -11,7 +11,9 @@ import BlockRenderer from './BlockEditor/BlockRenderer'
 import UnrealAlertDialog from './UnrealAlertDialog'
 import BrowserFrame from './BrowserFrame'
 import FloatingTextToolbar from './FloatingTextToolbar'
+import SpacingControl from './SpacingControl'
 import ResizeHandles from './ResizeHandles'
+import BorderControlPanel from './BorderControlPanel'
 
 export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSelect, viewMode = 'edit' }) {
   const [hoveredBlockIndex, setHoveredBlockIndex] = useState(null)
@@ -20,6 +22,10 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
   const [editingBlockIndex, setEditingBlockIndex] = useState(null)
   const [toolbarVisible, setToolbarVisible] = useState(false)
   const [toolbarPosition, setToolbarPosition] = useState({ x: 0, y: 0 })
+  const [spacingControlVisible, setSpacingControlVisible] = useState(false)
+  const [spacingControlBlock, setSpacingControlBlock] = useState(null)
+  const [borderControlVisible, setBorderControlVisible] = useState(false)
+  const [borderControlBlock, setBorderControlBlock] = useState(null)
   const [resizingBlockIndex, setResizingBlockIndex] = useState(null)
   const [selectedBlockIndex, setSelectedBlockIndex] = useState(null)
   const editableRefs = useRef({})
@@ -57,6 +63,40 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
   const handleBlockClick = (block, index) => {
     setSelectedBlockIndex(index)
     onBlockSelect?.(block, index)
+  }
+
+  const handleOpenSpacingControl = (block, index) => {
+    setSpacingControlBlock({ ...block, index })
+    setSpacingControlVisible(true)
+  }
+
+  const handleSpacingUpdate = (index, spacing) => {
+    const newBlocks = [...blocks]
+    newBlocks[index] = {
+      ...newBlocks[index],
+      data: {
+        ...newBlocks[index].data,
+        spacing
+      }
+    }
+    onBlocksChange?.(newBlocks)
+  }
+
+  const handleOpenBorderControl = (block, index) => {
+    setBorderControlBlock({ ...block, index })
+    setBorderControlVisible(true)
+  }
+
+  const handleBorderUpdate = (index, borderData) => {
+    const newBlocks = [...blocks]
+    newBlocks[index] = {
+      ...newBlocks[index],
+      data: {
+        ...newBlocks[index].data,
+        ...borderData
+      }
+    }
+    onBlocksChange?.(newBlocks)
   }
 
   const handleResize = (index, dimensions) => {
@@ -246,6 +286,46 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
             <button
               onClick={(e) => {
                 e.stopPropagation()
+                handleOpenSpacingControl(block, index)
+              }}
+              title="Adjust Spacing"
+              style={{
+                background: '#3a3a3a',
+                border: '1px solid #4a4a4a',
+                borderRadius: '3px',
+                padding: '4px 8px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                color: '#e0e0e0',
+                fontSize: '10px'
+              }}
+            >
+              <IconBoxPadding size={14} />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                handleOpenBorderControl(block, index)
+              }}
+              title="Border & Style"
+              style={{
+                background: '#3a3a3a',
+                border: '1px solid #4a4a4a',
+                borderRadius: '3px',
+                padding: '4px 8px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                color: '#e0e0e0',
+                fontSize: '10px'
+              }}
+            >
+              <IconSettings size={14} />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
                 handleBlockToggleVisibility(index)
               }}
               title={isHidden ? 'Show Block' : 'Hide Block'}
@@ -371,6 +451,24 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
         isVisible={toolbarVisible}
         position={toolbarPosition}
         onFormat={handleFormat}
+      />
+
+      {/* Spacing Control Panel */}
+      <SpacingControl
+        isVisible={spacingControlVisible}
+        block={spacingControlBlock}
+        blockIndex={spacingControlBlock?.index}
+        onUpdate={handleSpacingUpdate}
+        onClose={() => setSpacingControlVisible(false)}
+      />
+
+      {/* Border Control Panel */}
+      <BorderControlPanel
+        isVisible={borderControlVisible}
+        block={borderControlBlock}
+        blockIndex={borderControlBlock?.index}
+        onUpdate={handleBorderUpdate}
+        onClose={() => setBorderControlVisible(false)}
       />
 
       {/* Delete Confirmation Dialog */}
