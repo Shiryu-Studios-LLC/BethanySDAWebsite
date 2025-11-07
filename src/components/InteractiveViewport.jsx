@@ -12,6 +12,8 @@ import UnrealAlertDialog from './UnrealAlertDialog'
 import BrowserFrame from './BrowserFrame'
 import FloatingTextToolbar from './FloatingTextToolbar'
 import SpacingControl from './SpacingControl'
+import ResizeHandles from './ResizeHandles'
+import BorderControls from './BorderControls'
 
 export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSelect, viewMode = 'edit' }) {
   const [hoveredBlockIndex, setHoveredBlockIndex] = useState(null)
@@ -22,6 +24,10 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
   const [toolbarPosition, setToolbarPosition] = useState({ x: 0, y: 0 })
   const [spacingControlVisible, setSpacingControlVisible] = useState(false)
   const [spacingControlBlock, setSpacingControlBlock] = useState(null)
+  const [borderControlVisible, setBorderControlVisible] = useState(false)
+  const [borderControlBlock, setBorderControlBlock] = useState(null)
+  const [resizingBlockIndex, setResizingBlockIndex] = useState(null)
+  const [selectedBlockIndex, setSelectedBlockIndex] = useState(null)
   const editableRefs = useRef({})
 
   const isEditMode = viewMode === 'edit'
@@ -55,7 +61,38 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
   }, [isEditMode, editingBlockIndex])
 
   const handleBlockClick = (block, index) => {
+    setSelectedBlockIndex(index)
     onBlockSelect?.(block)
+  }
+
+  const handleOpenBorderControl = (block, index) => {
+    setBorderControlBlock({ ...block, index })
+    setBorderControlVisible(true)
+  }
+
+  const handleBorderUpdate = (index, borderData) => {
+    const newBlocks = [...blocks]
+    newBlocks[index] = {
+      ...newBlocks[index],
+      data: {
+        ...newBlocks[index].data,
+        ...borderData
+      }
+    }
+    onBlocksChange?.(newBlocks)
+  }
+
+  const handleResize = (index, dimensions) => {
+    const newBlocks = [...blocks]
+    newBlocks[index] = {
+      ...newBlocks[index],
+      data: {
+        ...newBlocks[index].data,
+        width: dimensions.width + 'px',
+        height: dimensions.height + 'px'
+      }
+    }
+    onBlocksChange?.(newBlocks)
   }
 
   const handleFormat = (command) => {
@@ -259,10 +296,31 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                color: '#e0e0e0'
+                color: '#e0e0e0',
+                fontSize: '10px'
               }}
             >
               <IconBoxPadding size={14} />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                handleOpenBorderControl(block, index)
+              }}
+              title="Border & Style"
+              style={{
+                background: '#3a3a3a',
+                border: '1px solid #4a4a4a',
+                borderRadius: '3px',
+                padding: '4px 8px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                color: '#e0e0e0',
+                fontSize: '10px'
+              }}
+            >
+              <IconSettings size={14} />
             </button>
             <button
               onClick={(e) => {
@@ -303,6 +361,15 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
               <IconTrash size={14} />
             </button>
           </div>
+        )}
+
+        {/* Resize Handles - Show when block is selected and resizable */}
+        {isEditMode && selectedBlockIndex === index && ['image', 'video', 'section', 'hero'].includes(block.type) && (
+          <ResizeHandles
+            initialWidth={parseInt(block.data?.width) || 300}
+            initialHeight={parseInt(block.data?.height) || 200}
+            onResize={(dimensions) => handleResize(index, dimensions)}
+          />
         )}
 
         {/* Drag Handle - Only in Edit Mode */}
@@ -392,6 +459,15 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
         blockIndex={spacingControlBlock?.index}
         onUpdate={handleSpacingUpdate}
         onClose={() => setSpacingControlVisible(false)}
+      />
+
+      {/* Border Control Panel */}
+      <BorderControls
+        isVisible={borderControlVisible}
+        block={borderControlBlock}
+        blockIndex={borderControlBlock?.index}
+        onUpdate={handleBorderUpdate}
+        onClose={() => setBorderControlVisible(false)}
       />
 
       {/* Delete Confirmation Dialog */}

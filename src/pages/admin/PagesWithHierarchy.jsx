@@ -19,6 +19,11 @@ import {
 import InteractiveViewport from '../../components/InteractiveViewport'
 import ComponentToolbox from '../../components/ComponentToolbox'
 import UnrealAlertDialog from '../../components/UnrealAlertDialog'
+import ResponsivePreview from '../../components/ResponsivePreview'
+import GridGuides from '../../components/GridGuides'
+import ColorPicker from '../../components/ColorPicker'
+import ImageUploadManager from '../../components/ImageUploadManager'
+import CSSClassEditor from '../../components/CSSClassEditor'
 
 export default function PagesWithHierarchy() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -36,6 +41,11 @@ export default function PagesWithHierarchy() {
   const [deletePageDialog, setDeletePageDialog] = useState({ isOpen: false, page: null })
   const [draggedPage, setDraggedPage] = useState(null)
   const [hoveredPageId, setHoveredPageId] = useState(null)
+  const [viewportSize, setViewportSize] = useState({ width: 1200, height: 800 })
+  const [showGridGuides, setShowGridGuides] = useState(false)
+  const [showImageUploader, setShowImageUploader] = useState(false)
+  const [showCSSEditor, setShowCSSEditor] = useState(false)
+  const [imageUploaderCallback, setImageUploaderCallback] = useState(null)
 
   // Icon mapping for special pages
   const pageIcons = {
@@ -48,6 +58,18 @@ export default function PagesWithHierarchy() {
 
   useEffect(() => {
     loadPages()
+  }, [])
+
+  // Keyboard shortcut for grid guides (Ctrl+')
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.key === "'") {
+        e.preventDefault()
+        setShowGridGuides(prev => !prev)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
   const loadPages = async () => {
@@ -602,54 +624,62 @@ export default function PagesWithHierarchy() {
                 </span>
               </div>
 
-              {/* Center: Mode Switcher */}
-              <div style={{
-                display: 'flex',
-                backgroundColor: '#1e1e1e',
-                borderRadius: '4px',
-                padding: '2px',
-                border: '1px solid #3a3a3a'
-              }}>
-                <button
-                  onClick={() => setViewMode('edit')}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '6px 16px',
-                    backgroundColor: viewMode === 'edit' ? '#4a7ba7' : 'transparent',
-                    border: 'none',
-                    borderRadius: '3px',
-                    color: viewMode === 'edit' ? '#ffffff' : '#a0a0a0',
-                    fontSize: '12px',
-                    fontWeight: '500',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  <IconEdit size={14} />
-                  <span>Edit</span>
-                </button>
-                <button
-                  onClick={() => setViewMode('preview')}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '6px 16px',
-                    backgroundColor: viewMode === 'preview' ? '#4a7ba7' : 'transparent',
-                    border: 'none',
-                    borderRadius: '3px',
-                    color: viewMode === 'preview' ? '#ffffff' : '#a0a0a0',
-                    fontSize: '12px',
-                    fontWeight: '500',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  <IconEye size={14} />
-                  <span>Preview</span>
-                </button>
+              {/* Center: Mode Switcher and Responsive Preview */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{
+                  display: 'flex',
+                  backgroundColor: '#1e1e1e',
+                  borderRadius: '4px',
+                  padding: '2px',
+                  border: '1px solid #3a3a3a'
+                }}>
+                  <button
+                    onClick={() => setViewMode('edit')}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '6px 16px',
+                      backgroundColor: viewMode === 'edit' ? '#4a7ba7' : 'transparent',
+                      border: 'none',
+                      borderRadius: '3px',
+                      color: viewMode === 'edit' ? '#ffffff' : '#a0a0a0',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    <IconEdit size={14} />
+                    <span>Edit</span>
+                  </button>
+                  <button
+                    onClick={() => setViewMode('preview')}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '6px 16px',
+                      backgroundColor: viewMode === 'preview' ? '#4a7ba7' : 'transparent',
+                      border: 'none',
+                      borderRadius: '3px',
+                      color: viewMode === 'preview' ? '#ffffff' : '#a0a0a0',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    <IconEye size={14} />
+                    <span>Preview</span>
+                  </button>
+                </div>
+
+                {/* Responsive Preview Controls */}
+                <ResponsivePreview
+                  viewportSize={viewportSize}
+                  onViewportChange={setViewportSize}
+                />
               </div>
 
               {/* Right: Save Button */}
@@ -705,11 +735,23 @@ export default function PagesWithHierarchy() {
                 flex: 1,
                 overflow: 'auto',
                 padding: '24px',
-                backgroundColor: '#1a1a1a'
+                backgroundColor: '#1a1a1a',
+                position: 'relative'
               }}>
+                {/* Grid Guides Overlay */}
+                {showGridGuides && viewMode === 'edit' && (
+                  <GridGuides
+                    viewportSize={viewportSize}
+                    onToggle={() => setShowGridGuides(false)}
+                  />
+                )}
+
                 <div style={{
-                  maxWidth: '1200px',
-                  margin: '0 auto'
+                  width: viewportSize.width + 'px',
+                  minHeight: viewportSize.height + 'px',
+                  margin: '0 auto',
+                  transition: 'width 0.3s ease',
+                  position: 'relative'
                 }}>
                   <InteractiveViewport
                     blocks={selectedPage.content || []}
@@ -803,6 +845,10 @@ export default function PagesWithHierarchy() {
                     value={selectedPage.title}
                     editable
                     onChange={(value) => setSelectedPage(prev => ({ ...prev, title: value }))}
+                    onImageSelect={(callback) => {
+                      setImageUploaderCallback(() => callback)
+                      setShowImageUploader(true)
+                    }}
                   />
                   <PropertyField
                     label="Slug"
@@ -858,6 +904,29 @@ export default function PagesWithHierarchy() {
                       icon={getBlockIcon(block.type)}
                       color={isSelected ? '#4a7ba7' : '#6a6a6a'}
                       defaultExpanded={false}
+                      headerActions={
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setSelectedBlock(block)
+                            setShowCSSEditor(true)
+                          }}
+                          title="Edit CSS Classes"
+                          style={{
+                            background: '#3a3a3a',
+                            border: '1px solid #4a4a4a',
+                            borderRadius: '3px',
+                            padding: '4px 6px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            color: '#e0e0e0',
+                            fontSize: '9px'
+                          }}
+                        >
+                          CSS
+                        </button>
+                      }
                     >
                       {block.data && Object.keys(block.data).filter(key => key !== 'spacing').length > 0 && (
                         <>
@@ -878,6 +947,18 @@ export default function PagesWithHierarchy() {
                                 if (isSelected) {
                                   setSelectedBlock(updatedBlock)
                                 }
+                              }}
+                              onImageSelect={(callback) => {
+                                setImageUploaderCallback(() => (url) => {
+                                  const updatedData = { ...block.data, [key]: url }
+                                  const updatedBlock = { ...block, data: updatedData }
+                                  const updatedBlocks = selectedPage.content.map((b, i) =>
+                                    i === index ? updatedBlock : b
+                                  )
+                                  handleBlocksChange(updatedBlocks)
+                                  callback(url)
+                                })
+                                setShowImageUploader(true)
                               }}
                             />
                           ))}
@@ -943,12 +1024,74 @@ export default function PagesWithHierarchy() {
         cancelText="Cancel"
         showCancel={true}
       />
+
+      {/* Image Upload Manager Modal */}
+      {showImageUploader && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          zIndex: 10000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <div style={{ maxWidth: '90vw', maxHeight: '90vh' }}>
+            <ImageUploadManager
+              onSelect={(url) => {
+                if (imageUploaderCallback) {
+                  imageUploaderCallback(url)
+                }
+                setShowImageUploader(false)
+                setImageUploaderCallback(null)
+              }}
+              onClose={() => {
+                setShowImageUploader(false)
+                setImageUploaderCallback(null)
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* CSS Class Editor Modal */}
+      {showCSSEditor && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          zIndex: 10000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <div style={{ maxWidth: '90vw', maxHeight: '90vh', width: '800px' }}>
+            <CSSClassEditor
+              block={selectedBlock}
+              onChange={(updatedBlock) => {
+                const updatedBlocks = selectedPage.content.map(b =>
+                  b === selectedBlock ? updatedBlock : b
+                )
+                handleBlocksChange(updatedBlocks)
+                setSelectedBlock(updatedBlock)
+              }}
+              onClose={() => setShowCSSEditor(false)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
 // Unity-style Inspector Component Block
-function InspectorComponent({ title, icon: Icon, color, defaultExpanded = true, children }) {
+function InspectorComponent({ title, icon: Icon, color, defaultExpanded = true, headerActions, children }) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded)
 
   return (
@@ -992,6 +1135,11 @@ function InspectorComponent({ title, icon: Icon, color, defaultExpanded = true, 
         }}>
           {title}
         </span>
+        {headerActions && (
+          <div onClick={(e) => e.stopPropagation()} style={{ marginLeft: '8px' }}>
+            {headerActions}
+          </div>
+        )}
       </div>
 
       {/* Component Content */}
@@ -1005,7 +1153,19 @@ function InspectorComponent({ title, icon: Icon, color, defaultExpanded = true, 
 }
 
 // Property Field Component
-function PropertyField({ label, value, multiline = false, editable = false, readOnly = false, type = 'text', onChange }) {
+function PropertyField({ label, value, multiline = false, editable = false, readOnly = false, type = 'text', onChange, onImageSelect }) {
+  const [showColorPicker, setShowColorPicker] = useState(false)
+
+  // Detect if this is a color field by looking at the label or value format
+  const isColorField = type === 'color' ||
+    label.toLowerCase().includes('color') ||
+    label.toLowerCase().includes('background') && typeof value === 'string' && value.match(/^#[0-9a-fA-F]{6}$/)
+
+  // Detect if this is an image URL field
+  const isImageField = type === 'image' ||
+    label.toLowerCase().includes('image') ||
+    label.toLowerCase().includes('background') && (typeof value === 'string' && (value.startsWith('http') || value.startsWith('/')))
+
   if (readOnly || !editable) {
     // Read-only display
     return (
@@ -1033,7 +1193,18 @@ function PropertyField({ label, value, multiline = false, editable = false, read
           textOverflow: 'ellipsis',
           lineHeight: '1.4'
         }}>
-          {value || '-'}
+          {isColorField && value ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{
+                width: '16px',
+                height: '16px',
+                backgroundColor: value,
+                border: '1px solid #3a3a3a',
+                borderRadius: '3px'
+              }} />
+              {value}
+            </div>
+          ) : (value || '-')}
         </div>
       </div>
     )
@@ -1069,6 +1240,141 @@ function PropertyField({ label, value, multiline = false, editable = false, read
             {label}
           </span>
         </label>
+      </div>
+    )
+  }
+
+  // Color field with ColorPicker
+  if (isColorField && editable) {
+    return (
+      <div style={{ marginBottom: '10px', position: 'relative' }}>
+        <div style={{
+          fontSize: '10px',
+          color: '#8a8a8a',
+          marginBottom: '4px',
+          fontWeight: '500',
+          textTransform: 'uppercase',
+          letterSpacing: '0.3px'
+        }}>
+          {label}
+        </div>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <div
+            onClick={() => setShowColorPicker(!showColorPicker)}
+            style={{
+              width: '32px',
+              height: '32px',
+              backgroundColor: value || '#000000',
+              border: '1px solid #3a3a3a',
+              borderRadius: '3px',
+              cursor: 'pointer',
+              flexShrink: 0
+            }}
+          />
+          <input
+            type="text"
+            value={value || ''}
+            onChange={(e) => onChange?.(e.target.value)}
+            placeholder="#000000"
+            style={{
+              flex: 1,
+              fontSize: '11px',
+              color: '#d0d0d0',
+              backgroundColor: '#1e1e1e',
+              padding: '6px 8px',
+              borderRadius: '2px',
+              border: '1px solid #3a3a3a',
+              fontFamily: 'monospace'
+            }}
+            onFocus={(e) => e.target.style.borderColor = '#4a7ba7'}
+            onBlur={(e) => e.target.style.borderColor = '#3a3a3a'}
+          />
+        </div>
+        {showColorPicker && (
+          <div style={{ position: 'absolute', zIndex: 1000, top: '70px' }}>
+            <div
+              onClick={() => setShowColorPicker(false)}
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0
+              }}
+            />
+            <ColorPicker
+              color={value || '#000000'}
+              onChange={(newColor) => {
+                onChange?.(newColor)
+                setShowColorPicker(false)
+              }}
+            />
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // Image field with button to open uploader
+  if (isImageField && editable) {
+    return (
+      <div style={{ marginBottom: '10px' }}>
+        <div style={{
+          fontSize: '10px',
+          color: '#8a8a8a',
+          marginBottom: '4px',
+          fontWeight: '500',
+          textTransform: 'uppercase',
+          letterSpacing: '0.3px'
+        }}>
+          {label}
+        </div>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="text"
+            value={value || ''}
+            onChange={(e) => onChange?.(e.target.value)}
+            placeholder="Image URL"
+            style={{
+              flex: 1,
+              fontSize: '11px',
+              color: '#d0d0d0',
+              backgroundColor: '#1e1e1e',
+              padding: '6px 8px',
+              borderRadius: '2px',
+              border: '1px solid #3a3a3a'
+            }}
+            onFocus={(e) => e.target.style.borderColor = '#4a7ba7'}
+            onBlur={(e) => e.target.style.borderColor = '#3a3a3a'}
+          />
+          <button
+            onClick={() => onImageSelect?.(onChange)}
+            style={{
+              padding: '6px 12px',
+              backgroundColor: '#3a3a3a',
+              border: '1px solid #4a4a4a',
+              borderRadius: '3px',
+              color: '#e0e0e0',
+              fontSize: '10px',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            Browse
+          </button>
+        </div>
+        {value && (
+          <div style={{
+            marginTop: '8px',
+            width: '100%',
+            height: '80px',
+            backgroundImage: `url(${value})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            border: '1px solid #3a3a3a',
+            borderRadius: '3px'
+          }} />
+        )}
       </div>
     )
   }
