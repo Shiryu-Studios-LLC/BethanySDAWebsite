@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { X, Upload, Trash2, Search, Copy, Check, Image, AlertCircle } from 'lucide-react';
+import { IconX, IconUpload, IconTrash, IconSearch, IconCopy, IconCheck, IconPhoto, IconAlertCircle } from '@tabler/icons-react';
 
 const ImageUploadManager = ({ isOpen, onClose, onSelectImage }) => {
   const [images, setImages] = useState([]);
@@ -243,14 +243,14 @@ const ImageUploadManager = ({ isOpen, onClose, onSelectImage }) => {
             onClick={onClose}
             className="p-1 hover:bg-[#3d3d3d] rounded transition-colors"
           >
-            <X className="w-5 h-5 text-gray-400" />
+            <IconX className="w-5 h-5 text-gray-400" />
           </button>
         </div>
 
         {/* Error Message */}
         {error && (
           <div className="mx-4 mt-4 p-3 bg-red-500/20 border border-red-500/50 rounded flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-red-400" />
+            <IconAlertCircle className="w-4 h-4 text-red-400" />
             <span className="text-sm text-red-400">{error}</span>
           </div>
         )}
@@ -277,7 +277,7 @@ const ImageUploadManager = ({ isOpen, onClose, onSelectImage }) => {
               className="hidden"
             />
 
-            <Upload className="w-12 h-12 mx-auto mb-3 text-gray-500" />
+            <IconUpload className="w-12 h-12 mx-auto mb-3 text-gray-500" />
             <p className="text-gray-300 mb-2">
               Drag and drop images here, or
             </p>
@@ -312,7 +312,7 @@ const ImageUploadManager = ({ isOpen, onClose, onSelectImage }) => {
         {/* Search Bar */}
         <div className="px-4 pb-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <input
               type="text"
               placeholder="Search images..."
@@ -331,7 +331,7 @@ const ImageUploadManager = ({ isOpen, onClose, onSelectImage }) => {
             </div>
           ) : filteredImages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-32 text-gray-500">
-              <Image className="w-12 h-12 mb-2 opacity-50" />
+              <IconPhoto className="w-12 h-12 mb-2 opacity-50" />
               <p>{searchTerm ? 'No images found' : 'No images uploaded yet'}</p>
             </div>
           ) : (
@@ -366,9 +366,9 @@ const ImageUploadManager = ({ isOpen, onClose, onSelectImage }) => {
                             title="Copy URL"
                           >
                             {copiedUrl === image.url ? (
-                              <Check className="w-4 h-4 text-green-400" />
+                              <IconCheck className="w-4 h-4 text-green-400" />
                             ) : (
-                              <Copy className="w-4 h-4 text-white" />
+                              <IconCopy className="w-4 h-4 text-white" />
                             )}
                           </button>
                           <button
@@ -376,7 +376,7 @@ const ImageUploadManager = ({ isOpen, onClose, onSelectImage }) => {
                             className="p-1 bg-[#2d2d2d] rounded hover:bg-red-600 transition-colors"
                             title="Delete"
                           >
-                            <Trash2 className="w-4 h-4 text-white" />
+                            <IconTrash className="w-4 h-4 text-white" />
                           </button>
                         </div>
 

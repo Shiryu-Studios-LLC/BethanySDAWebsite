@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, ChevronRight, Border, Square } from 'lucide-react';
+import { IconChevronDown, IconChevronRight, IconBorderOuter, IconSquare } from '@tabler/icons-react';
 import ColorPicker from './ColorPicker';
 
 const BorderControls = ({
@@ -218,10 +218,10 @@ const BorderControls = ({
         }}
       >
         {isExpanded ?
-          <ChevronDown size={16} style={{ color: '#999' }} /> :
-          <ChevronRight size={16} style={{ color: '#999' }} />
+          <IconChevronDown size={16} style={{ color: '#999' }} /> :
+          <IconChevronRight size={16} style={{ color: '#999' }} />
         }
-        <Border size={16} style={{ color: '#999' }} />
+        <IconBorderOuter size={16} style={{ color: '#999' }} />
         <span style={{ color: '#e0e0e0', fontSize: '13px', fontWeight: '500' }}>
           Border
         </span>

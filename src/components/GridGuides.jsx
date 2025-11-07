@@ -1,147 +1,4 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import styled from 'styled-components';
-
-const GridOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 9999;
-  transition: opacity 0.2s ease;
-  opacity: ${props => props.$isVisible ? 1 : 0};
-`;
-
-const GridCanvas = styled.canvas`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-`;
-
-const RulerContainer = styled.div`
-  position: absolute;
-  background: #252525;
-  color: #ffffff;
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-  font-size: 10px;
-  user-select: none;
-  pointer-events: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-`;
-
-const TopRuler = styled(RulerContainer)`
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 24px;
-  border-bottom: 1px solid #1a1a1a;
-  display: ${props => props.$show ? 'block' : 'none'};
-`;
-
-const LeftRuler = styled(RulerContainer)`
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 24px;
-  border-right: 1px solid #1a1a1a;
-  display: ${props => props.$show ? 'block' : 'none'};
-`;
-
-const CornerBox = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 24px;
-  height: 24px;
-  background: #1a1a1a;
-  border-right: 1px solid #0a0a0a;
-  border-bottom: 1px solid #0a0a0a;
-  display: ${props => props.$show ? 'block' : 'none'};
-`;
-
-const SmartGuide = styled.div`
-  position: absolute;
-  background: #ff00ff;
-  pointer-events: none;
-  z-index: 10000;
-  opacity: ${props => props.$active ? 0.8 : 0};
-  transition: opacity 0.1s ease;
-
-  &.horizontal {
-    height: 1px;
-    left: 0;
-    right: 0;
-  }
-
-  &.vertical {
-    width: 1px;
-    top: 0;
-    bottom: 0;
-  }
-`;
-
-const SnapIndicator = styled.div`
-  position: fixed;
-  padding: 4px 8px;
-  background: rgba(74, 123, 167, 0.9);
-  color: white;
-  font-size: 11px;
-  font-family: 'SF Mono', Monaco, monospace;
-  border-radius: 3px;
-  pointer-events: none;
-  z-index: 10001;
-  opacity: ${props => props.$show ? 1 : 0};
-  transition: opacity 0.15s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-`;
-
-const GridSettings = styled.div`
-  position: fixed;
-  top: 32px;
-  right: 16px;
-  background: rgba(37, 37, 37, 0.95);
-  padding: 8px;
-  border-radius: 4px;
-  display: ${props => props.$show ? 'flex' : 'none'};
-  flex-direction: column;
-  gap: 8px;
-  z-index: 10002;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(10px);
-`;
-
-const SettingRow = styled.label`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #e0e0e0;
-  font-size: 12px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 3px;
-
-  &:hover {
-    background: rgba(74, 123, 167, 0.2);
-  }
-
-  input, select {
-    background: #1a1a1a;
-    color: white;
-    border: 1px solid #3a3a3a;
-    padding: 2px 4px;
-    border-radius: 2px;
-    font-size: 11px;
-  }
-
-  select {
-    cursor: pointer;
-  }
-`;
 
 const GridGuides = ({
   isVisible = false,
@@ -163,6 +20,7 @@ const GridGuides = ({
   const [showSettings, setShowSettings] = useState(false);
   const [smartGuidePositions, setSmartGuidePositions] = useState({ horizontal: [], vertical: [] });
   const [snapIndicator, setSnapIndicator] = useState({ show: false, x: 0, y: 0, text: '' });
+  const [hoveredSetting, setHoveredSetting] = useState(null);
 
   const canvasRef = useRef(null);
   const topRulerRef = useRef(null);
@@ -452,54 +310,179 @@ const GridGuides = ({
 
   return (
     <>
-      <GridOverlay $isVisible={localVisible}>
-        <GridCanvas ref={canvasRef} />
+      {/* Grid Overlay */}
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
+        zIndex: 9999,
+        transition: 'opacity 0.2s ease',
+        opacity: localVisible ? 1 : 0
+      }}>
+        {/* Grid Canvas */}
+        <canvas
+          ref={canvasRef}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none'
+          }}
+        />
 
         {localShowRulers && (
           <>
-            <TopRuler $show={localShowRulers && localVisible}>
+            {/* Top Ruler */}
+            <div style={{
+              position: 'absolute',
+              background: '#252525',
+              color: '#ffffff',
+              fontFamily: "'SF Mono', Monaco, 'Cascadia Code', monospace",
+              fontSize: '10px',
+              userSelect: 'none',
+              pointerEvents: 'none',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '24px',
+              borderBottom: '1px solid #1a1a1a',
+              display: localShowRulers && localVisible ? 'block' : 'none'
+            }}>
               <canvas ref={topRulerRef} style={{ width: '100%', height: '24px' }} />
-            </TopRuler>
+            </div>
 
-            <LeftRuler $show={localShowRulers && localVisible}>
+            {/* Left Ruler */}
+            <div style={{
+              position: 'absolute',
+              background: '#252525',
+              color: '#ffffff',
+              fontFamily: "'SF Mono', Monaco, 'Cascadia Code', monospace",
+              fontSize: '10px',
+              userSelect: 'none',
+              pointerEvents: 'none',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+              top: 0,
+              left: 0,
+              bottom: 0,
+              width: '24px',
+              borderRight: '1px solid #1a1a1a',
+              display: localShowRulers && localVisible ? 'block' : 'none'
+            }}>
               <canvas ref={leftRulerRef} style={{ width: '24px', height: '100%' }} />
-            </LeftRuler>
+            </div>
 
-            <CornerBox $show={localShowRulers && localVisible} />
+            {/* Corner Box */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '24px',
+              height: '24px',
+              background: '#1a1a1a',
+              borderRight: '1px solid #0a0a0a',
+              borderBottom: '1px solid #0a0a0a',
+              display: localShowRulers && localVisible ? 'block' : 'none'
+            }} />
           </>
         )}
 
+        {/* Smart Guides - Horizontal */}
         {localShowSmartGuides && smartGuidePositions.horizontal.map((y, i) => (
-          <SmartGuide
+          <div
             key={`h-${i}-${y}`}
-            className="horizontal"
-            style={{ top: `${y}px` }}
-            $active={true}
+            style={{
+              position: 'absolute',
+              background: '#ff00ff',
+              pointerEvents: 'none',
+              zIndex: 10000,
+              opacity: 0.8,
+              transition: 'opacity 0.1s ease',
+              height: '1px',
+              left: 0,
+              right: 0,
+              top: `${y}px`
+            }}
           />
         ))}
 
+        {/* Smart Guides - Vertical */}
         {localShowSmartGuides && smartGuidePositions.vertical.map((x, i) => (
-          <SmartGuide
+          <div
             key={`v-${i}-${x}`}
-            className="vertical"
-            style={{ left: `${x}px` }}
-            $active={true}
+            style={{
+              position: 'absolute',
+              background: '#ff00ff',
+              pointerEvents: 'none',
+              zIndex: 10000,
+              opacity: 0.8,
+              transition: 'opacity 0.1s ease',
+              width: '1px',
+              top: 0,
+              bottom: 0,
+              left: `${x}px`
+            }}
           />
         ))}
-      </GridOverlay>
+      </div>
 
-      <SnapIndicator
-        $show={snapIndicator.show}
-        style={{
-          left: `${snapIndicator.x + 10}px`,
-          top: `${snapIndicator.y - 30}px`
-        }}
-      >
+      {/* Snap Indicator */}
+      <div style={{
+        position: 'fixed',
+        padding: '4px 8px',
+        background: 'rgba(74, 123, 167, 0.9)',
+        color: 'white',
+        fontSize: '11px',
+        fontFamily: "'SF Mono', Monaco, monospace",
+        borderRadius: '3px',
+        pointerEvents: 'none',
+        zIndex: 10001,
+        opacity: snapIndicator.show ? 1 : 0,
+        transition: 'opacity 0.15s ease',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+        left: `${snapIndicator.x + 10}px`,
+        top: `${snapIndicator.y - 30}px`
+      }}>
         {snapIndicator.text}
-      </SnapIndicator>
+      </div>
 
-      <GridSettings $show={showSettings && localVisible}>
-        <SettingRow>
+      {/* Grid Settings */}
+      <div style={{
+        position: 'fixed',
+        top: '32px',
+        right: '16px',
+        background: 'rgba(37, 37, 37, 0.95)',
+        padding: '8px',
+        borderRadius: '4px',
+        display: showSettings && localVisible ? 'flex' : 'none',
+        flexDirection: 'column',
+        gap: '8px',
+        zIndex: 10002,
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+        backdropFilter: 'blur(10px)'
+      }}>
+        {/* Show Rulers Setting */}
+        <label
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            color: '#e0e0e0',
+            fontSize: '12px',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+            cursor: 'pointer',
+            padding: '4px',
+            borderRadius: '3px',
+            background: hoveredSetting === 'rulers' ? 'rgba(74, 123, 167, 0.2)' : 'transparent'
+          }}
+          onMouseEnter={() => setHoveredSetting('rulers')}
+          onMouseLeave={() => setHoveredSetting(null)}
+        >
           <input
             type="checkbox"
             checked={localShowRulers}
@@ -507,11 +490,33 @@ const GridGuides = ({
               setLocalShowRulers(e.target.checked);
               onRulersToggle?.(e.target.checked);
             }}
+            style={{
+              background: '#1a1a1a',
+              color: 'white',
+              border: '1px solid #3a3a3a',
+              borderRadius: '2px'
+            }}
           />
           Show Rulers (Ctrl+R)
-        </SettingRow>
+        </label>
 
-        <SettingRow>
+        {/* Snap to Grid Setting */}
+        <label
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            color: '#e0e0e0',
+            fontSize: '12px',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+            cursor: 'pointer',
+            padding: '4px',
+            borderRadius: '3px',
+            background: hoveredSetting === 'snap' ? 'rgba(74, 123, 167, 0.2)' : 'transparent'
+          }}
+          onMouseEnter={() => setHoveredSetting('snap')}
+          onMouseLeave={() => setHoveredSetting(null)}
+        >
           <input
             type="checkbox"
             checked={localSnapToGrid}
@@ -519,11 +524,33 @@ const GridGuides = ({
               setLocalSnapToGrid(e.target.checked);
               onSnapToggle?.(e.target.checked);
             }}
+            style={{
+              background: '#1a1a1a',
+              color: 'white',
+              border: '1px solid #3a3a3a',
+              borderRadius: '2px'
+            }}
           />
           Snap to Grid
-        </SettingRow>
+        </label>
 
-        <SettingRow>
+        {/* Smart Guides Setting */}
+        <label
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            color: '#e0e0e0',
+            fontSize: '12px',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+            cursor: 'pointer',
+            padding: '4px',
+            borderRadius: '3px',
+            background: hoveredSetting === 'guides' ? 'rgba(74, 123, 167, 0.2)' : 'transparent'
+          }}
+          onMouseEnter={() => setHoveredSetting('guides')}
+          onMouseLeave={() => setHoveredSetting(null)}
+        >
           <input
             type="checkbox"
             checked={localShowSmartGuides}
@@ -531,11 +558,33 @@ const GridGuides = ({
               setLocalShowSmartGuides(e.target.checked);
               onSmartGuidesToggle?.(e.target.checked);
             }}
+            style={{
+              background: '#1a1a1a',
+              color: 'white',
+              border: '1px solid #3a3a3a',
+              borderRadius: '2px'
+            }}
           />
           Smart Guides
-        </SettingRow>
+        </label>
 
-        <SettingRow>
+        {/* Grid Size Setting */}
+        <label
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            color: '#e0e0e0',
+            fontSize: '12px',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+            cursor: 'pointer',
+            padding: '4px',
+            borderRadius: '3px',
+            background: hoveredSetting === 'size' ? 'rgba(74, 123, 167, 0.2)' : 'transparent'
+          }}
+          onMouseEnter={() => setHoveredSetting('size')}
+          onMouseLeave={() => setHoveredSetting(null)}
+        >
           Grid Size:
           <select
             value={localGridSize}
@@ -544,14 +593,23 @@ const GridGuides = ({
               setLocalGridSize(newSize);
               onGridSizeChange?.(newSize);
             }}
+            style={{
+              background: '#1a1a1a',
+              color: 'white',
+              border: '1px solid #3a3a3a',
+              padding: '2px 4px',
+              borderRadius: '2px',
+              fontSize: '11px',
+              cursor: 'pointer'
+            }}
           >
             <option value="8">8px</option>
             <option value="16">16px</option>
             <option value="24">24px</option>
             <option value="32">32px</option>
           </select>
-        </SettingRow>
-      </GridSettings>
+        </label>
+      </div>
     </>
   );
 };
