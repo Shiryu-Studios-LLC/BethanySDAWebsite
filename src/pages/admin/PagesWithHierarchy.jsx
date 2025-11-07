@@ -10,7 +10,7 @@ import {
   IconLayoutBottombar,
   IconDeviceFloppy
 } from '@tabler/icons-react'
-import UnityEditor from '../../components/BlockEditor/UnityEditor'
+import InteractiveViewport from '../../components/InteractiveViewport'
 
 export default function PagesWithHierarchy() {
   const [pages, setPages] = useState([])
@@ -98,6 +98,10 @@ export default function PagesWithHierarchy() {
 
   const handleBlocksChange = (newBlocks) => {
     setSelectedPage(prev => ({ ...prev, content: newBlocks }))
+  }
+
+  const handleBlockSelect = (block) => {
+    setSelectedBlock(block)
   }
 
   const handleSave = async () => {
@@ -268,27 +272,37 @@ export default function PagesWithHierarchy() {
                       </div>
                     </div>
 
-                    {/* Page Content/Blocks (when expanded) */}
-                    {isExpanded && selectedPage?.id === page.id && selectedPage.content && (
+                    {/* Page Components/Blocks (when expanded) */}
+                    {isExpanded && selectedPage?.id === page.id && selectedPage.content && selectedPage.content.length > 0 && (
                       <div style={{ marginLeft: '24px', marginTop: '4px' }}>
                         {selectedPage.content.map((block, index) => {
                           const BlockIcon = getBlockIcon(block.type)
+                          const isBlockSelected = selectedBlock === block
                           return (
                             <div
                               key={index}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleBlockSelect(block)
+                              }}
                               style={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 padding: '6px 8px',
                                 fontSize: '12px',
-                                color: '#a0a0a0',
+                                color: isBlockSelected ? '#ffffff' : '#a0a0a0',
+                                backgroundColor: isBlockSelected ? '#3a3a3a' : 'transparent',
                                 borderRadius: '3px',
-                                marginBottom: '2px'
+                                marginBottom: '2px',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.15s ease'
                               }}
+                              onMouseOver={(e) => !isBlockSelected && (e.currentTarget.style.backgroundColor = '#2d2d2d')}
+                              onMouseOut={(e) => !isBlockSelected && (e.currentTarget.style.backgroundColor = 'transparent')}
                             >
                               <BlockIcon size={14} style={{ marginRight: '6px' }} />
                               <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                {block.type || 'Block'}
+                                {block.type || 'Block'} {index + 1}
                               </span>
                             </div>
                           )
@@ -364,16 +378,23 @@ export default function PagesWithHierarchy() {
               </button>
             </div>
 
-            {/* Unity Editor */}
-            <div style={{ flex: 1, overflow: 'hidden' }}>
-              <UnityEditor
-                blocks={selectedPage.content || []}
-                onChange={handleBlocksChange}
-                pageTitle={selectedPage.title}
-                pageSubtitle={selectedPage.meta_description}
-                showPageHeader={selectedPage.show_page_header}
-                pageSlug={selectedPage.slug}
-              />
+            {/* Interactive Viewport */}
+            <div style={{
+              flex: 1,
+              overflow: 'auto',
+              padding: '24px',
+              backgroundColor: '#1a1a1a'
+            }}>
+              <div style={{
+                maxWidth: '1200px',
+                margin: '0 auto'
+              }}>
+                <InteractiveViewport
+                  blocks={selectedPage.content || []}
+                  onBlocksChange={handleBlocksChange}
+                  onBlockSelect={handleBlockSelect}
+                />
+              </div>
             </div>
           </>
         ) : (
@@ -433,7 +454,7 @@ export default function PagesWithHierarchy() {
             />
           </button>
           {!isPropertiesPanelCollapsed && (
-            <span style={{ fontSize: '13px', fontWeight: '600' }}>Properties</span>
+            <span style={{ fontSize: '13px', fontWeight: '600' }}>Inspector</span>
           )}
         </div>
 
@@ -442,75 +463,59 @@ export default function PagesWithHierarchy() {
           <div style={{
             flex: 1,
             overflowY: 'auto',
-            padding: '16px'
+            padding: '8px'
           }}>
             {selectedPage ? (
               <div>
-                {/* Page Properties */}
-                <div style={{ marginBottom: '24px' }}>
-                  <h3 style={{
-                    fontSize: '12px',
-                    fontWeight: '600',
-                    color: '#a0a0a0',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                    marginBottom: '12px'
-                  }}>
-                    Page Settings
-                  </h3>
-
+                {/* Page Component - Always shown */}
+                <InspectorComponent
+                  title="Page"
+                  icon={pageIcons[selectedPage.slug]?.icon || IconFile}
+                  color={pageIcons[selectedPage.slug]?.color || '#6a6a6a'}
+                  defaultExpanded={true}
+                >
                   <PropertyField label="Title" value={selectedPage.title} />
                   <PropertyField label="Slug" value={selectedPage.slug} />
                   <PropertyField label="Status" value={selectedPage.is_published ? 'Published' : 'Draft'} />
                   <PropertyField label="Show in Nav" value={selectedPage.show_in_nav ? 'Yes' : 'No'} />
                   <PropertyField label="Show Header" value={selectedPage.show_page_header ? 'Yes' : 'No'} />
                   <PropertyField label="Nav Order" value={selectedPage.nav_order} />
-                </div>
-
-                {/* Block Properties (if a block is selected) */}
-                {selectedBlock && (
-                  <div style={{ marginBottom: '24px' }}>
-                    <h3 style={{
-                      fontSize: '12px',
-                      fontWeight: '600',
-                      color: '#a0a0a0',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px',
-                      marginBottom: '12px'
-                    }}>
-                      Block Settings
-                    </h3>
-
-                    <PropertyField label="Type" value={selectedBlock.type} />
-                    {selectedBlock.content && (
-                      <PropertyField label="Content" value={selectedBlock.content.substring(0, 50) + '...'} />
-                    )}
-                  </div>
-                )}
-
-                {/* Meta Information */}
-                <div>
-                  <h3 style={{
-                    fontSize: '12px',
-                    fontWeight: '600',
-                    color: '#a0a0a0',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                    marginBottom: '12px'
-                  }}>
-                    Meta Data
-                  </h3>
-
                   <PropertyField label="Page ID" value={selectedPage.id} />
-                  <PropertyField label="Blocks" value={selectedPage.content?.length || 0} />
                   {selectedPage.meta_description && (
-                    <PropertyField label="Description" value={selectedPage.meta_description.substring(0, 50) + '...'} multiline />
+                    <PropertyField label="Description" value={selectedPage.meta_description} multiline />
                   )}
-                </div>
+                </InspectorComponent>
+
+                {/* Block Component - Only shown when a block is selected */}
+                {selectedBlock && (
+                  <InspectorComponent
+                    title={selectedBlock.type || 'Block'}
+                    icon={getBlockIcon(selectedBlock.type)}
+                    color="#4a7ba7"
+                    defaultExpanded={true}
+                  >
+                    <PropertyField label="Type" value={selectedBlock.type} />
+                    {selectedBlock.data && Object.keys(selectedBlock.data).length > 0 && (
+                      <>
+                        {Object.entries(selectedBlock.data).map(([key, value]) => (
+                          <PropertyField
+                            key={key}
+                            label={key.charAt(0).toUpperCase() + key.slice(1)}
+                            value={typeof value === 'string' ? value : JSON.stringify(value)}
+                            multiline={typeof value === 'string' && value.length > 50}
+                          />
+                        ))}
+                      </>
+                    )}
+                    {selectedBlock.hidden !== undefined && (
+                      <PropertyField label="Hidden" value={selectedBlock.hidden ? 'Yes' : 'No'} />
+                    )}
+                  </InspectorComponent>
+                )}
               </div>
             ) : (
               <div style={{ color: '#a0a0a0', textAlign: 'center', padding: '40px 20px' }}>
-                <p style={{ fontSize: '12px' }}>Select a page or block to view properties</p>
+                <p style={{ fontSize: '12px' }}>Select a page or component to view properties</p>
               </div>
             )}
           </div>
@@ -520,29 +525,89 @@ export default function PagesWithHierarchy() {
   )
 }
 
+// Unity-style Inspector Component Block
+function InspectorComponent({ title, icon: Icon, color, defaultExpanded = true, children }) {
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded)
+
+  return (
+    <div style={{
+      marginBottom: '8px',
+      backgroundColor: '#2a2a2a',
+      border: '1px solid #3a3a3a',
+      borderRadius: '4px',
+      overflow: 'hidden'
+    }}>
+      {/* Component Header */}
+      <div
+        onClick={() => setIsExpanded(!isExpanded)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '8px 10px',
+          backgroundColor: '#2d2d2d',
+          cursor: 'pointer',
+          borderBottom: isExpanded ? '1px solid #3a3a3a' : 'none',
+          transition: 'background-color 0.15s ease'
+        }}
+        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#353535'}
+        onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2d2d2d'}
+      >
+        <IconChevronRight
+          size={14}
+          style={{
+            color: '#a0a0a0',
+            marginRight: '6px',
+            transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+            transition: 'transform 0.2s ease'
+          }}
+        />
+        <Icon size={16} style={{ color, marginRight: '8px' }} />
+        <span style={{
+          fontSize: '12px',
+          fontWeight: '600',
+          color: '#e0e0e0',
+          flex: 1
+        }}>
+          {title}
+        </span>
+      </div>
+
+      {/* Component Content */}
+      {isExpanded && (
+        <div style={{ padding: '12px 10px' }}>
+          {children}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // Property Field Component
 function PropertyField({ label, value, multiline = false }) {
   return (
-    <div style={{ marginBottom: '12px' }}>
+    <div style={{ marginBottom: '10px' }}>
       <div style={{
-        fontSize: '11px',
-        color: '#7a7a7a',
+        fontSize: '10px',
+        color: '#8a8a8a',
         marginBottom: '4px',
-        fontWeight: '500'
+        fontWeight: '500',
+        textTransform: 'uppercase',
+        letterSpacing: '0.3px'
       }}>
         {label}
       </div>
       <div style={{
-        fontSize: '12px',
-        color: '#e0e0e0',
-        backgroundColor: '#1a1a1a',
-        padding: '8px',
-        borderRadius: '3px',
+        fontSize: '11px',
+        color: '#d0d0d0',
+        backgroundColor: '#1e1e1e',
+        padding: '6px 8px',
+        borderRadius: '2px',
         border: '1px solid #3a3a3a',
         wordWrap: multiline ? 'break-word' : 'normal',
         whiteSpace: multiline ? 'normal' : 'nowrap',
         overflow: 'hidden',
-        textOverflow: 'ellipsis'
+        textOverflow: 'ellipsis',
+        lineHeight: '1.4'
       }}>
         {value || '-'}
       </div>
