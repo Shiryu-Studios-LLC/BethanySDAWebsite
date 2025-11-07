@@ -7,8 +7,10 @@ import {
   IconChevronRight,
   IconChevronDown,
   IconLayoutNavbar,
-  IconLayoutBottombar
+  IconLayoutBottombar,
+  IconDeviceFloppy
 } from '@tabler/icons-react'
+import UnityEditor from '../../components/BlockEditor/UnityEditor'
 
 export default function PagesWithHierarchy() {
   const [pages, setPages] = useState([])
@@ -18,6 +20,7 @@ export default function PagesWithHierarchy() {
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false)
   const [isPropertiesPanelCollapsed, setIsPropertiesPanelCollapsed] = useState(false)
   const [selectedBlock, setSelectedBlock] = useState(null)
+  const [saving, setSaving] = useState(false)
 
   // Icon mapping for special pages
   const pageIcons = {
@@ -91,6 +94,41 @@ export default function PagesWithHierarchy() {
 
   const handlePageSelect = (page) => {
     loadPageContent(page.slug)
+  }
+
+  const handleBlocksChange = (newBlocks) => {
+    setSelectedPage(prev => ({ ...prev, content: newBlocks }))
+  }
+
+  const handleSave = async () => {
+    if (!selectedPage) return
+
+    setSaving(true)
+    try {
+      const dataToSave = {
+        ...selectedPage,
+        content: JSON.stringify(selectedPage.content)
+      }
+
+      const response = await fetch(`/api/pages/${selectedPage.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dataToSave)
+      })
+
+      if (response.ok) {
+        alert('Page saved successfully!')
+        loadPages() // Refresh the list
+      } else {
+        const error = await response.json()
+        alert(error.error || 'Failed to save page')
+      }
+    } catch (error) {
+      console.error('Error saving page:', error)
+      alert('Error saving page')
+    } finally {
+      setSaving(false)
+    }
   }
 
   const getBlockIcon = (blockType) => {
@@ -270,31 +308,74 @@ export default function PagesWithHierarchy() {
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        backgroundColor: '#1a1a1a'
       }}>
         {selectedPage ? (
-          <div style={{
-            flex: 1,
-            padding: '24px',
-            overflowY: 'auto'
-          }}>
-            <h2 style={{ margin: '0 0 8px 0', fontSize: '24px' }}>{selectedPage.title}</h2>
-            <p style={{ color: '#a0a0a0', margin: '0 0 24px 0' }}>/{selectedPage.slug}</p>
-
+          <>
+            {/* Editor Toolbar */}
             <div style={{
+              height: '48px',
               backgroundColor: '#252525',
-              border: '1px solid #3a3a3a',
-              borderRadius: '4px',
-              padding: '20px'
+              borderBottom: '1px solid #3a3a3a',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0 16px',
+              flexShrink: 0
             }}>
-              <p style={{ color: '#a0a0a0' }}>
-                Page editor content will go here. This will include the block editor interface.
-              </p>
-              <p style={{ color: '#a0a0a0', fontSize: '12px', marginTop: '12px' }}>
-                Blocks: {selectedPage.content?.length || 0}
-              </p>
+              <div>
+                <span style={{ fontSize: '14px', fontWeight: '600' }}>{selectedPage.title}</span>
+                <span style={{ fontSize: '12px', color: '#7a7a7a', marginLeft: '12px' }}>
+                  /{selectedPage.slug}
+                </span>
+              </div>
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '6px 16px',
+                  backgroundColor: '#4a7ba7',
+                  border: '1px solid #5a8bb7',
+                  borderRadius: '3px',
+                  color: '#ffffff',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  cursor: saving ? 'not-allowed' : 'pointer',
+                  opacity: saving ? 0.6 : 1,
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseEnter={(e) => !saving && (e.target.style.backgroundColor = '#5a8bb7')}
+                onMouseLeave={(e) => !saving && (e.target.style.backgroundColor = '#4a7ba7')}
+              >
+                {saving ? (
+                  <>
+                    <span>Saving...</span>
+                  </>
+                ) : (
+                  <>
+                    <IconDeviceFloppy size={16} />
+                    <span>Save</span>
+                  </>
+                )}
+              </button>
             </div>
-          </div>
+
+            {/* Unity Editor */}
+            <div style={{ flex: 1, overflow: 'hidden' }}>
+              <UnityEditor
+                blocks={selectedPage.content || []}
+                onChange={handleBlocksChange}
+                pageTitle={selectedPage.title}
+                pageSubtitle={selectedPage.meta_description}
+                showPageHeader={selectedPage.show_page_header}
+                pageSlug={selectedPage.slug}
+              />
+            </div>
+          </>
         ) : (
           <div style={{
             flex: 1,
