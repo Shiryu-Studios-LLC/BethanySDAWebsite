@@ -73,10 +73,8 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
         onClick={() => isEditMode && handleBlockClick(block, index)}
         style={{
           position: 'relative',
-          marginBottom: '16px',
           border: isEditMode && isHovered ? '2px solid #4a7ba7' : '2px solid transparent',
           borderRadius: '4px',
-          backgroundColor: isHidden ? '#2a2a2a' : '#252525',
           opacity: isHidden ? 0.5 : 1,
           cursor: isEditMode ? 'pointer' : 'default',
           transition: 'all 0.2s ease'
@@ -149,23 +147,9 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
           </div>
         )}
 
-        {/* Block Content Preview */}
-        <div style={{
-          padding: '16px 16px 16px 36px',
-          minHeight: '60px'
-        }}>
-          <div style={{
-            fontSize: '11px',
-            color: '#7a7a7a',
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px',
-            marginBottom: '8px',
-            fontWeight: '600'
-          }}>
-            {block.type || 'Unknown Block'}
-          </div>
-
-          <BlockPreview block={block} isPreview={!isEditMode} />
+        {/* Block Content - Always render as preview */}
+        <div>
+          <BlockPreview block={block} isPreview={true} />
         </div>
       </div>
     )
@@ -199,9 +183,7 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       style={{
-        backgroundColor: isEditMode ? '#1e1e1e' : 'transparent',
-        borderRadius: isEditMode ? '4px' : '0',
-        padding: isEditMode ? '24px' : '0',
+        backgroundColor: 'transparent',
         minHeight: '400px'
       }}
     >
@@ -211,13 +193,9 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
 
   return (
     <>
-      {isEditMode ? (
-        viewportContent
-      ) : (
-        <BrowserFrame>
-          {viewportContent}
-        </BrowserFrame>
-      )}
+      <BrowserFrame>
+        {viewportContent}
+      </BrowserFrame>
 
       {/* Delete Confirmation Dialog */}
       <UnrealAlertDialog
