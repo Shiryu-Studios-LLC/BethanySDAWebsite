@@ -4,12 +4,14 @@ import {
   IconEye,
   IconEyeOff,
   IconTrash,
-  IconSettings
+  IconSettings,
+  IconBoxPadding
 } from '@tabler/icons-react'
 import BlockRenderer from './BlockEditor/BlockRenderer'
 import UnrealAlertDialog from './UnrealAlertDialog'
 import BrowserFrame from './BrowserFrame'
 import FloatingTextToolbar from './FloatingTextToolbar'
+import SpacingControl from './SpacingControl'
 
 export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSelect, viewMode = 'edit' }) {
   const [hoveredBlockIndex, setHoveredBlockIndex] = useState(null)
@@ -18,6 +20,8 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
   const [editingBlockIndex, setEditingBlockIndex] = useState(null)
   const [toolbarVisible, setToolbarVisible] = useState(false)
   const [toolbarPosition, setToolbarPosition] = useState({ x: 0, y: 0 })
+  const [spacingControlVisible, setSpacingControlVisible] = useState(false)
+  const [spacingControlBlock, setSpacingControlBlock] = useState(null)
   const editableRefs = useRef({})
 
   const isEditMode = viewMode === 'edit'
@@ -146,6 +150,23 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
     editableRefs.current[index] = element
   }
 
+  const handleSpacingUpdate = (index, spacing) => {
+    const newBlocks = [...blocks]
+    newBlocks[index] = {
+      ...newBlocks[index],
+      data: {
+        ...newBlocks[index].data,
+        spacing
+      }
+    }
+    onBlocksChange?.(newBlocks)
+  }
+
+  const handleOpenSpacingControl = (block, index) => {
+    setSpacingControlBlock({ ...block, index })
+    setSpacingControlVisible(true)
+  }
+
   const handleDrop = (e) => {
     e.preventDefault()
     const componentType = e.dataTransfer.getData('componentType')
@@ -189,6 +210,7 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
   const renderBlock = (block, index) => {
     const isHovered = hoveredBlockIndex === index
     const isHidden = block.hidden
+    const spacing = block.data?.spacing || {}
 
     return (
       <div
@@ -202,7 +224,15 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
           borderRadius: '4px',
           opacity: isHidden ? 0.5 : 1,
           cursor: isEditMode ? 'pointer' : 'default',
-          transition: 'all 0.2s ease'
+          transition: 'all 0.2s ease',
+          marginTop: spacing.marginTop || '0',
+          marginRight: spacing.marginRight || '0',
+          marginBottom: spacing.marginBottom || '0',
+          marginLeft: spacing.marginLeft || '0',
+          paddingTop: spacing.paddingTop || '0',
+          paddingRight: spacing.paddingRight || '0',
+          paddingBottom: spacing.paddingBottom || '0',
+          paddingLeft: spacing.paddingLeft || '0'
         }}
       >
         {/* Block Controls - Show on Hover in Edit Mode */}
@@ -215,6 +245,25 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
             gap: '4px',
             zIndex: 10
           }}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                handleOpenSpacingControl(block, index)
+              }}
+              title="Adjust Spacing"
+              style={{
+                background: '#3a3a3a',
+                border: '1px solid #4a4a4a',
+                borderRadius: '3px',
+                padding: '4px 8px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                color: '#e0e0e0'
+              }}
+            >
+              <IconBoxPadding size={14} />
+            </button>
             <button
               onClick={(e) => {
                 e.stopPropagation()
@@ -334,6 +383,15 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
         isVisible={toolbarVisible}
         position={toolbarPosition}
         onFormat={handleFormat}
+      />
+
+      {/* Spacing Control Panel */}
+      <SpacingControl
+        isVisible={spacingControlVisible}
+        block={spacingControlBlock}
+        blockIndex={spacingControlBlock?.index}
+        onUpdate={handleSpacingUpdate}
+        onClose={() => setSpacingControlVisible(false)}
       />
 
       {/* Delete Confirmation Dialog */}
