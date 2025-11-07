@@ -16,6 +16,8 @@ export default function PagesWithHierarchy() {
   const [selectedPage, setSelectedPage] = useState(null)
   const [expandedPages, setExpandedPages] = useState({})
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false)
+  const [isPropertiesPanelCollapsed, setIsPropertiesPanelCollapsed] = useState(false)
+  const [selectedBlock, setSelectedBlock] = useState(null)
 
   // Icon mapping for special pages
   const pageIcons = {
@@ -307,6 +309,161 @@ export default function PagesWithHierarchy() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Right Panel - Properties */}
+      <div style={{
+        width: isPropertiesPanelCollapsed ? '50px' : '320px',
+        backgroundColor: '#252525',
+        borderLeft: '1px solid #3a3a3a',
+        display: 'flex',
+        flexDirection: 'column',
+        transition: 'width 0.3s ease',
+        overflow: 'hidden'
+      }}>
+        {/* Panel Header */}
+        <div style={{
+          height: '48px',
+          borderBottom: '1px solid #3a3a3a',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 12px',
+          flexShrink: 0
+        }}>
+          <button
+            onClick={() => setIsPropertiesPanelCollapsed(!isPropertiesPanelCollapsed)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#a0a0a0',
+              cursor: 'pointer',
+              padding: '4px',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <IconChevronRight
+              size={18}
+              style={{
+                transform: isPropertiesPanelCollapsed ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.3s ease'
+              }}
+            />
+          </button>
+          {!isPropertiesPanelCollapsed && (
+            <span style={{ fontSize: '13px', fontWeight: '600' }}>Properties</span>
+          )}
+        </div>
+
+        {/* Panel Content */}
+        {!isPropertiesPanelCollapsed && (
+          <div style={{
+            flex: 1,
+            overflowY: 'auto',
+            padding: '16px'
+          }}>
+            {selectedPage ? (
+              <div>
+                {/* Page Properties */}
+                <div style={{ marginBottom: '24px' }}>
+                  <h3 style={{
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    color: '#a0a0a0',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                    marginBottom: '12px'
+                  }}>
+                    Page Settings
+                  </h3>
+
+                  <PropertyField label="Title" value={selectedPage.title} />
+                  <PropertyField label="Slug" value={selectedPage.slug} />
+                  <PropertyField label="Status" value={selectedPage.is_published ? 'Published' : 'Draft'} />
+                  <PropertyField label="Show in Nav" value={selectedPage.show_in_nav ? 'Yes' : 'No'} />
+                  <PropertyField label="Show Header" value={selectedPage.show_page_header ? 'Yes' : 'No'} />
+                  <PropertyField label="Nav Order" value={selectedPage.nav_order} />
+                </div>
+
+                {/* Block Properties (if a block is selected) */}
+                {selectedBlock && (
+                  <div style={{ marginBottom: '24px' }}>
+                    <h3 style={{
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      color: '#a0a0a0',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      marginBottom: '12px'
+                    }}>
+                      Block Settings
+                    </h3>
+
+                    <PropertyField label="Type" value={selectedBlock.type} />
+                    {selectedBlock.content && (
+                      <PropertyField label="Content" value={selectedBlock.content.substring(0, 50) + '...'} />
+                    )}
+                  </div>
+                )}
+
+                {/* Meta Information */}
+                <div>
+                  <h3 style={{
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    color: '#a0a0a0',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                    marginBottom: '12px'
+                  }}>
+                    Meta Data
+                  </h3>
+
+                  <PropertyField label="Page ID" value={selectedPage.id} />
+                  <PropertyField label="Blocks" value={selectedPage.content?.length || 0} />
+                  {selectedPage.meta_description && (
+                    <PropertyField label="Description" value={selectedPage.meta_description.substring(0, 50) + '...'} multiline />
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div style={{ color: '#a0a0a0', textAlign: 'center', padding: '40px 20px' }}>
+                <p style={{ fontSize: '12px' }}>Select a page or block to view properties</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Property Field Component
+function PropertyField({ label, value, multiline = false }) {
+  return (
+    <div style={{ marginBottom: '12px' }}>
+      <div style={{
+        fontSize: '11px',
+        color: '#7a7a7a',
+        marginBottom: '4px',
+        fontWeight: '500'
+      }}>
+        {label}
+      </div>
+      <div style={{
+        fontSize: '12px',
+        color: '#e0e0e0',
+        backgroundColor: '#1a1a1a',
+        padding: '8px',
+        borderRadius: '3px',
+        border: '1px solid #3a3a3a',
+        wordWrap: multiline ? 'break-word' : 'normal',
+        whiteSpace: multiline ? 'normal' : 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+      }}>
+        {value || '-'}
       </div>
     </div>
   )
