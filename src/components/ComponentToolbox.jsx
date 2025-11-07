@@ -102,8 +102,9 @@ export default function ComponentToolbox({ onAddComponent }) {
               style={{
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: isExpanded ? 'flex-start' : 'center',
                 gap: '8px',
-                padding: '8px',
+                padding: isExpanded ? '8px' : '4px',
                 marginBottom: '4px',
                 backgroundColor: '#2a2a2a',
                 border: '1px solid #3a3a3a',
