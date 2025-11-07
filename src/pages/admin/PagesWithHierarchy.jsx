@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import {
   IconHome,
   IconMapPin,
@@ -17,6 +18,7 @@ import InteractiveViewport from '../../components/InteractiveViewport'
 import ComponentToolbox from '../../components/ComponentToolbox'
 
 export default function PagesWithHierarchy() {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [pages, setPages] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedPage, setSelectedPage] = useState(null)
@@ -55,6 +57,15 @@ export default function PagesWithHierarchy() {
           expanded[page.id] = true
         })
         setExpandedPages(expanded)
+
+        // Auto-select page from URL if 'page' param exists
+        const pageSlug = searchParams.get('page')
+        if (pageSlug && pagesData.length > 0) {
+          const pageToSelect = pagesData.find(p => p.slug === pageSlug)
+          if (pageToSelect) {
+            loadPageContent(pageToSelect.slug)
+          }
+        }
       }
     } catch (error) {
       console.error('Error loading pages:', error)
@@ -99,6 +110,9 @@ export default function PagesWithHierarchy() {
 
   const handlePageSelect = (page) => {
     loadPageContent(page.slug)
+    // Update URL to persist selected page
+    const currentParams = Object.fromEntries(searchParams.entries())
+    setSearchParams({ ...currentParams, page: page.slug })
   }
 
   const handleBlocksChange = (newBlocks) => {
