@@ -11,6 +11,7 @@ import {
   IconGripVertical
 } from '@tabler/icons-react'
 import ColorPicker from './ColorPicker'
+import GradientPicker from './GradientPicker'
 
 export default function PropertiesPanel({ block, blockIndex, onUpdate, isVisible }) {
   const [expandedSections, setExpandedSections] = useState({
@@ -23,6 +24,7 @@ export default function PropertiesPanel({ block, blockIndex, onUpdate, isVisible
   const [position, setPosition] = useState({ x: 100, y: 100 })
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
+  const [backgroundType, setBackgroundType] = useState('color') // 'color' or 'gradient'
   const panelRef = useRef(null)
 
   // Handle dragging
@@ -445,51 +447,133 @@ function BorderControls({ border, onUpdate }) {
 
 // Background Controls
 function BackgroundControls({ blockData, onUpdate }) {
+  const [backgroundType, setBackgroundType] = useState(() => {
+    // Detect if current background is a gradient
+    const bg = blockData.backgroundColor || blockData.backgroundImage || ''
+    if (bg.includes('gradient')) {
+      return 'gradient'
+    }
+    return 'color'
+  })
+
+  const handleBackgroundChange = (value) => {
+    if (backgroundType === 'gradient') {
+      onUpdate('backgroundImage', value)
+      onUpdate('backgroundColor', 'transparent')
+    } else {
+      onUpdate('backgroundColor', value)
+      onUpdate('backgroundImage', '')
+    }
+  }
+
   return (
     <div>
-      <div style={{ marginBottom: '16px' }}>
+      {/* Background Type Toggle */}
+      <div style={{ marginBottom: '12px' }}>
         <label style={{
           display: 'block',
-          fontSize: '11px',
-          color: '#a0a0a0',
+          fontSize: '10px',
+          color: '#8a8a8a',
           marginBottom: '6px',
+          fontWeight: '500',
           textTransform: 'uppercase',
-          letterSpacing: '0.5px'
+          letterSpacing: '0.3px'
         }}>
-          Background Color
+          Background Type
         </label>
-        <ColorPicker
-          color={blockData.backgroundColor || 'transparent'}
-          onChange={(color) => onUpdate('backgroundColor', color)}
-        />
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            onClick={() => setBackgroundType('color')}
+            style={{
+              flex: 1,
+              padding: '6px',
+              backgroundColor: backgroundType === 'color' ? '#4a7ba7' : '#1e1e1e',
+              border: '1px solid #3a3a3a',
+              borderRadius: '3px',
+              color: backgroundType === 'color' ? '#ffffff' : '#e0e0e0',
+              fontSize: '11px',
+              cursor: 'pointer'
+            }}
+          >
+            Solid Color
+          </button>
+          <button
+            onClick={() => setBackgroundType('gradient')}
+            style={{
+              flex: 1,
+              padding: '6px',
+              backgroundColor: backgroundType === 'gradient' ? '#4a7ba7' : '#1e1e1e',
+              border: '1px solid #3a3a3a',
+              borderRadius: '3px',
+              color: backgroundType === 'gradient' ? '#ffffff' : '#e0e0e0',
+              fontSize: '11px',
+              cursor: 'pointer'
+            }}
+          >
+            Gradient
+          </button>
+        </div>
       </div>
-      <div>
-        <label style={{
-          display: 'block',
-          fontSize: '11px',
-          color: '#a0a0a0',
-          marginBottom: '6px',
-          textTransform: 'uppercase',
-          letterSpacing: '0.5px'
-        }}>
-          Background Image URL
-        </label>
-        <input
-          type="text"
-          value={blockData.backgroundImage || ''}
-          onChange={(e) => onUpdate('backgroundImage', e.target.value)}
-          placeholder="https://..."
-          style={{
-            width: '100%',
-            padding: '6px 8px',
-            backgroundColor: '#1e1e1e',
-            border: '1px solid #3a3a3a',
-            borderRadius: '3px',
-            color: '#e0e0e0',
-            fontSize: '12px'
-          }}
-        />
-      </div>
+
+      {/* Color or Gradient Picker */}
+      {backgroundType === 'color' ? (
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{
+            display: 'block',
+            fontSize: '10px',
+            color: '#8a8a8a',
+            marginBottom: '6px',
+            fontWeight: '500',
+            textTransform: 'uppercase',
+            letterSpacing: '0.3px'
+          }}>
+            Color
+          </label>
+          <ColorPicker
+            color={blockData.backgroundColor || 'transparent'}
+            onChange={handleBackgroundChange}
+          />
+        </div>
+      ) : (
+        <div style={{ marginBottom: '16px' }}>
+          <GradientPicker
+            value={blockData.backgroundImage || 'linear-gradient(90deg, #4a7ba7 0%, #7ba74a 100%)'}
+            onChange={handleBackgroundChange}
+          />
+        </div>
+      )}
+
+      {/* Background Image URL (for actual images) */}
+      {backgroundType === 'color' && (
+        <div>
+          <label style={{
+            display: 'block',
+            fontSize: '10px',
+            color: '#8a8a8a',
+            marginBottom: '6px',
+            fontWeight: '500',
+            textTransform: 'uppercase',
+            letterSpacing: '0.3px'
+          }}>
+            Background Image URL
+          </label>
+          <input
+            type="text"
+            value={blockData.backgroundImage || ''}
+            onChange={(e) => onUpdate('backgroundImage', e.target.value)}
+            placeholder="https://..."
+            style={{
+              width: '100%',
+              padding: '6px 8px',
+              backgroundColor: '#1e1e1e',
+              border: '1px solid #3a3a3a',
+              borderRadius: '3px',
+              color: '#e0e0e0',
+              fontSize: '12px'
+            }}
+          />
+        </div>
+      )}
     </div>
   )
 }

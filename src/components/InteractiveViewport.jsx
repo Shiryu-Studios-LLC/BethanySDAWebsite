@@ -510,7 +510,11 @@ function BlockPreview({ block, blockIndex, isPreview = false, isEditMode = false
         return (
           <div style={{
             backgroundColor: blockData.backgroundColor || '#0054a6',
-            backgroundImage: blockData.backgroundImage ? `url(${blockData.backgroundImage})` : 'none',
+            backgroundImage: blockData.backgroundImage
+              ? (blockData.backgroundImage.includes('gradient')
+                  ? blockData.backgroundImage
+                  : `url(${blockData.backgroundImage})`)
+              : 'none',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             color: 'white',
