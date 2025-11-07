@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import {
   IconGripVertical,
   IconEye,
@@ -9,16 +9,141 @@ import {
 import BlockRenderer from './BlockEditor/BlockRenderer'
 import UnrealAlertDialog from './UnrealAlertDialog'
 import BrowserFrame from './BrowserFrame'
+import FloatingTextToolbar from './FloatingTextToolbar'
 
 export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSelect, viewMode = 'edit' }) {
   const [hoveredBlockIndex, setHoveredBlockIndex] = useState(null)
   const [draggedBlockIndex, setDraggedBlockIndex] = useState(null)
   const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, blockIndex: null })
+  const [editingBlockIndex, setEditingBlockIndex] = useState(null)
+  const [toolbarVisible, setToolbarVisible] = useState(false)
+  const [toolbarPosition, setToolbarPosition] = useState({ x: 0, y: 0 })
+  const editableRefs = useRef({})
 
   const isEditMode = viewMode === 'edit'
 
+  // Handle text selection for toolbar
+  useEffect(() => {
+    const handleSelectionChange = () => {
+      if (!isEditMode || editingBlockIndex === null) {
+        setToolbarVisible(false)
+        return
+      }
+
+      const selection = window.getSelection()
+      if (!selection || selection.isCollapsed || selection.toString().trim().length === 0) {
+        setToolbarVisible(false)
+        return
+      }
+
+      const range = selection.getRangeAt(0)
+      const rect = range.getBoundingClientRect()
+
+      setToolbarPosition({
+        x: rect.left + rect.width / 2,
+        y: rect.top
+      })
+      setToolbarVisible(true)
+    }
+
+    document.addEventListener('selectionchange', handleSelectionChange)
+    return () => document.removeEventListener('selectionchange', handleSelectionChange)
+  }, [isEditMode, editingBlockIndex])
+
   const handleBlockClick = (block, index) => {
     onBlockSelect?.(block)
+  }
+
+  const handleFormat = (command) => {
+    if (editingBlockIndex === null) return
+
+    switch (command) {
+      case 'bold':
+        document.execCommand('bold', false, null)
+        break
+      case 'italic':
+        document.execCommand('italic', false, null)
+        break
+      case 'underline':
+        document.execCommand('underline', false, null)
+        break
+      case 'h1':
+        document.execCommand('formatBlock', false, '<h1>')
+        break
+      case 'h2':
+        document.execCommand('formatBlock', false, '<h2>')
+        break
+      case 'h3':
+        document.execCommand('formatBlock', false, '<h3>')
+        break
+      case 'alignLeft':
+        document.execCommand('justifyLeft', false, null)
+        break
+      case 'alignCenter':
+        document.execCommand('justifyCenter', false, null)
+        break
+      case 'alignRight':
+        document.execCommand('justifyRight', false, null)
+        break
+      case 'bulletList':
+        document.execCommand('insertUnorderedList', false, null)
+        break
+      case 'numberedList':
+        document.execCommand('insertOrderedList', false, null)
+        break
+      case 'link':
+        const url = prompt('Enter URL:')
+        if (url) {
+          document.execCommand('createLink', false, url)
+        }
+        break
+      default:
+        break
+    }
+
+    // Update block content after formatting
+    updateBlockContent(editingBlockIndex)
+  }
+
+  const updateBlockContent = (index) => {
+    const element = editableRefs.current[index]
+    if (!element) return
+
+    const newBlocks = [...blocks]
+    const block = newBlocks[index]
+
+    // Update the appropriate field based on block type
+    if (block.type === 'text' || block.type === 'html') {
+      block.data.content = element.innerHTML
+    } else if (block.type === 'heading') {
+      block.data.text = element.innerText
+    } else if (block.type === 'hero') {
+      // Determine which element was edited (title or subtitle)
+      if (element.dataset.field === 'title') {
+        block.data.title = element.innerText
+      } else if (element.dataset.field === 'subtitle') {
+        block.data.subtitle = element.innerText
+      }
+    } else if (block.type === 'image-text') {
+      if (element.dataset.field === 'title') {
+        block.data.title = element.innerText
+      } else if (element.dataset.field === 'content') {
+        block.data.content = element.innerHTML
+      }
+    } else if (block.type === 'cta') {
+      if (element.dataset.field === 'heading') {
+        block.data.heading = element.innerText
+      } else if (element.dataset.field === 'buttonText') {
+        block.data.buttonText = element.innerText
+      }
+    }
+
+    onBlocksChange?.(newBlocks)
+  }
+
+  const handleContentEdit = (index, element) => {
+    setEditingBlockIndex(index)
+    editableRefs.current[index] = element
   }
 
   const handleDrop = (e) => {
@@ -149,7 +274,14 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
 
         {/* Block Content - Always render as preview */}
         <div>
-          <BlockPreview block={block} isPreview={true} />
+          <BlockPreview
+            block={block}
+            blockIndex={index}
+            isPreview={true}
+            isEditMode={isEditMode}
+            onContentEdit={handleContentEdit}
+            onBlur={() => updateBlockContent(index)}
+          />
         </div>
       </div>
     )
@@ -197,6 +329,13 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
         {viewportContent}
       </BrowserFrame>
 
+      {/* Floating Text Toolbar */}
+      <FloatingTextToolbar
+        isVisible={toolbarVisible}
+        position={toolbarPosition}
+        onFormat={handleFormat}
+      />
+
       {/* Delete Confirmation Dialog */}
       <UnrealAlertDialog
         isOpen={deleteDialog.isOpen}
@@ -214,8 +353,21 @@ export default function InteractiveViewport({ blocks, onBlocksChange, onBlockSel
 }
 
 // Block Preview Component - Renders a preview based on block type
-function BlockPreview({ block, isPreview = false }) {
+function BlockPreview({ block, blockIndex, isPreview = false, isEditMode = false, onContentEdit, onBlur }) {
   const blockData = block.data || {}
+
+  const makeEditable = (content, field) => ({
+    contentEditable: isEditMode,
+    suppressContentEditableWarning: true,
+    onFocus: (e) => isEditMode && onContentEdit?.(blockIndex, e.target),
+    onBlur: (e) => isEditMode && onBlur?.(e),
+    onInput: (e) => isEditMode && onBlur?.(e),
+    'data-field': field,
+    style: {
+      outline: isEditMode ? '2px solid transparent' : 'none',
+      cursor: isEditMode ? 'text' : 'default'
+    }
+  })
 
   switch (block.type) {
     case 'hero':
@@ -237,21 +389,29 @@ function BlockPreview({ block, isPreview = false }) {
             justifyContent: 'center'
           }}>
             {blockData.title && (
-              <h1 style={{
-                fontSize: '36px',
-                fontWeight: '700',
-                marginBottom: '16px',
-                textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-              }}>
+              <h1
+                {...makeEditable(blockData.title, 'title')}
+                style={{
+                  ...makeEditable(blockData.title, 'title').style,
+                  fontSize: '36px',
+                  fontWeight: '700',
+                  marginBottom: '16px',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                }}
+              >
                 {blockData.title}
               </h1>
             )}
             {blockData.subtitle && (
-              <p style={{
-                fontSize: '18px',
-                opacity: 0.9,
-                textShadow: '0 1px 2px rgba(0,0,0,0.3)'
-              }}>
+              <p
+                {...makeEditable(blockData.subtitle, 'subtitle')}
+                style={{
+                  ...makeEditable(blockData.subtitle, 'subtitle').style,
+                  fontSize: '18px',
+                  opacity: 0.9,
+                  textShadow: '0 1px 2px rgba(0,0,0,0.3)'
+                }}
+              >
                 {blockData.subtitle}
               </p>
             )}
@@ -290,19 +450,47 @@ function BlockPreview({ block, isPreview = false }) {
         </div>
       )
 
+    case 'heading':
+      if (isPreview) {
+        const HeadingTag = blockData.level || 'h2'
+        return (
+          <HeadingTag
+            {...makeEditable(blockData.text, 'text')}
+            style={{
+              ...makeEditable(blockData.text, 'text').style,
+              textAlign: blockData.alignment || 'left',
+              margin: '16px 0',
+              color: '#000000'
+            }}
+          >
+            {blockData.text || 'Heading'}
+          </HeadingTag>
+        )
+      }
+      return (
+        <div style={{ fontSize: '14px', color: '#a0a0a0' }}>
+          {blockData.level?.toUpperCase() || 'H2'}: {blockData.text || 'Heading'}
+        </div>
+      )
+
     case 'text':
     case 'html':
       if (isPreview && blockData.content) {
         return (
-          <div style={{
-            fontSize: '14px',
-            color: '#e0e0e0',
-            lineHeight: '1.6',
-            padding: '16px',
-            backgroundColor: '#1e1e1e',
-            borderRadius: '4px'
-          }}>
-            <div dangerouslySetInnerHTML={{ __html: blockData.content }} />
+          <div
+            {...makeEditable(blockData.content, 'content')}
+            style={{
+              ...makeEditable(blockData.content, 'content').style,
+              fontSize: '14px',
+              color: '#000000',
+              lineHeight: '1.6',
+              padding: '16px',
+              backgroundColor: 'transparent',
+              borderRadius: '4px'
+            }}
+            dangerouslySetInnerHTML={!isEditMode ? { __html: blockData.content } : undefined}
+          >
+            {isEditMode && <div dangerouslySetInnerHTML={{ __html: blockData.content }} />}
           </div>
         )
       }
