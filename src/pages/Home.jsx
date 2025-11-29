@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { IconCalendar, IconMapPin, IconClock, IconChevronDown } from '@tabler/icons-react'
+import { IconCalendar, IconMapPin, IconClock, IconChevronDown, IconHeart, IconUsers, IconBook, IconStar, IconBrandYoutube, IconMail } from '@tabler/icons-react'
 import './Home.css'
 
 export default function Home() {
@@ -230,6 +230,234 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Core Values Section */}
+      <section className="py-5 bg-white">
+        <div className="container py-5">
+          <div className="text-center mb-5">
+            <h2 className="display-5 fw-bold mb-3">Our Core Values</h2>
+            <p className="lead text-muted">What defines our community</p>
+          </div>
+          <div className="row g-4">
+            <div className="col-md-6 col-lg-3">
+              <div className="value-card text-center p-4">
+                <div className="value-icon mb-3">
+                  <IconHeart size={48} stroke={1.5} />
+                </div>
+                <h4 className="h5 mb-3">Love & Compassion</h4>
+                <p className="text-muted mb-0">
+                  We show Christ's love through genuine care and service to our community and beyond.
+                </p>
+              </div>
+            </div>
+            <div className="col-md-6 col-lg-3">
+              <div className="value-card text-center p-4">
+                <div className="value-icon mb-3">
+                  <IconUsers size={48} stroke={1.5} />
+                </div>
+                <h4 className="h5 mb-3">Community</h4>
+                <p className="text-muted mb-0">
+                  Together we grow stronger in faith, supporting one another through life's journey.
+                </p>
+              </div>
+            </div>
+            <div className="col-md-6 col-lg-3">
+              <div className="value-card text-center p-4">
+                <div className="value-icon mb-3">
+                  <IconBook size={48} stroke={1.5} />
+                </div>
+                <h4 className="h5 mb-3">Biblical Truth</h4>
+                <p className="text-muted mb-0">
+                  Scripture guides our teaching, worship, and daily living as faithful disciples.
+                </p>
+              </div>
+            </div>
+            <div className="col-md-6 col-lg-3">
+              <div className="value-card text-center p-4">
+                <div className="value-icon mb-3">
+                  <IconStar size={48} stroke={1.5} />
+                </div>
+                <h4 className="h5 mb-3">Excellence</h4>
+                <p className="text-muted mb-0">
+                  We strive for excellence in all we do, honoring God with our best efforts.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Upcoming Events Preview */}
+      <section className="py-5" style={{background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'}}>
+        <div className="container py-5">
+          <div className="text-center mb-5">
+            <h2 className="display-5 fw-bold mb-3">Upcoming Events</h2>
+            <p className="lead text-muted">Join us for these special gatherings</p>
+          </div>
+          <div className="row g-4">
+            <div className="col-lg-4">
+              <div className="event-preview-card h-100">
+                <div className="event-date-badge">
+                  <div className="event-month">DEC</div>
+                  <div className="event-day">07</div>
+                </div>
+                <div className="event-content">
+                  <h4 className="h5 mb-2">Community Sabbath</h4>
+                  <p className="text-muted mb-3">Special fellowship meal following worship service</p>
+                  <div className="d-flex align-items-center text-muted small">
+                    <IconClock size={16} className="me-1" />
+                    <span>11:00 AM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4">
+              <div className="event-preview-card h-100">
+                <div className="event-date-badge">
+                  <div className="event-month">DEC</div>
+                  <div className="event-day">14</div>
+                </div>
+                <div className="event-content">
+                  <h4 className="h5 mb-2">Youth Ministry Night</h4>
+                  <p className="text-muted mb-3">Games, worship, and fellowship for teens</p>
+                  <div className="d-flex align-items-center text-muted small">
+                    <IconClock size={16} className="me-1" />
+                    <span>6:00 PM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4">
+              <div className="event-preview-card h-100">
+                <div className="event-date-badge">
+                  <div className="event-month">DEC</div>
+                  <div className="event-day">21</div>
+                </div>
+                <div className="event-content">
+                  <h4 className="h5 mb-2">Christmas Concert</h4>
+                  <p className="text-muted mb-3">Celebrate the season with music and praise</p>
+                  <div className="d-flex align-items-center text-muted small">
+                    <IconClock size={16} className="me-1" />
+                    <span>5:00 PM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="text-center mt-5">
+            <Link to="/events" className="btn btn-dark btn-lg px-5">
+              <IconCalendar size={20} className="me-2" />
+              View All Events
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-5 bg-white">
+        <div className="container py-5">
+          <div className="text-center mb-5">
+            <h2 className="display-5 fw-bold mb-3">Stories of Faith</h2>
+            <p className="lead text-muted">Hear from our church family</p>
+          </div>
+          <div className="row g-4">
+            <div className="col-lg-4">
+              <div className="testimonial-card h-100">
+                <div className="testimonial-stars mb-3">
+                  <IconStar size={20} fill="currentColor" />
+                  <IconStar size={20} fill="currentColor" />
+                  <IconStar size={20} fill="currentColor" />
+                  <IconStar size={20} fill="currentColor" />
+                  <IconStar size={20} fill="currentColor" />
+                </div>
+                <p className="testimonial-text mb-4">
+                  "This church has been a beacon of hope for our family. The warmth and genuine love we've experienced here is truly special."
+                </p>
+                <div className="testimonial-author">
+                  <div className="author-avatar">MJ</div>
+                  <div>
+                    <div className="fw-bold">Marie Joseph</div>
+                    <div className="text-muted small">Member since 2020</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4">
+              <div className="testimonial-card h-100">
+                <div className="testimonial-stars mb-3">
+                  <IconStar size={20} fill="currentColor" />
+                  <IconStar size={20} fill="currentColor" />
+                  <IconStar size={20} fill="currentColor" />
+                  <IconStar size={20} fill="currentColor" />
+                  <IconStar size={20} fill="currentColor" />
+                </div>
+                <p className="testimonial-text mb-4">
+                  "The youth programs have helped my children grow in their faith. I'm grateful for such a caring community."
+                </p>
+                <div className="testimonial-author">
+                  <div className="author-avatar">PL</div>
+                  <div>
+                    <div className="fw-bold">Pierre Laurent</div>
+                    <div className="text-muted small">Member since 2018</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4">
+              <div className="testimonial-card h-100">
+                <div className="testimonial-stars mb-3">
+                  <IconStar size={20} fill="currentColor" />
+                  <IconStar size={20} fill="currentColor" />
+                  <IconStar size={20} fill="currentColor" />
+                  <IconStar size={20} fill="currentColor" />
+                  <IconStar size={20} fill="currentColor" />
+                </div>
+                <p className="testimonial-text mb-4">
+                  "As a newcomer to Houston, finding Bethany was a blessing. It truly feels like home away from home."
+                </p>
+                <div className="testimonial-author">
+                  <div className="author-avatar">SC</div>
+                  <div>
+                    <div className="fw-bold">Sophie Charles</div>
+                    <div className="text-muted small">Member since 2022</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Signup */}
+      <section className="py-5" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
+        <div className="container py-5">
+          <div className="row justify-content-center">
+            <div className="col-lg-8 text-center text-white">
+              <IconMail size={64} className="mb-4" />
+              <h2 className="display-5 fw-bold mb-3">Stay Connected</h2>
+              <p className="lead mb-5">
+                Get weekly updates, prayer requests, and inspiring messages delivered to your inbox
+              </p>
+              <form className="newsletter-form">
+                <div className="input-group input-group-lg">
+                  <input
+                    type="email"
+                    className="form-control"
+                    placeholder="Enter your email address"
+                    required
+                  />
+                  <button className="btn btn-dark px-5" type="submit">
+                    Subscribe
+                  </button>
+                </div>
+                <p className="small mt-3 mb-0 opacity-75">
+                  We respect your privacy. Unsubscribe at any time.
+                </p>
+              </form>
             </div>
           </div>
         </div>
