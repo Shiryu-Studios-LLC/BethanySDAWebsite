@@ -21,7 +21,7 @@ export default function PropertiesPanel({ block, blockIndex, onUpdate, isVisible
     dimensions: false,
     typography: false
   })
-  const [position, setPosition] = useState({ x: 100, y: 100 })
+  const [position, setPosition] = useState({ x: window.innerWidth - 400, y: 100 })
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const [backgroundType, setBackgroundType] = useState('color') // 'color' or 'gradient'
