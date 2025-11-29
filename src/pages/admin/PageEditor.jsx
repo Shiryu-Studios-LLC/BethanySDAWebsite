@@ -221,6 +221,7 @@ export default function PageEditor() {
                 pageTitle={pageData.title}
                 pageSubtitle={pageData.meta_description}
                 showPageHeader={pageData.show_page_header}
+                onSave={handleSubmit}
               />
             </div>
           </div>

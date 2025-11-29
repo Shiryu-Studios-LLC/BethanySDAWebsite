@@ -1,15 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { IconEye, IconCode, IconChevronDown, IconChevronRight, IconFileText, IconBoxMultiple, IconPhoto, IconQuote } from '@tabler/icons-react'
 import HierarchyPanel from './UnityEditor/HierarchyPanel'
 import ScenePanel from './UnityEditor/ScenePanel'
 import InspectorPanel from './UnityEditor/InspectorPanel'
 import UnityToolbar from './UnityEditor/UnityToolbar'
 
-export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubtitle = '', showPageHeader = true }) {
+export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubtitle = '', showPageHeader = true, onSave }) {
   const [selectedBlock, setSelectedBlock] = useState(null)
   const [viewMode, setViewMode] = useState('visual') // 'visual' or 'preview'
   const [hierarchyWidth, setHierarchyWidth] = useState(280)
   const [inspectorWidth, setInspectorWidth] = useState(320)
+  const [zoom, setZoom] = useState(100)
+
+  // Undo/Redo state
+  const [history, setHistory] = useState([blocks])
+  const [historyIndex, setHistoryIndex] = useState(0)
 
   // Handle block selection from hierarchy
   const handleSelectBlock = (blockId) => {
@@ -34,7 +39,7 @@ export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubt
 
   // Update selected block
   const handleUpdateBlock = (updatedBlock) => {
-    onChange(blocks.map(b => {
+    const newBlocks = blocks.map(b => {
       if (b.id === updatedBlock.id) return updatedBlock
 
       // Handle nested blocks in columns
@@ -54,7 +59,8 @@ export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubt
       }
 
       return b
-    }))
+    })
+    handleBlocksChange(newBlocks)
     setSelectedBlock(updatedBlock)
   }
 
@@ -75,7 +81,7 @@ export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubt
       }
       return block
     })
-    onChange(newBlocks)
+    handleBlocksChange(newBlocks)
     setSelectedBlock(null)
   }
 
@@ -91,10 +97,95 @@ export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubt
     if (index !== -1) {
       const newBlocks = [...blocks]
       newBlocks.splice(index + 1, 0, newBlock)
-      onChange(newBlocks)
+      handleBlocksChange(newBlocks)
       setSelectedBlock(newBlock)
     }
   }
+
+  // Handle blocks change with history
+  const handleBlocksChange = (newBlocks) => {
+    // Add to history
+    const newHistory = history.slice(0, historyIndex + 1)
+    newHistory.push(newBlocks)
+    setHistory(newHistory)
+    setHistoryIndex(newHistory.length - 1)
+    onChange(newBlocks)
+  }
+
+  // Undo/Redo handlers
+  const handleUndo = () => {
+    if (historyIndex > 0) {
+      const newIndex = historyIndex - 1
+      setHistoryIndex(newIndex)
+      onChange(history[newIndex])
+    }
+  }
+
+  const handleRedo = () => {
+    if (historyIndex < history.length - 1) {
+      const newIndex = historyIndex + 1
+      setHistoryIndex(newIndex)
+      onChange(history[newIndex])
+    }
+  }
+
+  // Quick actions
+  const handleQuickCopy = () => {
+    if (selectedBlock) {
+      handleDuplicateBlock(selectedBlock)
+    }
+  }
+
+  const handleQuickDelete = () => {
+    if (selectedBlock) {
+      handleDeleteBlock(selectedBlock.id)
+    }
+  }
+
+  // Keyboard shortcuts
+  const handleKeyDown = (e) => {
+    // Ctrl/Cmd + Z: Undo
+    if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+      e.preventDefault()
+      handleUndo()
+    }
+    // Ctrl/Cmd + Y or Ctrl/Cmd + Shift + Z: Redo
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+      e.preventDefault()
+      handleRedo()
+    }
+    // Ctrl/Cmd + D: Duplicate
+    if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+      e.preventDefault()
+      handleQuickCopy()
+    }
+    // Delete or Backspace: Delete selected
+    if ((e.key === 'Delete' || e.key === 'Backspace') && selectedBlock) {
+      e.preventDefault()
+      handleQuickDelete()
+    }
+    // Ctrl/Cmd + S: Save
+    if ((e.ctrlKey || e.metaKey) && e.key === 's' && onSave) {
+      e.preventDefault()
+      onSave()
+    }
+    // Ctrl/Cmd + E: Edit mode
+    if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+      e.preventDefault()
+      setViewMode('visual')
+    }
+    // Ctrl/Cmd + P: Preview mode
+    if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+      e.preventDefault()
+      setViewMode('preview')
+    }
+  }
+
+  // Attach keyboard listener
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedBlock, historyIndex, history, viewMode])
 
   return (
     <div className="unity-editor" style={{ height: '80vh', display: 'flex', flexDirection: 'column', backgroundColor: '#2b2b2b' }}>
@@ -103,6 +194,16 @@ export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubt
         viewMode={viewMode}
         setViewMode={setViewMode}
         blockCount={blocks.length}
+        onUndo={handleUndo}
+        onRedo={handleRedo}
+        onSave={onSave}
+        canUndo={historyIndex > 0}
+        canRedo={historyIndex < history.length - 1}
+        onCopy={handleQuickCopy}
+        onDelete={handleQuickDelete}
+        hasSelection={selectedBlock !== null}
+        zoom={zoom}
+        onZoomChange={setZoom}
       />
 
       {/* Main Editor Area */}
@@ -112,20 +213,21 @@ export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubt
           blocks={blocks}
           selectedBlock={selectedBlock}
           onSelectBlock={handleSelectBlock}
-          onReorderBlocks={onChange}
+          onReorderBlocks={handleBlocksChange}
           width={hierarchyWidth}
         />
 
         {/* Center Panel - Scene/Canvas */}
         <ScenePanel
           blocks={blocks}
-          onChange={onChange}
+          onChange={handleBlocksChange}
           selectedBlock={selectedBlock}
           onSelectBlock={handleSelectBlock}
           viewMode={viewMode}
           pageTitle={pageTitle}
           pageSubtitle={pageSubtitle}
           showPageHeader={showPageHeader}
+          zoom={zoom}
         />
 
         {/* Right Panel - Inspector */}
