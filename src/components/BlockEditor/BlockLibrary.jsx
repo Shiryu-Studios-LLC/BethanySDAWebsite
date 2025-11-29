@@ -388,12 +388,28 @@ export default function BlockLibrary({ onAddBlock, compact = false }) {
   return (
     <div className="block-library" style={{
       maxHeight: compact ? '400px' : 'auto',
-      overflowY: compact ? 'auto' : 'visible'
+      overflowY: compact ? 'auto' : 'visible',
+      backgroundColor: compact ? '#2b2b2b' : 'transparent'
     }}>
       {!compact && (
         <div className="p-3 border-bottom bg-light">
           <h5 className="mb-0">Add Blocks</h5>
           <small className="text-muted">Click to add, drag to reorder</small>
+        </div>
+      )}
+      {compact && (
+        <div style={{
+          padding: '8px',
+          borderBottom: '1px solid #1a1a1a',
+          marginBottom: '8px'
+        }}>
+          <h6 style={{
+            color: '#cbcbcb',
+            fontSize: '11px',
+            fontWeight: '600',
+            margin: 0,
+            textTransform: 'uppercase'
+          }}>Add Elements</h6>
         </div>
       )}
 
@@ -402,10 +418,14 @@ export default function BlockLibrary({ onAddBlock, compact = false }) {
         if (categoryBlocks.length === 0) return null
 
         return (
-          <div key={category} className={compact ? 'mb-2' : 'p-3 border-bottom'}>
+          <div key={category} className={compact ? 'mb-2' : 'p-3 border-bottom'} style={{
+            paddingLeft: compact ? '8px' : undefined,
+            paddingRight: compact ? '8px' : undefined
+          }}>
             <h6 className="text-muted text-uppercase small mb-2" style={{
               fontSize: compact ? '10px' : '12px',
-              fontWeight: '600'
+              fontWeight: '600',
+              color: compact ? '#8a8a8a' : undefined
             }}>{category}</h6>
             <div className="d-flex flex-wrap gap-1" style={{ gap: compact ? '4px' : '8px' }}>
               {categoryBlocks.map(block => {

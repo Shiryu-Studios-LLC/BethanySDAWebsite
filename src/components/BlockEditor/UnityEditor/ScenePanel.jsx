@@ -466,14 +466,15 @@ export default function ScenePanel({ blocks, onChange, selectedBlock, onSelectBl
                   marginTop: '4px',
                   maxHeight: '400px',
                   overflowY: 'auto',
-                  width: '280px',
-                  backgroundColor: '#fff',
+                  width: '300px',
+                  backgroundColor: '#2b2b2b',
+                  border: '1px solid #1a1a1a',
                   borderRadius: '4px',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
                   zIndex: 1000
                 }}
               >
-                <div className="p-2">
+                <div style={{ padding: '8px' }}>
                   <BlockLibrary onAddBlock={addBlock} compact={true} />
                 </div>
               </div>
