@@ -76,11 +76,42 @@ export default function PagesWithHierarchy() {
   const loadPages = async () => {
     try {
       setLoading(true)
+
+      // Try to load from localStorage first
+      const localPages = localStorage.getItem('pages')
+      if (localPages) {
+        const pagesData = JSON.parse(localPages)
+        setPages(pagesData)
+
+        // Auto-expand all pages initially
+        const expanded = {}
+        pagesData.forEach(page => {
+          expanded[page.id] = true
+        })
+        setExpandedPages(expanded)
+
+        // Auto-select page from URL if 'page' param exists
+        const pageSlug = searchParams.get('page')
+        if (pageSlug && pagesData.length > 0) {
+          const pageToSelect = pagesData.find(p => p.slug === pageSlug)
+          if (pageToSelect) {
+            loadPageContent(pageToSelect.slug)
+          }
+        }
+
+        setLoading(false)
+        return
+      }
+
+      // Fallback to API
       const response = await fetch('/api/pages')
       if (response.ok) {
         const data = await response.json()
         const pagesData = data.pages || []
         setPages(pagesData)
+
+        // Save to localStorage
+        localStorage.setItem('pages', JSON.stringify(pagesData))
 
         // Auto-expand all pages initially
         const expanded = {}
@@ -107,6 +138,15 @@ export default function PagesWithHierarchy() {
 
   const loadPageContent = async (slug) => {
     try {
+      // Try localStorage first
+      const localPage = localStorage.getItem(`page_${slug}`)
+      if (localPage) {
+        const data = JSON.parse(localPage)
+        setSelectedPage(data)
+        return
+      }
+
+      // Fallback to API
       const response = await fetch(`/api/pages/${slug}`)
       if (response.ok) {
         const data = await response.json()
@@ -128,7 +168,11 @@ export default function PagesWithHierarchy() {
         // Set show_page_header to false by default if not set
         const show_page_header = data.show_page_header ?? false
 
-        setSelectedPage({ ...data, content, show_page_header })
+        const pageData = { ...data, content, show_page_header }
+        setSelectedPage(pageData)
+
+        // Save to localStorage
+        localStorage.setItem(`page_${slug}`, JSON.stringify(pageData))
       }
     } catch (error) {
       console.error('Error loading page:', error)
@@ -180,32 +224,46 @@ export default function PagesWithHierarchy() {
 
     setSaving(true)
     try {
+      // Save to localStorage immediately
+      localStorage.setItem(`page_${selectedPage.slug}`, JSON.stringify(selectedPage))
+
+      // Try to save to API as well
       const dataToSave = {
         ...selectedPage,
         content: JSON.stringify(selectedPage.content)
       }
 
-      const response = await fetch(`/api/pages/${selectedPage.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dataToSave)
-      })
-
-      if (response.ok) {
-        setAlertDialog({
-          isOpen: true,
-          title: 'Success',
-          message: 'Page saved successfully!',
-          type: 'success'
+      try {
+        const response = await fetch(`/api/pages/${selectedPage.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dataToSave)
         })
-        loadPages() // Refresh the list
-      } else {
-        const error = await response.json()
+
+        if (response.ok) {
+          setAlertDialog({
+            isOpen: true,
+            title: 'Success',
+            message: 'Page saved successfully to server and localStorage!',
+            type: 'success'
+          })
+          loadPages() // Refresh the list
+        } else {
+          const error = await response.json()
+          setAlertDialog({
+            isOpen: true,
+            title: 'Saved to localStorage only',
+            message: 'Page saved locally. Server save failed: ' + (error.error || 'Unknown error'),
+            type: 'warning'
+          })
+        }
+      } catch (apiError) {
+        console.error('API save failed, but localStorage succeeded:', apiError)
         setAlertDialog({
           isOpen: true,
-          title: 'Save Failed',
-          message: error.error || 'Failed to save page',
-          type: 'error'
+          title: 'Saved Locally',
+          message: 'Page saved to localStorage! (Server not available)',
+          type: 'success'
         })
       }
     } catch (error) {
@@ -213,7 +271,7 @@ export default function PagesWithHierarchy() {
       setAlertDialog({
         isOpen: true,
         title: 'Error',
-        message: 'An error occurred while saving the page',
+        message: 'Failed to save page',
         type: 'error'
       })
     } finally {
