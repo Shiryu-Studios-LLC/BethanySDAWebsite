@@ -28,6 +28,7 @@ import {
 } from '@tabler/icons-react'
 
 const BLOCK_ICONS = {
+  navbar: IconMapPin,
   hero: IconLayoutNavbar,
   heading: IconH1,
   text: IconFileText,
@@ -73,6 +74,8 @@ function HierarchyItem({ block, level = 0, isSelected, onSelect, expandedBlocks,
 
   const getBlockLabel = (block) => {
     switch (block.type) {
+      case 'navbar':
+        return block.content.brandName || 'Navigation Bar'
       case 'hero':
         return block.content.title || 'Hero Section'
       case 'heading':

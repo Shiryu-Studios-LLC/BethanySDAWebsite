@@ -14,6 +14,27 @@ function renderBlock(block) {
   const blockData = block.content || block.data || {}
 
   switch (block.type) {
+    case 'navbar':
+      const isSticky = blockData.sticky ? 'position: sticky; top: 0; z-index: 1000;' : ''
+      const isTransparent = blockData.transparent ? 'background-color: transparent; backdrop-filter: blur(10px);' : `background-color: ${escapeHtml(blockData.backgroundColor || '#ffffff')};`
+      return `
+        <nav style="${isSticky} ${isTransparent} color: ${escapeHtml(blockData.textColor || '#333333')}; padding: 1rem 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-weight: bold; font-size: 1.25rem;">
+              ${blockData.brandLogo ? `<img src="${escapeHtml(blockData.brandLogo)}" alt="${escapeHtml(blockData.brandName || '')}" style="height: 40px; margin-right: 10px;">` : ''}
+              ${escapeHtml(blockData.brandName || 'Brand')}
+            </div>
+            <div style="display: flex; gap: 2rem;">
+              ${(blockData.links || []).map(link => `
+                <a href="${escapeHtml(link.url || '#')}" style="color: inherit; text-decoration: none; font-weight: 500;">
+                  ${escapeHtml(link.text || '')}
+                </a>
+              `).join('')}
+            </div>
+          </div>
+        </nav>
+      `
+
     case 'hero':
       const bgType = blockData.backgroundType || 'color'
       const bgColor = blockData.backgroundColor || '#0054a6'

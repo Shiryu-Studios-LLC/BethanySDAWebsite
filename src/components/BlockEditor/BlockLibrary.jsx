@@ -1,6 +1,29 @@
-import { IconLayoutColumns, IconPhoto, IconVideo, IconSquare, IconTypography, IconSeparator, IconClick, IconLayoutNavbar, IconCards, IconQuote, IconFrame, IconInfoCircle, IconPhotoPlus, IconStar, IconChevronDown, IconForms, IconMapPin, IconClock } from '@tabler/icons-react'
+import { IconLayoutColumns, IconPhoto, IconVideo, IconSquare, IconTypography, IconSeparator, IconClick, IconLayoutNavbar, IconCards, IconQuote, IconFrame, IconInfoCircle, IconPhotoPlus, IconStar, IconChevronDown, IconForms, IconMapPin, IconClock, IconMenu2 } from '@tabler/icons-react'
 
 export const BLOCK_TEMPLATES = [
+  {
+    id: 'navbar',
+    name: 'Navigation Bar',
+    icon: IconMenu2,
+    category: 'Containers',
+    template: {
+      type: 'navbar',
+      content: {
+        brandName: 'Church Name',
+        brandLogo: '',
+        links: [
+          { text: 'Home', url: '/' },
+          { text: 'About', url: '/about' },
+          { text: 'Events', url: '/events' },
+          { text: 'Contact', url: '/contact' }
+        ],
+        backgroundColor: '#ffffff',
+        textColor: '#333333',
+        sticky: true,
+        transparent: false
+      }
+    }
+  },
   {
     id: 'hero',
     name: 'Hero Section',
@@ -363,7 +386,10 @@ export default function BlockLibrary({ onAddBlock, compact = false }) {
   const filteredCategories = categories
 
   return (
-    <div className="block-library">
+    <div className="block-library" style={{
+      maxHeight: compact ? '400px' : 'auto',
+      overflowY: compact ? 'auto' : 'visible'
+    }}>
       {!compact && (
         <div className="p-3 border-bottom bg-light">
           <h5 className="mb-0">Add Blocks</h5>
@@ -376,21 +402,42 @@ export default function BlockLibrary({ onAddBlock, compact = false }) {
         if (categoryBlocks.length === 0) return null
 
         return (
-          <div key={category} className={compact ? 'mb-3' : 'p-3 border-bottom'}>
-            <h6 className="text-muted text-uppercase small mb-2">{category}</h6>
-            <div className="d-flex flex-wrap gap-2">
+          <div key={category} className={compact ? 'mb-2' : 'p-3 border-bottom'}>
+            <h6 className="text-muted text-uppercase small mb-2" style={{
+              fontSize: compact ? '10px' : '12px',
+              fontWeight: '600'
+            }}>{category}</h6>
+            <div className="d-flex flex-wrap gap-1" style={{ gap: compact ? '4px' : '8px' }}>
               {categoryBlocks.map(block => {
                 const Icon = block.icon
                 return (
                   <button
                     key={block.id}
-                    className="btn btn-outline-secondary btn-sm"
+                    className="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-start text-start"
                     onClick={() => onAddBlock(block.template)}
                     title={block.name}
-                    style={{ width: compact ? '100%' : 'calc(50% - 4px)' }}
+                    style={{
+                      width: compact ? '100%' : 'calc(50% - 4px)',
+                      fontSize: compact ? '11px' : '12px',
+                      padding: compact ? '4px 8px' : '6px 12px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      border: '1px solid #444',
+                      backgroundColor: '#3a3a3a',
+                      color: '#cbcbcb'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#4a4a4a'
+                      e.currentTarget.style.borderColor = '#666'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = '#3a3a3a'
+                      e.currentTarget.style.borderColor = '#444'
+                    }}
                   >
-                    <Icon size={16} className="me-1" />
-                    <span className="small">{block.name}</span>
+                    <Icon size={compact ? 14 : 16} className="me-1" style={{ flexShrink: 0 }} />
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{block.name}</span>
                   </button>
                 )
               })}
