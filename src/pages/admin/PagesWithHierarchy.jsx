@@ -61,17 +61,37 @@ export default function PagesWithHierarchy() {
     loadPages()
   }, [])
 
-  // Keyboard shortcut for grid guides (Ctrl+')
+  // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
+      // Ctrl+' : Toggle grid guides
       if (e.ctrlKey && e.key === "'") {
         e.preventDefault()
         setShowGridGuides(prev => !prev)
       }
+      // Ctrl+S : Save
+      if ((e.ctrlKey || e.metaKey) && e.key === 's' && selectedPage) {
+        e.preventDefault()
+        handleSave()
+      }
+      // Ctrl+E : Toggle view mode
+      if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+        e.preventDefault()
+        setViewMode(prev => prev === 'edit' ? 'preview' : 'edit')
+      }
+      // Delete : Delete selected block
+      if (e.key === 'Delete' && selectedBlock && viewMode === 'edit') {
+        e.preventDefault()
+        if (confirm('Delete this block?')) {
+          const updatedBlocks = selectedPage.content.filter(b => b !== selectedBlock)
+          handleBlocksChange(updatedBlocks)
+          setSelectedBlock(null)
+        }
+      }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [selectedPage, selectedBlock, viewMode])
 
   const loadPages = async () => {
     try {
@@ -755,7 +775,19 @@ export default function PagesWithHierarchy() {
               </div>
 
               {/* Right: Save Button */}
-              <div style={{ flex: '0 0 auto' }}>
+              <div style={{ flex: '0 0 auto', display: 'flex', gap: '8px', alignItems: 'center' }}>
+                {/* Keyboard Shortcuts Hint */}
+                <div style={{
+                  fontSize: '10px',
+                  color: '#6a6a6a',
+                  display: 'flex',
+                  gap: '8px'
+                }}>
+                  <span title="Toggle view mode">Ctrl+E</span>
+                  <span title="Save">Ctrl+S</span>
+                  <span title="Toggle grid">Ctrl+'</span>
+                </div>
+
                 <button
                   onClick={handleSave}
                   disabled={saving}
