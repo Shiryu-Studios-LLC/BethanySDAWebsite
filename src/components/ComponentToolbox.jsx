@@ -27,7 +27,9 @@ import {
   IconCode,
   IconLayoutList,
   IconPhotoPlus,
-  IconLayoutBottombar
+  IconLayoutBottombar,
+  IconSearch,
+  IconX
 } from '@tabler/icons-react'
 
 // Available component types organized by category
@@ -96,8 +98,9 @@ const componentLibrary = [
 ]
 
 export default function ComponentToolbox({ onAddComponent }) {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true)
   const [expandedCategories, setExpandedCategories] = useState({ 'Layout': true, 'Content': true, 'Interactive': true, 'Dynamic': true, 'Navigation': true })
+  const [searchQuery, setSearchQuery] = useState('')
 
   const handleDragStart = (e, componentType) => {
     e.dataTransfer.setData('componentType', componentType)
@@ -114,10 +117,19 @@ export default function ComponentToolbox({ onAddComponent }) {
     onAddComponent?.(newBlock)
   }
 
+  // Filter components based on search
+  const filteredLibrary = componentLibrary.map(category => ({
+    ...category,
+    components: category.components.filter(comp =>
+      comp.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      comp.type.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  })).filter(category => category.components.length > 0)
+
   return (
     <div
       style={{
-        width: isExpanded ? '200px' : '48px',
+        width: isExpanded ? '240px' : '48px',
         backgroundColor: '#252525',
         borderRight: '1px solid #3a3a3a',
         display: 'flex',
@@ -141,7 +153,7 @@ export default function ComponentToolbox({ onAddComponent }) {
         onClick={() => setIsExpanded(!isExpanded)}
       >
         {isExpanded && (
-          <span style={{ fontSize: '11px', fontWeight: '600', color: '#e0e0e0' }}>
+          <span style={{ fontSize: '12px', fontWeight: '600', color: '#e0e0e0' }}>
             Components
           </span>
         )}
@@ -156,6 +168,43 @@ export default function ComponentToolbox({ onAddComponent }) {
         />
       </div>
 
+      {/* Search Bar */}
+      {isExpanded && (
+        <div style={{ padding: '8px', borderBottom: '1px solid #3a3a3a' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: '#1e1e1e',
+            borderRadius: '4px',
+            padding: '4px 8px',
+            border: '1px solid #3a3a3a'
+          }}>
+            <IconSearch size={14} style={{ color: '#6a6a6a', marginRight: '6px' }} />
+            <input
+              type="text"
+              placeholder="Search components..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                flex: 1,
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                color: '#e0e0e0',
+                fontSize: '11px'
+              }}
+            />
+            {searchQuery && (
+              <IconX
+                size={14}
+                style={{ color: '#6a6a6a', cursor: 'pointer' }}
+                onClick={() => setSearchQuery('')}
+              />
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Component List */}
       <div
         style={{
@@ -164,7 +213,7 @@ export default function ComponentToolbox({ onAddComponent }) {
           padding: '8px'
         }}
       >
-        {componentLibrary.map((category) => {
+        {filteredLibrary.map((category) => {
           const isCategoryExpanded = expandedCategories[category.category]
 
           return (
