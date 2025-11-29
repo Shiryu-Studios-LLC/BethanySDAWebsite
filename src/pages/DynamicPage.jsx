@@ -30,12 +30,22 @@ export default function DynamicPage({ fixedSlug }) {
           if (typeof content === 'string') {
             try {
               const blocks = JSON.parse(content)
+              console.log('Parsed blocks:', blocks)
               // Convert blocks to HTML
-              content = blocksToHtml(blocks)
+              if (Array.isArray(blocks) && blocks.length > 0) {
+                content = blocksToHtml(blocks)
+                console.log('Converted to HTML:', content)
+              } else {
+                console.warn('Blocks is not an array or is empty, using raw content')
+              }
             } catch (e) {
               // If parsing fails, use content as-is (backward compatibility with old HTML content)
-              console.warn('Failed to parse content as JSON, using as HTML')
+              console.warn('Failed to parse content as JSON, using as HTML', e)
             }
+          } else if (Array.isArray(content)) {
+            // Content is already blocks array
+            console.log('Content is already blocks array:', content)
+            content = blocksToHtml(content)
           }
 
           setPage({ ...data, content })

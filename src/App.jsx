@@ -13,8 +13,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/* Core pages */}
-        <Route index element={<Home />} />
+        {/* Core pages using visual builder */}
+        <Route index element={<DynamicPage fixedSlug="home" />} />
         <Route path="visit" element={<DynamicPage fixedSlug="visit" />} />
         <Route path="about" element={<DynamicPage fixedSlug="about" />} />
 
