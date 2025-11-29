@@ -170,19 +170,24 @@ export default function ComponentToolbox({ onAddComponent }) {
 
       {/* Search Bar */}
       {isExpanded && (
-        <div style={{ padding: '8px', borderBottom: '1px solid #3a3a3a' }}>
+        <div style={{
+          padding: '8px',
+          borderBottom: '1px solid #3a3a3a',
+          backgroundColor: '#252525',
+          flexShrink: 0
+        }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
             backgroundColor: '#1e1e1e',
             borderRadius: '4px',
-            padding: '4px 8px',
+            padding: '6px 8px',
             border: '1px solid #3a3a3a'
           }}>
-            <IconSearch size={14} style={{ color: '#6a6a6a', marginRight: '6px' }} />
+            <IconSearch size={14} style={{ color: '#6a6a6a', marginRight: '6px', flexShrink: 0 }} />
             <input
               type="text"
-              placeholder="Search components..."
+              placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
@@ -191,14 +196,18 @@ export default function ComponentToolbox({ onAddComponent }) {
                 border: 'none',
                 outline: 'none',
                 color: '#e0e0e0',
-                fontSize: '11px'
+                fontSize: '11px',
+                minWidth: 0
               }}
             />
             {searchQuery && (
               <IconX
                 size={14}
-                style={{ color: '#6a6a6a', cursor: 'pointer' }}
-                onClick={() => setSearchQuery('')}
+                style={{ color: '#6a6a6a', cursor: 'pointer', flexShrink: 0, marginLeft: '4px' }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setSearchQuery('')
+                }}
               />
             )}
           </div>
