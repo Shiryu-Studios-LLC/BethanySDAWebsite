@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { IconEye, IconCode, IconChevronDown, IconChevronRight, IconFileText, IconBoxMultiple, IconPhoto, IconQuote } from '@tabler/icons-react'
 import HierarchyPanel from './UnityEditor/HierarchyPanel'
 import ScenePanel from './UnityEditor/ScenePanel'
 import InspectorPanel from './UnityEditor/InspectorPanel'
 import UnityToolbar from './UnityEditor/UnityToolbar'
+import FloatingToolbar from './UnityEditor/FloatingToolbar'
 
 export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubtitle = '', showPageHeader = true, onSave }) {
   const [selectedBlock, setSelectedBlock] = useState(null)
@@ -11,6 +12,8 @@ export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubt
   const [hierarchyWidth, setHierarchyWidth] = useState(280)
   const [inspectorWidth, setInspectorWidth] = useState(320)
   const [zoom, setZoom] = useState(100)
+  const [floatingToolbarPos, setFloatingToolbarPos] = useState(null)
+  const sceneRef = useRef(null)
 
   // Undo/Redo state
   const [history, setHistory] = useState([blocks])
@@ -142,6 +145,32 @@ export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubt
     }
   }
 
+  // Move block up/down
+  const handleMoveBlockUp = () => {
+    if (!selectedBlock) return
+    const index = blocks.findIndex(b => b.id === selectedBlock.id)
+    if (index > 0) {
+      const newBlocks = [...blocks]
+      ;[newBlocks[index - 1], newBlocks[index]] = [newBlocks[index], newBlocks[index - 1]]
+      handleBlocksChange(newBlocks)
+    }
+  }
+
+  const handleMoveBlockDown = () => {
+    if (!selectedBlock) return
+    const index = blocks.findIndex(b => b.id === selectedBlock.id)
+    if (index < blocks.length - 1) {
+      const newBlocks = [...blocks]
+      ;[newBlocks[index], newBlocks[index + 1]] = [newBlocks[index + 1], newBlocks[index]]
+      handleBlocksChange(newBlocks)
+    }
+  }
+
+  const getSelectedBlockIndex = () => {
+    if (!selectedBlock) return -1
+    return blocks.findIndex(b => b.id === selectedBlock.id)
+  }
+
   // Keyboard shortcuts
   const handleKeyDown = (e) => {
     // Ctrl/Cmd + Z: Undo
@@ -188,7 +217,7 @@ export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubt
   }, [selectedBlock, historyIndex, history, viewMode])
 
   return (
-    <div className="unity-editor" style={{ height: '80vh', display: 'flex', flexDirection: 'column', backgroundColor: '#2b2b2b' }}>
+    <div className="unity-editor" style={{ height: '80vh', display: 'flex', flexDirection: 'column', backgroundColor: '#2b2b2b', position: 'relative' }}>
       {/* Top Toolbar */}
       <UnityToolbar
         viewMode={viewMode}
@@ -206,14 +235,27 @@ export default function UnityEditor({ blocks, onChange, pageTitle = '', pageSubt
         onZoomChange={setZoom}
       />
 
+      {/* Floating Toolbar for Selected Block */}
+      <FloatingToolbar
+        selectedBlock={selectedBlock}
+        onDuplicate={handleQuickCopy}
+        onDelete={handleQuickDelete}
+        onMoveUp={handleMoveBlockUp}
+        onMoveDown={handleMoveBlockDown}
+        canMoveUp={getSelectedBlockIndex() > 0}
+        canMoveDown={getSelectedBlockIndex() >= 0 && getSelectedBlockIndex() < blocks.length - 1}
+        position={floatingToolbarPos}
+      />
+
       {/* Main Editor Area */}
-      <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+      <div ref={sceneRef} style={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative' }}>
         {/* Left Panel - Hierarchy */}
         <HierarchyPanel
           blocks={blocks}
           selectedBlock={selectedBlock}
           onSelectBlock={handleSelectBlock}
           onReorderBlocks={handleBlocksChange}
+          onAddBlock={(newBlock) => handleBlocksChange([...blocks, newBlock])}
           width={hierarchyWidth}
         />
 
