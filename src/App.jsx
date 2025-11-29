@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
+import Home from './pages/Home'
 import Events from './pages/Events'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
@@ -12,8 +13,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/* Core pages using visual builder */}
-        <Route index element={<DynamicPage fixedSlug="home" />} />
+        {/* Core pages */}
+        <Route index element={<Home />} />
         <Route path="visit" element={<DynamicPage fixedSlug="visit" />} />
         <Route path="about" element={<DynamicPage fixedSlug="about" />} />
 
