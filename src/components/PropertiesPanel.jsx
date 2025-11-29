@@ -8,7 +8,8 @@ import {
   IconDimensions,
   IconTypography,
   IconSettings,
-  IconGripVertical
+  IconGripVertical,
+  IconX
 } from '@tabler/icons-react'
 import ColorPicker from './ColorPicker'
 import GradientPicker from './GradientPicker'
@@ -16,7 +17,7 @@ import GradientPicker from './GradientPicker'
 export default function PropertiesPanel({ block, blockIndex, onUpdate, isVisible }) {
   const [expandedSections, setExpandedSections] = useState({
     spacing: true,
-    border: true,
+    border: false,
     background: true,
     dimensions: false,
     typography: false
@@ -24,7 +25,6 @@ export default function PropertiesPanel({ block, blockIndex, onUpdate, isVisible
   const [position, setPosition] = useState({ x: window.innerWidth - 400, y: 100 })
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
-  const [backgroundType, setBackgroundType] = useState('color') // 'color' or 'gradient'
   const panelRef = useRef(null)
 
   // Handle dragging
@@ -116,13 +116,13 @@ export default function PropertiesPanel({ block, blockIndex, onUpdate, isVisible
         position: 'fixed',
         left: `${position.x}px`,
         top: `${position.y}px`,
-        width: '320px',
+        width: '340px',
         maxHeight: '80vh',
-        backgroundColor: '#252525',
-        borderRadius: '4px',
+        backgroundColor: '#161b22',
+        borderRadius: '12px',
         overflow: 'hidden',
-        border: '1px solid #3a3a3a',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
+        border: '1px solid #30363d',
+        boxShadow: '0 16px 70px rgba(1, 4, 9, 0.8)',
         zIndex: 1000,
         cursor: isDragging ? 'grabbing' : 'default'
       }}
@@ -131,26 +131,28 @@ export default function PropertiesPanel({ block, blockIndex, onUpdate, isVisible
       <div
         onMouseDown={handleMouseDown}
         style={{
-          padding: '12px',
-          borderBottom: '1px solid #3a3a3a',
-          backgroundColor: '#2d2d2d',
+          padding: '14px 16px',
+          borderBottom: '1px solid #30363d',
+          backgroundColor: '#1c2128',
           cursor: 'grab',
-          userSelect: 'none'
+          userSelect: 'none',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
         }}
       >
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '8px'
+          gap: '10px'
         }}>
-          <IconGripVertical size={16} style={{ color: '#7a7a7a' }} />
-          <IconSettings size={16} style={{ color: '#4a7ba7' }} />
+          <IconGripVertical size={16} style={{ color: '#7d8590', opacity: 0.6 }} />
+          <IconSettings size={18} style={{ color: '#58a6ff' }} />
           <h3 style={{
             margin: 0,
-            fontSize: '13px',
+            fontSize: '14px',
             fontWeight: '600',
-            color: '#e0e0e0',
-            flex: 1
+            color: '#e6edf3'
           }}>
             {block.type?.toUpperCase()} Properties
           </h3>
@@ -159,8 +161,9 @@ export default function PropertiesPanel({ block, blockIndex, onUpdate, isVisible
 
       {/* Scrollable Content */}
       <div style={{
-        maxHeight: 'calc(80vh - 50px)',
-        overflowY: 'auto'
+        maxHeight: 'calc(80vh - 56px)',
+        overflowY: 'auto',
+        backgroundColor: '#161b22'
       }}>
         {/* Spacing Section */}
         <CollapsibleSection
@@ -222,36 +225,36 @@ export default function PropertiesPanel({ block, blockIndex, onUpdate, isVisible
 function CollapsibleSection({ title, icon: Icon, isExpanded, onToggle, children }) {
   return (
     <div style={{
-      borderBottom: '1px solid #3a3a3a'
+      borderBottom: '1px solid #21262d'
     }}>
       <button
         onClick={onToggle}
         style={{
           width: '100%',
-          padding: '12px 16px',
+          padding: '14px 16px',
           backgroundColor: 'transparent',
           border: 'none',
           display: 'flex',
           alignItems: 'center',
-          gap: '8px',
+          gap: '10px',
           cursor: 'pointer',
           transition: 'background-color 0.15s'
         }}
-        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2d2d2d'}
+        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1c2128'}
         onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
       >
         {isExpanded ? (
-          <IconChevronDown size={16} style={{ color: '#999' }} />
+          <IconChevronDown size={16} style={{ color: '#7d8590' }} />
         ) : (
-          <IconChevronRight size={16} style={{ color: '#999' }} />
+          <IconChevronRight size={16} style={{ color: '#7d8590' }} />
         )}
-        <Icon size={16} style={{ color: '#999' }} />
-        <span style={{ color: '#e0e0e0', fontSize: '13px', fontWeight: '500' }}>
+        <Icon size={16} style={{ color: '#58a6ff' }} />
+        <span style={{ color: '#e6edf3', fontSize: '13px', fontWeight: '500', flex: 1, textAlign: 'left' }}>
           {title}
         </span>
       </button>
       {isExpanded && (
-        <div style={{ padding: '16px' }}>
+        <div style={{ padding: '16px', paddingTop: '8px' }}>
           {children}
         </div>
       )}
@@ -262,14 +265,15 @@ function CollapsibleSection({ title, icon: Icon, isExpanded, onToggle, children 
 // Spacing Controls
 function SpacingControls({ spacing, onUpdate }) {
   const SpacingInput = ({ label, property }) => (
-    <div style={{ marginBottom: '12px' }}>
+    <div style={{ marginBottom: '14px' }}>
       <label style={{
         display: 'block',
         fontSize: '11px',
-        color: '#a0a0a0',
+        color: '#7d8590',
         marginBottom: '6px',
         textTransform: 'uppercase',
-        letterSpacing: '0.5px'
+        letterSpacing: '0.5px',
+        fontWeight: '500'
       }}>
         {label}
       </label>
@@ -280,13 +284,17 @@ function SpacingControls({ spacing, onUpdate }) {
         placeholder="0px"
         style={{
           width: '100%',
-          padding: '6px 8px',
-          backgroundColor: '#1e1e1e',
-          border: '1px solid #3a3a3a',
-          borderRadius: '3px',
-          color: '#e0e0e0',
-          fontSize: '12px'
+          padding: '8px 10px',
+          backgroundColor: '#0d1117',
+          border: '1px solid #30363d',
+          borderRadius: '6px',
+          color: '#e6edf3',
+          fontSize: '13px',
+          outline: 'none',
+          transition: 'border-color 0.15s'
         }}
+        onFocus={(e) => e.target.style.borderColor = '#58a6ff'}
+        onBlur={(e) => e.target.style.borderColor = '#30363d'}
       />
     </div>
   )
@@ -296,13 +304,13 @@ function SpacingControls({ spacing, onUpdate }) {
       <div style={{
         marginBottom: '16px',
         paddingBottom: '16px',
-        borderBottom: '1px solid #3a3a3a'
+        borderBottom: '1px solid #21262d'
       }}>
         <h4 style={{
           margin: '0 0 12px 0',
           fontSize: '12px',
-          color: '#7a7a7a',
-          fontWeight: '500'
+          color: '#7d8590',
+          fontWeight: '600'
         }}>
           Margin
         </h4>
@@ -315,8 +323,8 @@ function SpacingControls({ spacing, onUpdate }) {
         <h4 style={{
           margin: '0 0 12px 0',
           fontSize: '12px',
-          color: '#7a7a7a',
-          fontWeight: '500'
+          color: '#7d8590',
+          fontWeight: '600'
         }}>
           Padding
         </h4>
@@ -338,10 +346,11 @@ function BorderControls({ border, onUpdate }) {
         <label style={{
           display: 'block',
           fontSize: '11px',
-          color: '#a0a0a0',
+          color: '#7d8590',
           marginBottom: '6px',
           textTransform: 'uppercase',
-          letterSpacing: '0.5px'
+          letterSpacing: '0.5px',
+          fontWeight: '500'
         }}>
           Style
         </label>
@@ -350,12 +359,14 @@ function BorderControls({ border, onUpdate }) {
           onChange={(e) => onUpdate('style', e.target.value)}
           style={{
             width: '100%',
-            padding: '6px 8px',
-            backgroundColor: '#1e1e1e',
-            border: '1px solid #3a3a3a',
-            borderRadius: '3px',
-            color: '#e0e0e0',
-            fontSize: '12px'
+            padding: '8px 10px',
+            backgroundColor: '#0d1117',
+            border: '1px solid #30363d',
+            borderRadius: '6px',
+            color: '#e6edf3',
+            fontSize: '13px',
+            outline: 'none',
+            cursor: 'pointer'
           }}
         >
           <option value="none">None</option>
@@ -374,13 +385,14 @@ function BorderControls({ border, onUpdate }) {
               display: 'flex',
               justifyContent: 'space-between',
               fontSize: '11px',
-              color: '#a0a0a0',
-              marginBottom: '6px',
+              color: '#7d8590',
+              marginBottom: '8px',
               textTransform: 'uppercase',
-              letterSpacing: '0.5px'
+              letterSpacing: '0.5px',
+              fontWeight: '500'
             }}>
               <span>Width</span>
-              <span>{border.width || 1}px</span>
+              <span style={{ color: '#e6edf3', fontWeight: '600' }}>{border.width || 1}px</span>
             </label>
             <input
               type="range"
@@ -390,7 +402,7 @@ function BorderControls({ border, onUpdate }) {
               onChange={(e) => onUpdate('width', parseInt(e.target.value))}
               style={{
                 width: '100%',
-                accentColor: '#4a7ba7'
+                accentColor: '#58a6ff'
               }}
             />
           </div>
@@ -400,10 +412,11 @@ function BorderControls({ border, onUpdate }) {
             <label style={{
               display: 'block',
               fontSize: '11px',
-              color: '#a0a0a0',
+              color: '#7d8590',
               marginBottom: '6px',
               textTransform: 'uppercase',
-              letterSpacing: '0.5px'
+              letterSpacing: '0.5px',
+              fontWeight: '500'
             }}>
               Color
             </label>
@@ -419,13 +432,14 @@ function BorderControls({ border, onUpdate }) {
               display: 'flex',
               justifyContent: 'space-between',
               fontSize: '11px',
-              color: '#a0a0a0',
-              marginBottom: '6px',
+              color: '#7d8590',
+              marginBottom: '8px',
               textTransform: 'uppercase',
-              letterSpacing: '0.5px'
+              letterSpacing: '0.5px',
+              fontWeight: '500'
             }}>
               <span>Radius</span>
-              <span>{border.radius || 0}px</span>
+              <span style={{ color: '#e6edf3', fontWeight: '600' }}>{border.radius || 0}px</span>
             </label>
             <input
               type="range"
@@ -435,7 +449,7 @@ function BorderControls({ border, onUpdate }) {
               onChange={(e) => onUpdate('radius', parseInt(e.target.value))}
               style={{
                 width: '100%',
-                accentColor: '#4a7ba7'
+                accentColor: '#58a6ff'
               }}
             />
           </div>
@@ -469,45 +483,49 @@ function BackgroundControls({ blockData, onUpdate }) {
   return (
     <div>
       {/* Background Type Toggle */}
-      <div style={{ marginBottom: '12px' }}>
+      <div style={{ marginBottom: '14px' }}>
         <label style={{
           display: 'block',
-          fontSize: '10px',
-          color: '#8a8a8a',
-          marginBottom: '6px',
-          fontWeight: '500',
+          fontSize: '11px',
+          color: '#7d8590',
+          marginBottom: '8px',
           textTransform: 'uppercase',
-          letterSpacing: '0.3px'
+          letterSpacing: '0.5px',
+          fontWeight: '500'
         }}>
-          Background Type
+          Type
         </label>
         <div style={{ display: 'flex', gap: '8px' }}>
           <button
             onClick={() => setBackgroundType('color')}
             style={{
               flex: 1,
-              padding: '6px',
-              backgroundColor: backgroundType === 'color' ? '#4a7ba7' : '#1e1e1e',
-              border: '1px solid #3a3a3a',
-              borderRadius: '3px',
-              color: backgroundType === 'color' ? '#ffffff' : '#e0e0e0',
-              fontSize: '11px',
-              cursor: 'pointer'
+              padding: '8px',
+              backgroundColor: backgroundType === 'color' ? '#58a6ff' : '#0d1117',
+              border: '1px solid #30363d',
+              borderRadius: '6px',
+              color: backgroundType === 'color' ? '#ffffff' : '#e6edf3',
+              fontSize: '12px',
+              fontWeight: '500',
+              cursor: 'pointer',
+              transition: 'all 0.15s'
             }}
           >
-            Solid Color
+            Solid
           </button>
           <button
             onClick={() => setBackgroundType('gradient')}
             style={{
               flex: 1,
-              padding: '6px',
-              backgroundColor: backgroundType === 'gradient' ? '#4a7ba7' : '#1e1e1e',
-              border: '1px solid #3a3a3a',
-              borderRadius: '3px',
-              color: backgroundType === 'gradient' ? '#ffffff' : '#e0e0e0',
-              fontSize: '11px',
-              cursor: 'pointer'
+              padding: '8px',
+              backgroundColor: backgroundType === 'gradient' ? '#58a6ff' : '#0d1117',
+              border: '1px solid #30363d',
+              borderRadius: '6px',
+              color: backgroundType === 'gradient' ? '#ffffff' : '#e6edf3',
+              fontSize: '12px',
+              fontWeight: '500',
+              cursor: 'pointer',
+              transition: 'all 0.15s'
             }}
           >
             Gradient
@@ -520,12 +538,12 @@ function BackgroundControls({ blockData, onUpdate }) {
         <div style={{ marginBottom: '16px' }}>
           <label style={{
             display: 'block',
-            fontSize: '10px',
-            color: '#8a8a8a',
+            fontSize: '11px',
+            color: '#7d8590',
             marginBottom: '6px',
-            fontWeight: '500',
             textTransform: 'uppercase',
-            letterSpacing: '0.3px'
+            letterSpacing: '0.5px',
+            fontWeight: '500'
           }}>
             Color
           </label>
@@ -548,14 +566,14 @@ function BackgroundControls({ blockData, onUpdate }) {
         <div>
           <label style={{
             display: 'block',
-            fontSize: '10px',
-            color: '#8a8a8a',
+            fontSize: '11px',
+            color: '#7d8590',
             marginBottom: '6px',
-            fontWeight: '500',
             textTransform: 'uppercase',
-            letterSpacing: '0.3px'
+            letterSpacing: '0.5px',
+            fontWeight: '500'
           }}>
-            Background Image URL
+            Image URL
           </label>
           <input
             type="text"
@@ -564,13 +582,18 @@ function BackgroundControls({ blockData, onUpdate }) {
             placeholder="https://..."
             style={{
               width: '100%',
-              padding: '6px 8px',
-              backgroundColor: '#1e1e1e',
-              border: '1px solid #3a3a3a',
-              borderRadius: '3px',
-              color: '#e0e0e0',
-              fontSize: '12px'
+              padding: '8px 10px',
+              backgroundColor: '#0d1117',
+              border: '1px solid #30363d',
+              borderRadius: '6px',
+              color: '#e6edf3',
+              fontSize: '12px',
+              outline: 'none',
+              fontFamily: 'ui-monospace, SFMono-Regular, monospace',
+              transition: 'border-color 0.15s'
             }}
+            onFocus={(e) => e.target.style.borderColor = '#58a6ff'}
+            onBlur={(e) => e.target.style.borderColor = '#30363d'}
           />
         </div>
       )}
@@ -582,14 +605,15 @@ function BackgroundControls({ blockData, onUpdate }) {
 function DimensionControls({ blockData, onUpdate }) {
   return (
     <div>
-      <div style={{ marginBottom: '12px' }}>
+      <div style={{ marginBottom: '14px' }}>
         <label style={{
           display: 'block',
           fontSize: '11px',
-          color: '#a0a0a0',
+          color: '#7d8590',
           marginBottom: '6px',
           textTransform: 'uppercase',
-          letterSpacing: '0.5px'
+          letterSpacing: '0.5px',
+          fontWeight: '500'
         }}>
           Width
         </label>
@@ -600,23 +624,28 @@ function DimensionControls({ blockData, onUpdate }) {
           placeholder="auto"
           style={{
             width: '100%',
-            padding: '6px 8px',
-            backgroundColor: '#1e1e1e',
-            border: '1px solid #3a3a3a',
-            borderRadius: '3px',
-            color: '#e0e0e0',
-            fontSize: '12px'
+            padding: '8px 10px',
+            backgroundColor: '#0d1117',
+            border: '1px solid #30363d',
+            borderRadius: '6px',
+            color: '#e6edf3',
+            fontSize: '13px',
+            outline: 'none',
+            transition: 'border-color 0.15s'
           }}
+          onFocus={(e) => e.target.style.borderColor = '#58a6ff'}
+          onBlur={(e) => e.target.style.borderColor = '#30363d'}
         />
       </div>
-      <div style={{ marginBottom: '12px' }}>
+      <div style={{ marginBottom: '14px' }}>
         <label style={{
           display: 'block',
           fontSize: '11px',
-          color: '#a0a0a0',
+          color: '#7d8590',
           marginBottom: '6px',
           textTransform: 'uppercase',
-          letterSpacing: '0.5px'
+          letterSpacing: '0.5px',
+          fontWeight: '500'
         }}>
           Height
         </label>
@@ -627,23 +656,28 @@ function DimensionControls({ blockData, onUpdate }) {
           placeholder="auto"
           style={{
             width: '100%',
-            padding: '6px 8px',
-            backgroundColor: '#1e1e1e',
-            border: '1px solid #3a3a3a',
-            borderRadius: '3px',
-            color: '#e0e0e0',
-            fontSize: '12px'
+            padding: '8px 10px',
+            backgroundColor: '#0d1117',
+            border: '1px solid #30363d',
+            borderRadius: '6px',
+            color: '#e6edf3',
+            fontSize: '13px',
+            outline: 'none',
+            transition: 'border-color 0.15s'
           }}
+          onFocus={(e) => e.target.style.borderColor = '#58a6ff'}
+          onBlur={(e) => e.target.style.borderColor = '#30363d'}
         />
       </div>
       <div>
         <label style={{
           display: 'block',
           fontSize: '11px',
-          color: '#a0a0a0',
+          color: '#7d8590',
           marginBottom: '6px',
           textTransform: 'uppercase',
-          letterSpacing: '0.5px'
+          letterSpacing: '0.5px',
+          fontWeight: '500'
         }}>
           Max Width
         </label>
@@ -654,13 +688,17 @@ function DimensionControls({ blockData, onUpdate }) {
           placeholder="none"
           style={{
             width: '100%',
-            padding: '6px 8px',
-            backgroundColor: '#1e1e1e',
-            border: '1px solid #3a3a3a',
-            borderRadius: '3px',
-            color: '#e0e0e0',
-            fontSize: '12px'
+            padding: '8px 10px',
+            backgroundColor: '#0d1117',
+            border: '1px solid #30363d',
+            borderRadius: '6px',
+            color: '#e6edf3',
+            fontSize: '13px',
+            outline: 'none',
+            transition: 'border-color 0.15s'
           }}
+          onFocus={(e) => e.target.style.borderColor = '#58a6ff'}
+          onBlur={(e) => e.target.style.borderColor = '#30363d'}
         />
       </div>
     </div>
@@ -671,14 +709,15 @@ function DimensionControls({ blockData, onUpdate }) {
 function TypographyControls({ blockData, onUpdate }) {
   return (
     <div>
-      <div style={{ marginBottom: '12px' }}>
+      <div style={{ marginBottom: '14px' }}>
         <label style={{
           display: 'block',
           fontSize: '11px',
-          color: '#a0a0a0',
+          color: '#7d8590',
           marginBottom: '6px',
           textTransform: 'uppercase',
-          letterSpacing: '0.5px'
+          letterSpacing: '0.5px',
+          fontWeight: '500'
         }}>
           Font Size
         </label>
@@ -689,23 +728,28 @@ function TypographyControls({ blockData, onUpdate }) {
           placeholder="16px"
           style={{
             width: '100%',
-            padding: '6px 8px',
-            backgroundColor: '#1e1e1e',
-            border: '1px solid #3a3a3a',
-            borderRadius: '3px',
-            color: '#e0e0e0',
-            fontSize: '12px'
+            padding: '8px 10px',
+            backgroundColor: '#0d1117',
+            border: '1px solid #30363d',
+            borderRadius: '6px',
+            color: '#e6edf3',
+            fontSize: '13px',
+            outline: 'none',
+            transition: 'border-color 0.15s'
           }}
+          onFocus={(e) => e.target.style.borderColor = '#58a6ff'}
+          onBlur={(e) => e.target.style.borderColor = '#30363d'}
         />
       </div>
-      <div style={{ marginBottom: '12px' }}>
+      <div style={{ marginBottom: '14px' }}>
         <label style={{
           display: 'block',
           fontSize: '11px',
-          color: '#a0a0a0',
+          color: '#7d8590',
           marginBottom: '6px',
           textTransform: 'uppercase',
-          letterSpacing: '0.5px'
+          letterSpacing: '0.5px',
+          fontWeight: '500'
         }}>
           Font Weight
         </label>
@@ -714,12 +758,14 @@ function TypographyControls({ blockData, onUpdate }) {
           onChange={(e) => onUpdate('fontWeight', e.target.value)}
           style={{
             width: '100%',
-            padding: '6px 8px',
-            backgroundColor: '#1e1e1e',
-            border: '1px solid #3a3a3a',
-            borderRadius: '3px',
-            color: '#e0e0e0',
-            fontSize: '12px'
+            padding: '8px 10px',
+            backgroundColor: '#0d1117',
+            border: '1px solid #30363d',
+            borderRadius: '6px',
+            color: '#e6edf3',
+            fontSize: '13px',
+            outline: 'none',
+            cursor: 'pointer'
           }}
         >
           <option value="normal">Normal</option>
@@ -732,10 +778,11 @@ function TypographyControls({ blockData, onUpdate }) {
         <label style={{
           display: 'block',
           fontSize: '11px',
-          color: '#a0a0a0',
+          color: '#7d8590',
           marginBottom: '6px',
           textTransform: 'uppercase',
-          letterSpacing: '0.5px'
+          letterSpacing: '0.5px',
+          fontWeight: '500'
         }}>
           Text Color
         </label>

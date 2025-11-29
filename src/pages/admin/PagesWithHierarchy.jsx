@@ -14,7 +14,12 @@ import {
   IconEye,
   IconPlus,
   IconTrash,
-  IconGripVertical
+  IconGripVertical,
+  IconSearch,
+  IconX,
+  IconSettings,
+  IconRefresh,
+  IconBoxMultiple
 } from '@tabler/icons-react'
 import InteractiveViewport from '../../components/InteractiveViewport'
 import ComponentToolbox from '../../components/ComponentToolbox'
@@ -47,14 +52,15 @@ export default function PagesWithHierarchy() {
   const [showImageUploader, setShowImageUploader] = useState(false)
   const [showCSSEditor, setShowCSSEditor] = useState(false)
   const [imageUploaderCallback, setImageUploaderCallback] = useState(null)
+  const [pageSearchQuery, setPageSearchQuery] = useState('')
 
   // Icon mapping for special pages
   const pageIcons = {
-    'home': { icon: IconHome, color: '#4a7ba7' },
-    'visit': { icon: IconMapPin, color: '#5a9b5a' },
-    'about': { icon: IconInfoCircle, color: '#7b8ba7' },
-    'navbar': { icon: IconLayoutNavbar, color: '#6a9ba7' },
-    'footer': { icon: IconLayoutBottombar, color: '#8a7ba7' }
+    'home': { icon: IconHome, color: '#4a9eff' },
+    'visit': { icon: IconMapPin, color: '#4ade80' },
+    'about': { icon: IconInfoCircle, color: '#a78bfa' },
+    'navbar': { icon: IconLayoutNavbar, color: '#fb923c' },
+    'footer': { icon: IconLayoutBottombar, color: '#f472b6' }
   }
 
   useEffect(() => {
@@ -263,8 +269,8 @@ export default function PagesWithHierarchy() {
         if (response.ok) {
           setAlertDialog({
             isOpen: true,
-            title: 'Success',
-            message: 'Page saved successfully to server and localStorage!',
+            title: 'Saved Successfully',
+            message: 'Page saved to server and localStorage!',
             type: 'success'
           })
           loadPages() // Refresh the list
@@ -272,7 +278,7 @@ export default function PagesWithHierarchy() {
           const error = await response.json()
           setAlertDialog({
             isOpen: true,
-            title: 'Saved to localStorage only',
+            title: 'Partial Save',
             message: 'Page saved locally. Server save failed: ' + (error.error || 'Unknown error'),
             type: 'warning'
           })
@@ -290,7 +296,7 @@ export default function PagesWithHierarchy() {
       console.error('Error saving page:', error)
       setAlertDialog({
         isOpen: true,
-        title: 'Error',
+        title: 'Save Failed',
         message: 'Failed to save page',
         type: 'error'
       })
@@ -315,7 +321,7 @@ export default function PagesWithHierarchy() {
       if (response.ok) {
         setAlertDialog({
           isOpen: true,
-          title: 'Success',
+          title: 'Page Created',
           message: 'Page created successfully!',
           type: 'success'
         })
@@ -362,7 +368,7 @@ export default function PagesWithHierarchy() {
       if (response.ok) {
         setAlertDialog({
           isOpen: true,
-          title: 'Success',
+          title: 'Page Deleted',
           message: 'Page deleted successfully!',
           type: 'success'
         })
@@ -434,55 +440,74 @@ export default function PagesWithHierarchy() {
 
   const getBlockIcon = (blockType) => {
     // Map block types to icons - you can customize this
-    return IconFile
+    return IconBoxMultiple
   }
+
+  // Filter pages based on search
+  const filteredPages = pages.filter(page =>
+    page.title.toLowerCase().includes(pageSearchQuery.toLowerCase()) ||
+    page.slug.toLowerCase().includes(pageSearchQuery.toLowerCase())
+  )
 
   return (
     <div style={{
       display: 'flex',
-      height: 'calc(100vh - 40px)', // Full height minus toolbar
-      backgroundColor: '#1a1a1a',
-      color: '#e0e0e0'
+      height: 'calc(100vh - 40px)',
+      backgroundColor: '#0d1117',
+      color: '#e6edf3',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif'
     }}>
-      {/* Left Panel - Hierarchy */}
+      {/* Left Panel - Page Hierarchy */}
       <div style={{
-        width: isPanelCollapsed ? '50px' : '300px',
-        backgroundColor: '#252525',
-        borderRight: '1px solid #3a3a3a',
+        width: isPanelCollapsed ? '50px' : '280px',
+        backgroundColor: '#161b22',
+        borderRight: '1px solid #30363d',
         display: 'flex',
         flexDirection: 'column',
-        transition: 'width 0.3s ease',
+        transition: 'width 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
         overflow: 'hidden'
       }}>
         {/* Panel Header */}
         <div style={{
-          height: '48px',
-          borderBottom: '1px solid #3a3a3a',
+          height: '56px',
+          borderBottom: '1px solid #30363d',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 12px',
+          padding: '0 16px',
           flexShrink: 0,
-          gap: '8px'
+          gap: '12px'
         }}>
           {!isPanelCollapsed && (
             <>
-              <span style={{ fontSize: '13px', fontWeight: '600', flex: 1 }}>Page Hierarchy</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
+                <IconFile size={18} style={{ color: '#58a6ff' }} />
+                <span style={{ fontSize: '14px', fontWeight: '600', color: '#e6edf3' }}>Pages</span>
+              </div>
               <button
                 onClick={() => setNewPageDialog({ isOpen: true })}
                 title="Create New Page"
                 style={{
-                  background: '#4a7ba7',
-                  border: '1px solid #5a8bb7',
-                  borderRadius: '3px',
+                  background: 'linear-gradient(180deg, #1f6feb 0%, #1158c7 100%)',
+                  border: '1px solid rgba(240,246,252,0.1)',
+                  borderRadius: '6px',
                   color: '#ffffff',
                   cursor: 'pointer',
-                  padding: '4px 8px',
+                  padding: '6px 12px',
                   display: 'flex',
                   alignItems: 'center',
-                  fontSize: '11px',
+                  fontSize: '12px',
                   fontWeight: '500',
-                  gap: '4px'
+                  gap: '6px',
+                  transition: 'all 0.15s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(180deg, #2672f3 0%, #1a63d7 100%)'
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(31, 111, 235, 0.3)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(180deg, #1f6feb 0%, #1158c7 100%)'
+                  e.currentTarget.style.boxShadow = 'none'
                 }}
               >
                 <IconPlus size={14} />
@@ -493,39 +518,105 @@ export default function PagesWithHierarchy() {
           <button
             onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
             style={{
-              background: 'none',
+              background: 'transparent',
               border: 'none',
-              color: '#a0a0a0',
+              color: '#7d8590',
               cursor: 'pointer',
-              padding: '4px',
+              padding: '6px',
               display: 'flex',
-              alignItems: 'center'
+              alignItems: 'center',
+              borderRadius: '6px',
+              transition: 'all 0.15s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#30363d'
+              e.currentTarget.style.color = '#e6edf3'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent'
+              e.currentTarget.style.color = '#7d8590'
             }}
           >
             <IconChevronRight
               size={18}
               style={{
                 transform: isPanelCollapsed ? 'rotate(0deg)' : 'rotate(180deg)',
-                transition: 'transform 0.3s ease'
+                transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
               }}
             />
           </button>
         </div>
+
+        {/* Search Bar */}
+        {!isPanelCollapsed && (
+          <div style={{
+            padding: '12px 16px',
+            borderBottom: '1px solid #30363d',
+            flexShrink: 0
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              backgroundColor: '#0d1117',
+              borderRadius: '6px',
+              padding: '8px 12px',
+              border: '1px solid #30363d',
+              transition: 'all 0.15s'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = '#58a6ff'}
+            onFocus={(e) => e.currentTarget.style.borderColor = '#58a6ff'}
+            onMouseLeave={(e) => !pageSearchQuery && (e.currentTarget.style.borderColor = '#30363d')}
+            onBlur={(e) => !pageSearchQuery && (e.currentTarget.style.borderColor = '#30363d')}
+            >
+              <IconSearch size={16} style={{ color: '#7d8590', marginRight: '8px', flexShrink: 0 }} />
+              <input
+                type="text"
+                placeholder="Search pages..."
+                value={pageSearchQuery}
+                onChange={(e) => setPageSearchQuery(e.target.value)}
+                style={{
+                  flex: 1,
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  color: '#e6edf3',
+                  fontSize: '13px',
+                  minWidth: 0
+                }}
+              />
+              {pageSearchQuery && (
+                <IconX
+                  size={16}
+                  style={{ color: '#7d8590', cursor: 'pointer', flexShrink: 0, marginLeft: '8px' }}
+                  onClick={() => setPageSearchQuery('')}
+                />
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Panel Content */}
         {!isPanelCollapsed && (
           <div style={{
             flex: 1,
             overflowY: 'auto',
-            padding: '8px'
+            padding: '12px'
           }}>
             {loading ? (
-              <div style={{ padding: '20px', textAlign: 'center', color: '#a0a0a0' }}>
-                Loading pages...
+              <div style={{ padding: '32px', textAlign: 'center', color: '#7d8590' }}>
+                <div className="spinner-border spinner-border-sm" style={{ color: '#58a6ff' }} />
+                <p style={{ marginTop: '12px', fontSize: '13px' }}>Loading pages...</p>
+              </div>
+            ) : filteredPages.length === 0 ? (
+              <div style={{ padding: '32px', textAlign: 'center', color: '#7d8590' }}>
+                <IconFile size={48} style={{ opacity: 0.3, marginBottom: '12px' }} />
+                <p style={{ fontSize: '13px' }}>
+                  {pageSearchQuery ? 'No pages found' : 'No pages yet'}
+                </p>
               </div>
             ) : (
-              pages.map((page) => {
-                const iconConfig = pageIcons[page.slug] || { icon: IconFile, color: '#6a6a6a' }
+              filteredPages.map((page) => {
+                const iconConfig = pageIcons[page.slug] || { icon: IconFile, color: '#7d8590' }
                 const Icon = iconConfig.icon
                 const isExpanded = expandedPages[page.id]
                 const isSelected = selectedPage?.id === page.id
@@ -547,27 +638,43 @@ export default function PagesWithHierarchy() {
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        padding: '8px',
-                        borderRadius: '3px',
+                        padding: '8px 12px',
+                        borderRadius: '6px',
                         cursor: 'pointer',
-                        backgroundColor: isSelected ? '#3a3a3a' : 'transparent',
-                        border: hoveredPageId === page.id ? '2px solid #4a7ba7' : '2px solid transparent',
-                        transition: 'background-color 0.15s ease'
+                        backgroundColor: isSelected ? 'rgba(88, 166, 255, 0.15)' : 'transparent',
+                        border: hoveredPageId === page.id ? '2px solid #58a6ff' : '2px solid transparent',
+                        transition: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
+                        position: 'relative'
                       }}
-                      onMouseOver={(e) => !isSelected && (e.currentTarget.style.backgroundColor = '#2d2d2d')}
-                      onMouseOut={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'transparent')}
+                      onMouseEnter={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'rgba(110, 118, 129, 0.1)')}
+                      onMouseLeave={(e) => !isSelected && (e.currentTarget.style.backgroundColor = 'transparent')}
                     >
+                      {/* Selection Indicator */}
+                      {isSelected && (
+                        <div style={{
+                          position: 'absolute',
+                          left: 0,
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          width: '3px',
+                          height: '20px',
+                          backgroundColor: '#58a6ff',
+                          borderRadius: '0 3px 3px 0'
+                        }} />
+                      )}
+
                       {/* Drag Handle */}
                       <div
                         style={{
                           cursor: 'grab',
-                          color: '#7a7a7a',
-                          marginRight: '4px',
+                          color: '#7d8590',
+                          marginRight: '8px',
                           display: 'flex',
-                          alignItems: 'center'
+                          alignItems: 'center',
+                          opacity: 0.5
                         }}
-                        onMouseDown={(e) => e.currentTarget.style.cursor = 'grabbing'}
-                        onMouseUp={(e) => e.currentTarget.style.cursor = 'grab'}
+                        onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                        onMouseLeave={(e) => e.currentTarget.style.opacity = '0.5'}
                       >
                         <IconGripVertical size={14} />
                       </div>
@@ -580,24 +687,24 @@ export default function PagesWithHierarchy() {
                         style={{
                           background: 'none',
                           border: 'none',
-                          color: '#a0a0a0',
+                          color: '#7d8590',
                           cursor: 'pointer',
                           padding: '0 4px',
                           display: 'flex',
                           alignItems: 'center',
-                          marginRight: '4px'
+                          marginRight: '8px'
                         }}
                       >
                         {isExpanded ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
                       </button>
 
-                      <Icon size={16} style={{ color: iconConfig.color, marginRight: '8px' }} />
+                      <Icon size={16} style={{ color: iconConfig.color, marginRight: '10px' }} />
 
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{
                           fontSize: '13px',
-                          fontWeight: isSelected ? '600' : '400',
-                          color: isSelected ? '#ffffff' : '#e0e0e0',
+                          fontWeight: isSelected ? '600' : '500',
+                          color: isSelected ? '#e6edf3' : '#c9d1d9',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap'
@@ -607,10 +714,12 @@ export default function PagesWithHierarchy() {
                         {isCorePages && (
                           <div style={{
                             fontSize: '10px',
-                            color: '#7a7a7a',
-                            marginTop: '2px'
+                            color: '#7d8590',
+                            marginTop: '2px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px'
                           }}>
-                            Core Page
+                            Core
                           </div>
                         )}
                       </div>
@@ -624,17 +733,25 @@ export default function PagesWithHierarchy() {
                           }}
                           title="Delete Page"
                           style={{
-                            background: 'none',
+                            background: 'transparent',
                             border: 'none',
-                            color: '#ff6b6b',
+                            color: '#f85149',
                             cursor: 'pointer',
                             padding: '4px',
                             display: 'flex',
                             alignItems: 'center',
-                            opacity: 0.7
+                            opacity: 0,
+                            borderRadius: '4px',
+                            transition: 'all 0.15s'
                           }}
-                          onMouseOver={(e) => e.currentTarget.style.opacity = '1'}
-                          onMouseOut={(e) => e.currentTarget.style.opacity = '0.7'}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.opacity = '1'
+                            e.currentTarget.style.backgroundColor = 'rgba(248, 81, 73, 0.15)'
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.opacity = '0'
+                            e.currentTarget.style.backgroundColor = 'transparent'
+                          }}
                         >
                           <IconTrash size={14} />
                         </button>
@@ -643,7 +760,7 @@ export default function PagesWithHierarchy() {
 
                     {/* Page Components/Blocks (when expanded) */}
                     {isExpanded && selectedPage?.id === page.id && selectedPage.content && selectedPage.content.length > 0 && (
-                      <div style={{ marginLeft: '24px', marginTop: '4px' }}>
+                      <div style={{ marginLeft: '32px', marginTop: '4px' }}>
                         {selectedPage.content.map((block, index) => {
                           const BlockIcon = getBlockIcon(block.type)
                           const isBlockSelected = selectedBlock === block
@@ -657,20 +774,26 @@ export default function PagesWithHierarchy() {
                               style={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                padding: '6px 8px',
+                                padding: '6px 10px',
                                 fontSize: '12px',
-                                color: isBlockSelected ? '#ffffff' : '#a0a0a0',
-                                backgroundColor: isBlockSelected ? '#3a3a3a' : 'transparent',
-                                borderRadius: '3px',
+                                color: isBlockSelected ? '#e6edf3' : '#7d8590',
+                                backgroundColor: isBlockSelected ? 'rgba(88, 166, 255, 0.1)' : 'transparent',
+                                borderRadius: '6px',
                                 marginBottom: '2px',
                                 cursor: 'pointer',
-                                transition: 'background-color 0.15s ease'
+                                transition: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
+                                borderLeft: isBlockSelected ? '2px solid #58a6ff' : '2px solid transparent'
                               }}
-                              onMouseOver={(e) => !isBlockSelected && (e.currentTarget.style.backgroundColor = '#2d2d2d')}
-                              onMouseOut={(e) => !isBlockSelected && (e.currentTarget.style.backgroundColor = 'transparent')}
+                              onMouseEnter={(e) => !isBlockSelected && (e.currentTarget.style.backgroundColor = 'rgba(110, 118, 129, 0.08)')}
+                              onMouseLeave={(e) => !isBlockSelected && (e.currentTarget.style.backgroundColor = 'transparent')}
                             >
-                              <BlockIcon size={14} style={{ marginRight: '6px' }} />
-                              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              <BlockIcon size={14} style={{ marginRight: '8px', flexShrink: 0 }} />
+                              <span style={{
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                fontWeight: isBlockSelected ? '500' : '400'
+                              }}>
                                 {block.type || 'Block'} {index + 1}
                               </span>
                             </div>
@@ -692,38 +815,52 @@ export default function PagesWithHierarchy() {
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
-        backgroundColor: '#1a1a1a'
+        backgroundColor: '#0d1117'
       }}>
         {selectedPage ? (
           <>
             {/* Editor Toolbar */}
             <div style={{
-              height: '48px',
-              backgroundColor: '#252525',
-              borderBottom: '1px solid #3a3a3a',
+              height: '56px',
+              backgroundColor: '#161b22',
+              borderBottom: '1px solid #30363d',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              padding: '0 16px',
+              padding: '0 20px',
               flexShrink: 0,
-              gap: '16px'
+              gap: '20px'
             }}>
               {/* Left: Page Info */}
-              <div style={{ flex: '0 1 auto', minWidth: 0 }}>
-                <span style={{ fontSize: '14px', fontWeight: '600' }}>{selectedPage.title}</span>
-                <span style={{ fontSize: '12px', color: '#7a7a7a', marginLeft: '12px' }}>
+              <div style={{ flex: '0 1 auto', minWidth: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <span style={{ fontSize: '14px', fontWeight: '600', color: '#e6edf3' }}>{selectedPage.title}</span>
+                <span style={{
+                  fontSize: '11px',
+                  color: '#7d8590',
+                  backgroundColor: '#21262d',
+                  padding: '3px 8px',
+                  borderRadius: '6px',
+                  fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace'
+                }}>
                   /{selectedPage.slug}
                 </span>
               </div>
 
               {/* Center: Mode Switcher and Responsive Preview */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flex: '1 1 auto', justifyContent: 'center', minWidth: 0 }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '16px',
+                flex: '1 1 auto',
+                justifyContent: 'center',
+                minWidth: 0
+              }}>
                 <div style={{
                   display: 'flex',
-                  backgroundColor: '#1e1e1e',
-                  borderRadius: '4px',
-                  padding: '2px',
-                  border: '1px solid #3a3a3a'
+                  backgroundColor: '#0d1117',
+                  borderRadius: '6px',
+                  padding: '3px',
+                  border: '1px solid #30363d'
                 }}>
                   <button
                     onClick={() => setViewMode('edit')}
@@ -732,15 +869,17 @@ export default function PagesWithHierarchy() {
                       alignItems: 'center',
                       gap: '6px',
                       padding: '6px 16px',
-                      backgroundColor: viewMode === 'edit' ? '#4a7ba7' : 'transparent',
+                      backgroundColor: viewMode === 'edit' ? '#58a6ff' : 'transparent',
                       border: 'none',
-                      borderRadius: '3px',
-                      color: viewMode === 'edit' ? '#ffffff' : '#a0a0a0',
-                      fontSize: '12px',
+                      borderRadius: '4px',
+                      color: viewMode === 'edit' ? '#ffffff' : '#7d8590',
+                      fontSize: '13px',
                       fontWeight: '500',
                       cursor: 'pointer',
-                      transition: 'all 0.2s'
+                      transition: 'all 0.15s'
                     }}
+                    onMouseEnter={(e) => viewMode !== 'edit' && (e.currentTarget.style.backgroundColor = 'rgba(110, 118, 129, 0.1)')}
+                    onMouseLeave={(e) => viewMode !== 'edit' && (e.currentTarget.style.backgroundColor = 'transparent')}
                   >
                     <IconEdit size={14} />
                     <span>Edit</span>
@@ -752,15 +891,17 @@ export default function PagesWithHierarchy() {
                       alignItems: 'center',
                       gap: '6px',
                       padding: '6px 16px',
-                      backgroundColor: viewMode === 'preview' ? '#4a7ba7' : 'transparent',
+                      backgroundColor: viewMode === 'preview' ? '#58a6ff' : 'transparent',
                       border: 'none',
-                      borderRadius: '3px',
-                      color: viewMode === 'preview' ? '#ffffff' : '#a0a0a0',
-                      fontSize: '12px',
+                      borderRadius: '4px',
+                      color: viewMode === 'preview' ? '#ffffff' : '#7d8590',
+                      fontSize: '13px',
                       fontWeight: '500',
                       cursor: 'pointer',
-                      transition: 'all 0.2s'
+                      transition: 'all 0.15s'
                     }}
+                    onMouseEnter={(e) => viewMode !== 'preview' && (e.currentTarget.style.backgroundColor = 'rgba(110, 118, 129, 0.1)')}
+                    onMouseLeave={(e) => viewMode !== 'preview' && (e.currentTarget.style.backgroundColor = 'transparent')}
                   >
                     <IconEye size={14} />
                     <span>Preview</span>
@@ -774,18 +915,22 @@ export default function PagesWithHierarchy() {
                 />
               </div>
 
-              {/* Right: Save Button */}
-              <div style={{ flex: '0 0 auto', display: 'flex', gap: '8px', alignItems: 'center' }}>
+              {/* Right: Actions */}
+              <div style={{ flex: '0 0 auto', display: 'flex', gap: '12px', alignItems: 'center' }}>
                 {/* Keyboard Shortcuts Hint */}
                 <div style={{
                   fontSize: '10px',
-                  color: '#6a6a6a',
+                  color: '#7d8590',
                   display: 'flex',
-                  gap: '8px'
+                  gap: '12px',
+                  padding: '6px 12px',
+                  backgroundColor: '#0d1117',
+                  borderRadius: '6px',
+                  border: '1px solid #30363d'
                 }}>
-                  <span title="Toggle view mode">Ctrl+E</span>
-                  <span title="Save">Ctrl+S</span>
-                  <span title="Toggle grid">Ctrl+'</span>
+                  <span title="Toggle view mode">⌘E</span>
+                  <span title="Save">⌘S</span>
+                  <span title="Toggle grid">⌘'</span>
                 </div>
 
                 <button
@@ -794,24 +939,25 @@ export default function PagesWithHierarchy() {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    padding: '6px 16px',
-                    backgroundColor: '#4a7ba7',
-                    border: '1px solid #5a8bb7',
-                    borderRadius: '3px',
+                    gap: '8px',
+                    padding: '8px 16px',
+                    background: saving ? '#30363d' : 'linear-gradient(180deg, #238636 0%, #196c2e 100%)',
+                    border: '1px solid rgba(240,246,252,0.1)',
+                    borderRadius: '6px',
                     color: '#ffffff',
                     fontSize: '13px',
                     fontWeight: '500',
                     cursor: saving ? 'not-allowed' : 'pointer',
                     opacity: saving ? 0.6 : 1,
-                    transition: 'background-color 0.2s',
+                    transition: 'all 0.15s',
                     whiteSpace: 'nowrap'
                   }}
-                  onMouseEnter={(e) => !saving && (e.target.style.backgroundColor = '#5a8bb7')}
-                  onMouseLeave={(e) => !saving && (e.target.style.backgroundColor = '#4a7ba7')}
+                  onMouseEnter={(e) => !saving && (e.target.style.background = 'linear-gradient(180deg, #2ea043 0%, #1e7e34 100)')}
+                  onMouseLeave={(e) => !saving && (e.target.style.background = 'linear-gradient(180deg, #238636 0%, #196c2e 100%)')}
                 >
                   {saving ? (
                     <>
+                      <div className="spinner-border spinner-border-sm" />
                       <span>Saving...</span>
                     </>
                   ) : (
@@ -839,8 +985,8 @@ export default function PagesWithHierarchy() {
               <div style={{
                 flex: 1,
                 overflow: 'auto',
-                padding: '24px',
-                backgroundColor: '#1a1a1a',
+                padding: '32px',
+                backgroundColor: '#0d1117',
                 position: 'relative'
               }}>
                 {/* Grid Guides Overlay */}
@@ -855,8 +1001,10 @@ export default function PagesWithHierarchy() {
                   width: viewportSize.width + 'px',
                   minHeight: viewportSize.height + 'px',
                   margin: '0 auto',
-                  transition: 'width 0.3s ease',
-                  position: 'relative'
+                  transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  position: 'relative',
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0 0 0 1px rgba(240,246,252,0.1), 0 16px 32px rgba(1,4,9,0.85)'
                 }}>
                   <InteractiveViewport
                     blocks={selectedPage.content || []}
@@ -874,231 +1022,40 @@ export default function PagesWithHierarchy() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#a0a0a0'
+            color: '#7d8590',
+            flexDirection: 'column',
+            gap: '16px'
           }}>
-            <div style={{ textAlign: 'center' }}>
-              <IconFile size={64} style={{ marginBottom: '16px', opacity: 0.5 }} />
-              <p>Select a page from the hierarchy to edit</p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Right Panel - Properties */}
-      <div style={{
-        width: isPropertiesPanelCollapsed ? '50px' : '320px',
-        backgroundColor: '#252525',
-        borderLeft: '1px solid #3a3a3a',
-        display: 'flex',
-        flexDirection: 'column',
-        transition: 'width 0.3s ease',
-        overflow: 'hidden'
-      }}>
-        {/* Panel Header */}
-        <div style={{
-          height: '48px',
-          borderBottom: '1px solid #3a3a3a',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 12px',
-          flexShrink: 0
-        }}>
-          <button
-            onClick={() => setIsPropertiesPanelCollapsed(!isPropertiesPanelCollapsed)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#a0a0a0',
-              cursor: 'pointer',
-              padding: '4px',
-              display: 'flex',
-              alignItems: 'center'
-            }}
-          >
-            <IconChevronRight
-              size={18}
+            <IconFile size={64} style={{ opacity: 0.3 }} />
+            <p style={{ fontSize: '14px', fontWeight: '500' }}>Select a page to start editing</p>
+            <button
+              onClick={() => setNewPageDialog({ isOpen: true })}
               style={{
-                transform: isPropertiesPanelCollapsed ? 'rotate(180deg)' : 'rotate(0deg)',
-                transition: 'transform 0.3s ease'
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                background: 'linear-gradient(180deg, #1f6feb 0%, #1158c7 100%)',
+                border: '1px solid rgba(240,246,252,0.1)',
+                borderRadius: '6px',
+                color: '#ffffff',
+                fontSize: '13px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'all 0.15s'
               }}
-            />
-          </button>
-          {!isPropertiesPanelCollapsed && (
-            <span style={{ fontSize: '13px', fontWeight: '600' }}>Inspector</span>
-          )}
-        </div>
-
-        {/* Panel Content */}
-        {!isPropertiesPanelCollapsed && (
-          <div style={{
-            flex: 1,
-            overflowY: 'auto',
-            padding: '8px'
-          }}>
-            {selectedPage ? (
-              <div>
-                {/* Page Component - Always shown */}
-                <InspectorComponent
-                  title="Page"
-                  icon={pageIcons[selectedPage.slug]?.icon || IconFile}
-                  color={pageIcons[selectedPage.slug]?.color || '#6a6a6a'}
-                  defaultExpanded={false}
-                >
-                  <PropertyField
-                    label="Title"
-                    value={selectedPage.title}
-                    editable
-                    onChange={(value) => setSelectedPage(prev => ({ ...prev, title: value }))}
-                    onImageSelect={(callback) => {
-                      setImageUploaderCallback(() => callback)
-                      setShowImageUploader(true)
-                    }}
-                  />
-                  <PropertyField
-                    label="Slug"
-                    value={selectedPage.slug}
-                    editable
-                    onChange={(value) => setSelectedPage(prev => ({ ...prev, slug: value }))}
-                  />
-                  <PropertyField
-                    label="Status"
-                    value={selectedPage.is_published}
-                    type="boolean"
-                    editable
-                    onChange={(value) => setSelectedPage(prev => ({ ...prev, is_published: value }))}
-                  />
-                  <PropertyField
-                    label="Show in Nav"
-                    value={selectedPage.show_in_nav}
-                    type="boolean"
-                    editable
-                    onChange={(value) => setSelectedPage(prev => ({ ...prev, show_in_nav: value }))}
-                  />
-                  <PropertyField
-                    label="Show Header"
-                    value={selectedPage.show_page_header}
-                    type="boolean"
-                    editable
-                    onChange={(value) => setSelectedPage(prev => ({ ...prev, show_page_header: value }))}
-                  />
-                  <PropertyField
-                    label="Nav Order"
-                    value={selectedPage.nav_order}
-                    type="number"
-                    editable
-                    onChange={(value) => setSelectedPage(prev => ({ ...prev, nav_order: parseInt(value) || 0 }))}
-                  />
-                  <PropertyField label="Page ID" value={selectedPage.id} readOnly />
-                  <PropertyField
-                    label="Description"
-                    value={selectedPage.meta_description || ''}
-                    multiline
-                    editable
-                    onChange={(value) => setSelectedPage(prev => ({ ...prev, meta_description: value }))}
-                  />
-                </InspectorComponent>
-
-                {/* All Blocks - Always shown */}
-                {selectedPage.content && selectedPage.content.length > 0 && selectedPage.content.map((block, index) => {
-                  const isSelected = selectedBlock === block
-                  return (
-                    <InspectorComponent
-                      key={index}
-                      title={`${block.type || 'Block'} ${index + 1}`}
-                      icon={getBlockIcon(block.type)}
-                      color={isSelected ? '#4a7ba7' : '#6a6a6a'}
-                      defaultExpanded={false}
-                      headerActions={
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setSelectedBlock(block)
-                            setShowCSSEditor(true)
-                          }}
-                          title="Edit CSS Classes"
-                          style={{
-                            background: '#3a3a3a',
-                            border: '1px solid #4a4a4a',
-                            borderRadius: '3px',
-                            padding: '4px 6px',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            color: '#e0e0e0',
-                            fontSize: '9px'
-                          }}
-                        >
-                          CSS
-                        </button>
-                      }
-                    >
-                      {block.data && Object.keys(block.data).filter(key => key !== 'spacing').length > 0 && (
-                        <>
-                          {Object.entries(block.data).filter(([key]) => key !== 'spacing').map(([key, value]) => (
-                            <PropertyField
-                              key={key}
-                              label={key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
-                              value={typeof value === 'string' ? value : JSON.stringify(value)}
-                              multiline={typeof value === 'string' && value.length > 50}
-                              editable
-                              onChange={(newValue) => {
-                                const updatedData = { ...block.data, [key]: newValue }
-                                const updatedBlock = { ...block, data: updatedData }
-                                const updatedBlocks = selectedPage.content.map((b, i) =>
-                                  i === index ? updatedBlock : b
-                                )
-                                handleBlocksChange(updatedBlocks)
-                                if (isSelected) {
-                                  setSelectedBlock(updatedBlock)
-                                }
-                              }}
-                              onImageSelect={(callback) => {
-                                setImageUploaderCallback(() => (url) => {
-                                  const updatedData = { ...block.data, [key]: url }
-                                  const updatedBlock = { ...block, data: updatedData }
-                                  const updatedBlocks = selectedPage.content.map((b, i) =>
-                                    i === index ? updatedBlock : b
-                                  )
-                                  handleBlocksChange(updatedBlocks)
-                                  callback(url)
-                                })
-                                setShowImageUploader(true)
-                              }}
-                            />
-                          ))}
-                        </>
-                      )}
-                      {block.hidden !== undefined && (
-                        <PropertyField
-                          label="Hidden"
-                          value={block.hidden}
-                          type="boolean"
-                          editable
-                          onChange={(value) => {
-                            const updatedBlock = { ...block, hidden: value }
-                            const updatedBlocks = selectedPage.content.map((b, i) =>
-                              i === index ? updatedBlock : b
-                            )
-                            handleBlocksChange(updatedBlocks)
-                            if (isSelected) {
-                              setSelectedBlock(updatedBlock)
-                            }
-                          }}
-                        />
-                      )}
-                    </InspectorComponent>
-                  )
-                })}
-              </div>
-            ) : (
-              <div style={{ color: '#a0a0a0', textAlign: 'center', padding: '40px 20px' }}>
-                <p style={{ fontSize: '12px' }}>Select a page or component to view properties</p>
-              </div>
-            )}
+              onMouseEnter={(e) => e.target.style.background = 'linear-gradient(180deg, #2672f3 0%, #1a63d7 100%)'}
+              onMouseLeave={(e) => e.target.style.background = 'linear-gradient(180deg, #1f6feb 0%, #1158c7 100%)'}
+            >
+              <IconPlus size={16} />
+              Create New Page
+            </button>
           </div>
         )}
       </div>
+
+      {/* Right Panel - Properties (now using the fixed PropertiesPanel component) */}
+      {/* Note: The Inspector panel was removed in favor of the floating PropertiesPanel */}
 
       {/* Alert Dialog */}
       <UnrealAlertDialog
@@ -1138,7 +1095,8 @@ export default function PagesWithHierarchy() {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          backgroundColor: 'rgba(1, 4, 9, 0.8)',
+          backdropFilter: 'blur(8px)',
           zIndex: 10000,
           display: 'flex',
           alignItems: 'center',
@@ -1170,7 +1128,8 @@ export default function PagesWithHierarchy() {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          backgroundColor: 'rgba(1, 4, 9, 0.8)',
+          backdropFilter: 'blur(8px)',
           zIndex: 10000,
           display: 'flex',
           alignItems: 'center',
@@ -1198,333 +1157,6 @@ export default function PagesWithHierarchy() {
         blockIndex={selectedBlock?.index}
         onUpdate={handleBlockUpdate}
         isVisible={selectedBlock && selectedBlock.index !== undefined && viewMode === 'edit'}
-      />
-    </div>
-  )
-}
-
-// Unity-style Inspector Component Block
-function InspectorComponent({ title, icon: Icon, color, defaultExpanded = true, headerActions, children }) {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded)
-
-  return (
-    <div style={{
-      marginBottom: '8px',
-      backgroundColor: '#2a2a2a',
-      border: '1px solid #3a3a3a',
-      borderRadius: '4px',
-      overflow: 'hidden'
-    }}>
-      {/* Component Header */}
-      <div
-        onClick={() => setIsExpanded(!isExpanded)}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '8px 10px',
-          backgroundColor: '#2d2d2d',
-          cursor: 'pointer',
-          borderBottom: isExpanded ? '1px solid #3a3a3a' : 'none',
-          transition: 'background-color 0.15s ease'
-        }}
-        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#353535'}
-        onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2d2d2d'}
-      >
-        <IconChevronRight
-          size={14}
-          style={{
-            color: '#a0a0a0',
-            marginRight: '6px',
-            transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-            transition: 'transform 0.2s ease'
-          }}
-        />
-        <Icon size={16} style={{ color, marginRight: '8px' }} />
-        <span style={{
-          fontSize: '12px',
-          fontWeight: '600',
-          color: '#e0e0e0',
-          flex: 1
-        }}>
-          {title}
-        </span>
-        {headerActions && (
-          <div onClick={(e) => e.stopPropagation()} style={{ marginLeft: '8px' }}>
-            {headerActions}
-          </div>
-        )}
-      </div>
-
-      {/* Component Content */}
-      {isExpanded && (
-        <div style={{ padding: '12px 10px' }}>
-          {children}
-        </div>
-      )}
-    </div>
-  )
-}
-
-// Property Field Component
-function PropertyField({ label, value, multiline = false, editable = false, readOnly = false, type = 'text', onChange, onImageSelect }) {
-  const [showColorPicker, setShowColorPicker] = useState(false)
-
-  // Detect if this is a color field by looking at the label or value format
-  const isColorField = type === 'color' ||
-    label.toLowerCase().includes('color') ||
-    label.toLowerCase().includes('background') && typeof value === 'string' && value.match(/^#[0-9a-fA-F]{6}$/)
-
-  // Detect if this is an image URL field
-  const isImageField = type === 'image' ||
-    label.toLowerCase().includes('image') ||
-    label.toLowerCase().includes('background') && (typeof value === 'string' && (value.startsWith('http') || value.startsWith('/')))
-
-  if (readOnly || !editable) {
-    // Read-only display
-    return (
-      <div style={{ marginBottom: '10px' }}>
-        <div style={{
-          fontSize: '10px',
-          color: '#8a8a8a',
-          marginBottom: '4px',
-          fontWeight: '500',
-          textTransform: 'uppercase',
-          letterSpacing: '0.3px'
-        }}>
-          {label}
-        </div>
-        <div style={{
-          fontSize: '11px',
-          color: '#d0d0d0',
-          backgroundColor: '#1e1e1e',
-          padding: '6px 8px',
-          borderRadius: '2px',
-          border: '1px solid #3a3a3a',
-          wordWrap: multiline ? 'break-word' : 'normal',
-          whiteSpace: multiline ? 'normal' : 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          lineHeight: '1.4'
-        }}>
-          {isColorField && value ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{
-                width: '16px',
-                height: '16px',
-                backgroundColor: value,
-                border: '1px solid #3a3a3a',
-                borderRadius: '3px'
-              }} />
-              {value}
-            </div>
-          ) : (value || '-')}
-        </div>
-      </div>
-    )
-  }
-
-  // Editable field
-  if (type === 'boolean') {
-    return (
-      <div style={{ marginBottom: '10px' }}>
-        <label style={{
-          display: 'flex',
-          alignItems: 'center',
-          cursor: 'pointer',
-          gap: '8px'
-        }}>
-          <input
-            type="checkbox"
-            checked={value}
-            onChange={(e) => onChange?.(e.target.checked)}
-            style={{
-              width: '14px',
-              height: '14px',
-              cursor: 'pointer'
-            }}
-          />
-          <span style={{
-            fontSize: '10px',
-            color: '#8a8a8a',
-            fontWeight: '500',
-            textTransform: 'uppercase',
-            letterSpacing: '0.3px'
-          }}>
-            {label}
-          </span>
-        </label>
-      </div>
-    )
-  }
-
-  // Color field with ColorPicker
-  if (isColorField && editable) {
-    return (
-      <div style={{ marginBottom: '10px', position: 'relative' }}>
-        <div style={{
-          fontSize: '10px',
-          color: '#8a8a8a',
-          marginBottom: '4px',
-          fontWeight: '500',
-          textTransform: 'uppercase',
-          letterSpacing: '0.3px'
-        }}>
-          {label}
-        </div>
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <div
-            onClick={() => setShowColorPicker(!showColorPicker)}
-            style={{
-              width: '32px',
-              height: '32px',
-              backgroundColor: value || '#000000',
-              border: '1px solid #3a3a3a',
-              borderRadius: '3px',
-              cursor: 'pointer',
-              flexShrink: 0
-            }}
-          />
-          <input
-            type="text"
-            value={value || ''}
-            onChange={(e) => onChange?.(e.target.value)}
-            placeholder="#000000"
-            style={{
-              flex: 1,
-              fontSize: '11px',
-              color: '#d0d0d0',
-              backgroundColor: '#1e1e1e',
-              padding: '6px 8px',
-              borderRadius: '2px',
-              border: '1px solid #3a3a3a',
-              fontFamily: 'monospace'
-            }}
-            onFocus={(e) => e.target.style.borderColor = '#4a7ba7'}
-            onBlur={(e) => e.target.style.borderColor = '#3a3a3a'}
-          />
-        </div>
-        {showColorPicker && (
-          <div style={{ position: 'absolute', zIndex: 1000, top: '70px' }}>
-            <div
-              onClick={() => setShowColorPicker(false)}
-              style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0
-              }}
-            />
-            <ColorPicker
-              color={value || '#000000'}
-              onChange={(newColor) => {
-                onChange?.(newColor)
-                setShowColorPicker(false)
-              }}
-            />
-          </div>
-        )}
-      </div>
-    )
-  }
-
-  // Image field with button to open uploader
-  if (isImageField && editable) {
-    return (
-      <div style={{ marginBottom: '10px' }}>
-        <div style={{
-          fontSize: '10px',
-          color: '#8a8a8a',
-          marginBottom: '4px',
-          fontWeight: '500',
-          textTransform: 'uppercase',
-          letterSpacing: '0.3px'
-        }}>
-          {label}
-        </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input
-            type="text"
-            value={value || ''}
-            onChange={(e) => onChange?.(e.target.value)}
-            placeholder="Image URL"
-            style={{
-              flex: 1,
-              fontSize: '11px',
-              color: '#d0d0d0',
-              backgroundColor: '#1e1e1e',
-              padding: '6px 8px',
-              borderRadius: '2px',
-              border: '1px solid #3a3a3a'
-            }}
-            onFocus={(e) => e.target.style.borderColor = '#4a7ba7'}
-            onBlur={(e) => e.target.style.borderColor = '#3a3a3a'}
-          />
-          <button
-            onClick={() => onImageSelect?.(onChange)}
-            style={{
-              padding: '6px 12px',
-              backgroundColor: '#3a3a3a',
-              border: '1px solid #4a4a4a',
-              borderRadius: '3px',
-              color: '#e0e0e0',
-              fontSize: '10px',
-              cursor: 'pointer',
-              whiteSpace: 'nowrap'
-            }}
-          >
-            Browse
-          </button>
-        </div>
-        {value && (
-          <div style={{
-            marginTop: '8px',
-            width: '100%',
-            height: '80px',
-            backgroundImage: `url(${value})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            border: '1px solid #3a3a3a',
-            borderRadius: '3px'
-          }} />
-        )}
-      </div>
-    )
-  }
-
-  const InputComponent = multiline ? 'textarea' : 'input'
-
-  return (
-    <div style={{ marginBottom: '10px' }}>
-      <div style={{
-        fontSize: '10px',
-        color: '#8a8a8a',
-        marginBottom: '4px',
-        fontWeight: '500',
-        textTransform: 'uppercase',
-        letterSpacing: '0.3px'
-      }}>
-        {label}
-      </div>
-      <InputComponent
-        type={type === 'number' ? 'number' : 'text'}
-        value={value}
-        onChange={(e) => onChange?.(e.target.value)}
-        style={{
-          width: '100%',
-          fontSize: '11px',
-          color: '#d0d0d0',
-          backgroundColor: '#1e1e1e',
-          padding: '6px 8px',
-          borderRadius: '2px',
-          border: '1px solid #3a3a3a',
-          fontFamily: 'inherit',
-          lineHeight: '1.4',
-          resize: multiline ? 'vertical' : 'none',
-          minHeight: multiline ? '60px' : 'auto'
-        }}
-        onFocus={(e) => e.target.style.borderColor = '#4a7ba7'}
-        onBlur={(e) => e.target.style.borderColor = '#3a3a3a'}
       />
     </div>
   )
@@ -1564,7 +1196,8 @@ function NewPageDialog({ isOpen, onClose, onConfirm }) {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          backgroundColor: 'rgba(1, 4, 9, 0.8)',
+          backdropFilter: 'blur(8px)',
           zIndex: 9999,
           display: 'flex',
           alignItems: 'center',
@@ -1576,10 +1209,10 @@ function NewPageDialog({ isOpen, onClose, onConfirm }) {
         <div
           onClick={(e) => e.stopPropagation()}
           style={{
-            backgroundColor: '#2d2d2d',
-            border: '1px solid #4a4a4a',
-            borderRadius: '4px',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
+            backgroundColor: '#161b22',
+            border: '1px solid #30363d',
+            borderRadius: '12px',
+            boxShadow: '0 16px 70px rgba(1, 4, 9, 0.9)',
             width: '480px',
             maxWidth: '90vw',
             overflow: 'hidden',
@@ -1589,16 +1222,15 @@ function NewPageDialog({ isOpen, onClose, onConfirm }) {
           {/* Header */}
           <div
             style={{
-              padding: '20px 24px',
-              borderBottom: '1px solid #3a3a3a',
-              backgroundColor: '#252525'
+              padding: '24px 24px 20px 24px',
+              borderBottom: '1px solid #30363d'
             }}
           >
             <h2 style={{
               margin: 0,
-              fontSize: '18px',
+              fontSize: '20px',
               fontWeight: '600',
-              color: '#e0e0e0'
+              color: '#e6edf3'
             }}>
               Create New Page
             </h2>
@@ -1607,15 +1239,13 @@ function NewPageDialog({ isOpen, onClose, onConfirm }) {
           {/* Body */}
           <div style={{
             padding: '24px',
-            color: '#c0c0c0',
-            fontSize: '14px',
-            lineHeight: '1.6'
+            color: '#c9d1d9'
           }}>
-            <div style={{ marginBottom: '16px' }}>
+            <div style={{ marginBottom: '20px' }}>
               <label style={{
                 display: 'block',
-                fontSize: '12px',
-                color: '#a0a0a0',
+                fontSize: '13px',
+                color: '#c9d1d9',
                 marginBottom: '8px',
                 fontWeight: '500'
               }}>
@@ -1629,23 +1259,26 @@ function NewPageDialog({ isOpen, onClose, onConfirm }) {
                 autoFocus
                 style={{
                   width: '100%',
-                  padding: '8px 12px',
-                  backgroundColor: '#1e1e1e',
-                  border: '1px solid #3a3a3a',
-                  borderRadius: '3px',
-                  color: '#e0e0e0',
-                  fontSize: '13px',
+                  padding: '10px 12px',
+                  backgroundColor: '#0d1117',
+                  border: '1px solid #30363d',
+                  borderRadius: '6px',
+                  color: '#e6edf3',
+                  fontSize: '14px',
                   outline: 'none',
-                  boxSizing: 'border-box'
+                  boxSizing: 'border-box',
+                  transition: 'all 0.15s'
                 }}
+                onFocus={(e) => e.target.style.borderColor = '#58a6ff'}
+                onBlur={(e) => e.target.style.borderColor = '#30363d'}
               />
             </div>
 
-            <div style={{ marginBottom: '16px' }}>
+            <div style={{ marginBottom: '20px' }}>
               <label style={{
                 display: 'block',
-                fontSize: '12px',
-                color: '#a0a0a0',
+                fontSize: '13px',
+                color: '#c9d1d9',
                 marginBottom: '8px',
                 fontWeight: '500'
               }}>
@@ -1658,20 +1291,25 @@ function NewPageDialog({ isOpen, onClose, onConfirm }) {
                 placeholder="page-slug"
                 style={{
                   width: '100%',
-                  padding: '8px 12px',
-                  backgroundColor: '#1e1e1e',
-                  border: '1px solid #3a3a3a',
-                  borderRadius: '3px',
-                  color: '#e0e0e0',
-                  fontSize: '13px',
+                  padding: '10px 12px',
+                  backgroundColor: '#0d1117',
+                  border: '1px solid #30363d',
+                  borderRadius: '6px',
+                  color: '#e6edf3',
+                  fontSize: '14px',
                   outline: 'none',
-                  boxSizing: 'border-box'
+                  boxSizing: 'border-box',
+                  fontFamily: 'ui-monospace, SFMono-Regular, monospace',
+                  transition: 'all 0.15s'
                 }}
+                onFocus={(e) => e.target.style.borderColor = '#58a6ff'}
+                onBlur={(e) => e.target.style.borderColor = '#30363d'}
               />
               <div style={{
                 fontSize: '11px',
-                color: '#7a7a7a',
-                marginTop: '4px'
+                color: '#7d8590',
+                marginTop: '6px',
+                fontFamily: 'ui-monospace, SFMono-Regular, monospace'
               }}>
                 URL: /{formData.slug || 'page-slug'}
               </div>
@@ -1681,9 +1319,8 @@ function NewPageDialog({ isOpen, onClose, onConfirm }) {
           {/* Footer */}
           <div
             style={{
-              padding: '16px 24px',
-              borderTop: '1px solid #3a3a3a',
-              backgroundColor: '#252525',
+              padding: '20px 24px',
+              borderTop: '1px solid #30363d',
               display: 'flex',
               justifyContent: 'flex-end',
               gap: '12px'
@@ -1693,17 +1330,17 @@ function NewPageDialog({ isOpen, onClose, onConfirm }) {
               onClick={onClose}
               style={{
                 padding: '8px 20px',
-                backgroundColor: '#3a3a3a',
-                border: '1px solid #4a4a4a',
-                borderRadius: '3px',
-                color: '#e0e0e0',
+                backgroundColor: '#21262d',
+                border: '1px solid #30363d',
+                borderRadius: '6px',
+                color: '#e6edf3',
                 fontSize: '13px',
                 fontWeight: '500',
                 cursor: 'pointer',
-                transition: 'background-color 0.2s'
+                transition: 'all 0.15s'
               }}
-              onMouseEnter={(e) => e.target.style.backgroundColor = '#4a4a4a'}
-              onMouseLeave={(e) => e.target.style.backgroundColor = '#3a3a3a'}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#30363d'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#21262d'}
             >
               Cancel
             </button>
@@ -1711,17 +1348,17 @@ function NewPageDialog({ isOpen, onClose, onConfirm }) {
               onClick={handleConfirm}
               style={{
                 padding: '8px 20px',
-                backgroundColor: '#4a7ba7',
-                border: '1px solid #5a8bb7',
-                borderRadius: '3px',
+                background: 'linear-gradient(180deg, #1f6feb 0%, #1158c7 100%)',
+                border: '1px solid rgba(240,246,252,0.1)',
+                borderRadius: '6px',
                 color: '#ffffff',
                 fontSize: '13px',
                 fontWeight: '500',
                 cursor: 'pointer',
-                transition: 'background-color 0.2s'
+                transition: 'all 0.15s'
               }}
-              onMouseEnter={(e) => e.target.style.backgroundColor = '#5a8bb7'}
-              onMouseLeave={(e) => e.target.style.backgroundColor = '#4a7ba7'}
+              onMouseEnter={(e) => e.target.style.background = 'linear-gradient(180deg, #2672f3 0%, #1a63d7 100%)'}
+              onMouseLeave={(e) => e.target.style.background = 'linear-gradient(180deg, #1f6feb 0%, #1158c7 100%)'}
             >
               Create
             </button>

@@ -29,7 +29,9 @@ import {
   IconPhotoPlus,
   IconLayoutBottombar,
   IconSearch,
-  IconX
+  IconX,
+  IconChevronDown,
+  IconLayersLinked
 } from '@tabler/icons-react'
 
 // Available component types organized by category
@@ -37,69 +39,75 @@ const componentLibrary = [
   {
     category: 'Layout',
     components: [
-      { type: 'hero', icon: IconHeading, label: 'Hero', color: '#4a7ba7' },
-      { type: 'section', icon: IconBoxMultiple, label: 'Section', color: '#5a8ba7' },
-      { type: 'two-column', icon: IconColumns, label: 'Two Column', color: '#8a9b7b' },
-      { type: 'three-column', icon: IconLayoutGrid, label: 'Three Column', color: '#7ba7a7' },
-      { type: 'card-grid', icon: IconLayoutGrid, label: 'Card Grid', color: '#7ba7a7' },
-      { type: 'divider', icon: IconSeparator, label: 'Divider', color: '#7a7a7a' },
-      { type: 'spacer', icon: IconSeparator, label: 'Spacer', color: '#6a6a6a' },
+      { type: 'hero', icon: IconHeading, label: 'Hero', color: '#58a6ff' },
+      { type: 'section', icon: IconBoxMultiple, label: 'Section', color: '#79c0ff' },
+      { type: 'two-column', icon: IconColumns, label: 'Two Column', color: '#a5d6ff' },
+      { type: 'three-column', icon: IconLayoutGrid, label: 'Three Column', color: '#79c0ff' },
+      { type: 'card-grid', icon: IconLayoutGrid, label: 'Card Grid', color: '#a5d6ff' },
+      { type: 'divider', icon: IconSeparator, label: 'Divider', color: '#7d8590' },
+      { type: 'spacer', icon: IconSeparator, label: 'Spacer', color: '#6e7681' },
     ]
   },
   {
     category: 'Content',
     components: [
-      { type: 'heading', icon: IconHeading, label: 'Heading', color: '#4a7ba7' },
-      { type: 'text', icon: IconTextSize, label: 'Text', color: '#5a9b5a' },
-      { type: 'html', icon: IconCode, label: 'HTML', color: '#7b8ba7' },
-      { type: 'image', icon: IconPhoto, label: 'Image', color: '#9b7ba7' },
-      { type: 'image-text', icon: IconPhotoPlus, label: 'Image + Text', color: '#8b7ba7' },
-      { type: 'gallery', icon: IconLayoutGrid, label: 'Gallery', color: '#7b9ba7' },
-      { type: 'video', icon: IconVideo, label: 'Video', color: '#6a8ba7' },
-      { type: 'youtube', icon: IconBrandYoutube, label: 'YouTube', color: '#ff0000' },
-      { type: 'bulletin', icon: IconFileDescription, label: 'Bulletin', color: '#7b9b8b' },
+      { type: 'heading', icon: IconHeading, label: 'Heading', color: '#d29922' },
+      { type: 'text', icon: IconTextSize, label: 'Text', color: '#f0883e' },
+      { type: 'html', icon: IconCode, label: 'HTML', color: '#db6d28' },
+      { type: 'image', icon: IconPhoto, label: 'Image', color: '#a371f7' },
+      { type: 'image-text', icon: IconPhotoPlus, label: 'Image + Text', color: '#b083f0' },
+      { type: 'gallery', icon: IconLayoutGrid, label: 'Gallery', color: '#bc8cff' },
+      { type: 'video', icon: IconVideo, label: 'Video', color: '#d2a8ff' },
+      { type: 'youtube', icon: IconBrandYoutube, label: 'YouTube', color: '#ff4444' },
+      { type: 'bulletin', icon: IconFileDescription, label: 'Bulletin', color: '#d2a8ff' },
     ]
   },
   {
     category: 'Interactive',
     components: [
-      { type: 'button', icon: IconClick, label: 'Button', color: '#a77b7b' },
-      { type: 'cta', icon: IconClick, label: 'CTA Banner', color: '#a77b7b' },
-      { type: 'contact-form', icon: IconMail, label: 'Contact Form', color: '#9b7b7b' },
-      { type: 'accordion', icon: IconListDetails, label: 'Accordion', color: '#8b7b9b' },
-      { type: 'tabs', icon: IconLayoutList, label: 'Tabs', color: '#7b8b9b' },
-      { type: 'language-switcher', icon: IconLanguage, label: 'Language', color: '#8a7ba7' },
+      { type: 'button', icon: IconClick, label: 'Button', color: '#3fb950' },
+      { type: 'cta', icon: IconClick, label: 'CTA Banner', color: '#56d364' },
+      { type: 'contact-form', icon: IconMail, label: 'Contact Form', color: '#7ee787' },
+      { type: 'accordion', icon: IconListDetails, label: 'Accordion', color: '#4ac26b' },
+      { type: 'tabs', icon: IconLayoutList, label: 'Tabs', color: '#2ea043' },
+      { type: 'language-switcher', icon: IconLanguage, label: 'Language', color: '#39d353' },
     ]
   },
   {
     category: 'Dynamic',
     components: [
-      { type: 'events-list', icon: IconCalendar, label: 'Events', color: '#7ba78a' },
-      { type: 'event-calendar', icon: IconCalendar, label: 'Calendar', color: '#6ba78a' },
-      { type: 'news-list', icon: IconNews, label: 'News', color: '#7ba79a' },
-      { type: 'blog-posts', icon: IconNews, label: 'Blog Posts', color: '#8ba78a' },
-      { type: 'sermon-list', icon: IconPlayerPlay, label: 'Sermons', color: '#9ba78a' },
-      { type: 'staff-grid', icon: IconUsers, label: 'Staff', color: '#7b9b8a' },
-      { type: 'countdown', icon: IconClock, label: 'Countdown', color: '#ab7b7b' },
-      { type: 'map', icon: IconMap, label: 'Map', color: '#5a9b7b' },
-      { type: 'testimonial', icon: IconQuote, label: 'Testimonial', color: '#7b8b9b' },
-      { type: 'social-feed', icon: IconLink, label: 'Social Feed', color: '#8b7b9b' },
-      { type: 'embed', icon: IconLayout2, label: 'Embed', color: '#9b8b7b' },
+      { type: 'events-list', icon: IconCalendar, label: 'Events', color: '#f778ba' },
+      { type: 'event-calendar', icon: IconCalendar, label: 'Calendar', color: '#f778ba' },
+      { type: 'news-list', icon: IconNews, label: 'News', color: '#db61a2' },
+      { type: 'blog-posts', icon: IconNews, label: 'Blog Posts', color: '#ea6045' },
+      { type: 'sermon-list', icon: IconPlayerPlay, label: 'Sermons', color: '#f778ba' },
+      { type: 'staff-grid', icon: IconUsers, label: 'Staff', color: '#ff7b72' },
+      { type: 'countdown', icon: IconClock, label: 'Countdown', color: '#ff9492' },
+      { type: 'map', icon: IconMap, label: 'Map', color: '#39d353' },
+      { type: 'testimonial', icon: IconQuote, label: 'Testimonial', color: '#d29922' },
+      { type: 'social-feed', icon: IconLayersLinked, label: 'Social Feed', color: '#58a6ff' },
+      { type: 'embed', icon: IconLayout2, label: 'Embed', color: '#a371f7' },
     ]
   },
   {
     category: 'Navigation',
     components: [
-      { type: 'breadcrumb', icon: IconLink, label: 'Breadcrumb', color: '#7a8a9a' },
-      { type: 'menu', icon: IconLayoutBottombar, label: 'Menu', color: '#6a7a8a' },
-      { type: 'link', icon: IconLink, label: 'Link', color: '#5a6a7a' },
+      { type: 'breadcrumb', icon: IconLink, label: 'Breadcrumb', color: '#7d8590' },
+      { type: 'menu', icon: IconLayoutBottombar, label: 'Menu', color: '#7d8590' },
+      { type: 'link', icon: IconLink, label: 'Link', color: '#58a6ff' },
     ]
   }
 ]
 
 export default function ComponentToolbox({ onAddComponent }) {
   const [isExpanded, setIsExpanded] = useState(true)
-  const [expandedCategories, setExpandedCategories] = useState({ 'Layout': true, 'Content': true, 'Interactive': true, 'Dynamic': true, 'Navigation': true })
+  const [expandedCategories, setExpandedCategories] = useState({
+    'Layout': true,
+    'Content': true,
+    'Interactive': true,
+    'Dynamic': true,
+    'Navigation': true
+  })
   const [searchQuery, setSearchQuery] = useState('')
 
   const handleDragStart = (e, componentType) => {
@@ -129,12 +137,12 @@ export default function ComponentToolbox({ onAddComponent }) {
   return (
     <div
       style={{
-        width: isExpanded ? '240px' : '48px',
-        backgroundColor: '#252525',
-        borderRight: '1px solid #3a3a3a',
+        width: isExpanded ? '260px' : '48px',
+        backgroundColor: '#161b22',
+        borderRight: '1px solid #30363d',
         display: 'flex',
         flexDirection: 'column',
-        transition: 'width 0.3s ease',
+        transition: 'width 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
         overflow: 'hidden',
         flexShrink: 0
       }}
@@ -142,27 +150,31 @@ export default function ComponentToolbox({ onAddComponent }) {
       {/* Toolbox Header */}
       <div
         style={{
-          height: '40px',
-          borderBottom: '1px solid #3a3a3a',
+          height: '48px',
+          borderBottom: '1px solid #30363d',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 8px',
-          cursor: 'pointer'
+          padding: '0 12px',
+          cursor: 'pointer',
+          flexShrink: 0
         }}
         onClick={() => setIsExpanded(!isExpanded)}
       >
         {isExpanded && (
-          <span style={{ fontSize: '12px', fontWeight: '600', color: '#e0e0e0' }}>
-            Components
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <IconBoxMultiple size={18} style={{ color: '#58a6ff' }} />
+            <span style={{ fontSize: '13px', fontWeight: '600', color: '#e6edf3' }}>
+              Components
+            </span>
+          </div>
         )}
         <IconChevronRight
           size={16}
           style={{
-            color: '#a0a0a0',
+            color: '#7d8590',
             transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
-            transition: 'transform 0.3s ease',
+            transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
             margin: isExpanded ? '0' : '0 auto'
           }}
         />
@@ -171,23 +183,23 @@ export default function ComponentToolbox({ onAddComponent }) {
       {/* Search Bar */}
       {isExpanded && (
         <div style={{
-          padding: '8px',
-          borderBottom: '1px solid #3a3a3a',
-          backgroundColor: '#252525',
+          padding: '12px',
+          borderBottom: '1px solid #30363d',
           flexShrink: 0
         }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            backgroundColor: '#1e1e1e',
-            borderRadius: '4px',
-            padding: '6px 8px',
-            border: '1px solid #3a3a3a'
+            backgroundColor: '#0d1117',
+            borderRadius: '6px',
+            padding: '8px 10px',
+            border: '1px solid #30363d',
+            transition: 'border-color 0.15s'
           }}>
-            <IconSearch size={14} style={{ color: '#6a6a6a', marginRight: '6px', flexShrink: 0 }} />
+            <IconSearch size={14} style={{ color: '#7d8590', marginRight: '8px', flexShrink: 0 }} />
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Search components..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
@@ -195,15 +207,15 @@ export default function ComponentToolbox({ onAddComponent }) {
                 background: 'transparent',
                 border: 'none',
                 outline: 'none',
-                color: '#e0e0e0',
-                fontSize: '11px',
+                color: '#e6edf3',
+                fontSize: '12px',
                 minWidth: 0
               }}
             />
             {searchQuery && (
               <IconX
                 size={14}
-                style={{ color: '#6a6a6a', cursor: 'pointer', flexShrink: 0, marginLeft: '4px' }}
+                style={{ color: '#7d8590', cursor: 'pointer', flexShrink: 0, marginLeft: '6px' }}
                 onClick={(e) => {
                   e.stopPropagation()
                   setSearchQuery('')
@@ -219,6 +231,7 @@ export default function ComponentToolbox({ onAddComponent }) {
         style={{
           flex: 1,
           overflowY: 'auto',
+          overflowX: 'hidden',
           padding: '8px'
         }}
       >
@@ -237,25 +250,25 @@ export default function ComponentToolbox({ onAddComponent }) {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: '6px 4px',
+                    padding: '6px 8px',
                     cursor: 'pointer',
-                    marginBottom: '6px',
-                    userSelect: 'none'
+                    marginBottom: '4px',
+                    userSelect: 'none',
+                    borderRadius: '6px',
+                    transition: 'background-color 0.15s'
                   }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(110, 118, 129, 0.1)'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                 >
-                  <IconChevronRight
-                    size={12}
-                    style={{
-                      color: '#7a7a7a',
-                      marginRight: '6px',
-                      transform: isCategoryExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-                      transition: 'transform 0.2s ease'
-                    }}
-                  />
+                  {isCategoryExpanded ? (
+                    <IconChevronDown size={12} style={{ color: '#7d8590', marginRight: '6px' }} />
+                  ) : (
+                    <IconChevronRight size={12} style={{ color: '#7d8590', marginRight: '6px' }} />
+                  )}
                   <span style={{
-                    fontSize: '10px',
+                    fontSize: '11px',
                     fontWeight: '600',
-                    color: '#7a7a7a',
+                    color: '#7d8590',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
@@ -278,23 +291,25 @@ export default function ComponentToolbox({ onAddComponent }) {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: isExpanded ? 'flex-start' : 'center',
-                      gap: '8px',
-                      padding: isExpanded ? '8px' : '4px',
-                      marginBottom: '4px',
-                      backgroundColor: '#2a2a2a',
-                      border: '1px solid #3a3a3a',
-                      borderRadius: '3px',
+                      gap: '10px',
+                      padding: isExpanded ? '10px 12px' : '8px',
+                      marginBottom: '3px',
+                      backgroundColor: '#0d1117',
+                      border: '1px solid #30363d',
+                      borderRadius: '6px',
                       cursor: 'grab',
-                      transition: 'all 0.15s ease',
+                      transition: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
                       userSelect: 'none'
                     }}
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.backgroundColor = '#3a3a3a'
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#161b22'
                       e.currentTarget.style.borderColor = component.color
+                      e.currentTarget.style.transform = 'translateX(2px)'
                     }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.backgroundColor = '#2a2a2a'
-                      e.currentTarget.style.borderColor = '#3a3a3a'
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = '#0d1117'
+                      e.currentTarget.style.borderColor = '#30363d'
+                      e.currentTarget.style.transform = 'translateX(0)'
                     }}
                   >
                     <div
@@ -304,8 +319,8 @@ export default function ComponentToolbox({ onAddComponent }) {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: component.color + '33',
-                        borderRadius: '3px',
+                        backgroundColor: component.color + '15',
+                        borderRadius: '6px',
                         flexShrink: 0
                       }}
                     >
@@ -315,21 +330,23 @@ export default function ComponentToolbox({ onAddComponent }) {
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div
                           style={{
-                            fontSize: '11px',
+                            fontSize: '12px',
                             fontWeight: '500',
-                            color: '#e0e0e0',
+                            color: '#e6edf3',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
+                            whiteSpace: 'nowrap',
+                            lineHeight: '1.4'
                           }}
                         >
                           {component.label}
                         </div>
                         <div
                           style={{
-                            fontSize: '9px',
-                            color: '#7a7a7a',
-                            marginTop: '2px'
+                            fontSize: '10px',
+                            color: '#7d8590',
+                            marginTop: '2px',
+                            fontFamily: 'ui-monospace, SFMono-Regular, monospace'
                           }}
                         >
                           {component.type}
